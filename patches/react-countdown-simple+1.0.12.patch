@@ -1,0 +1,48 @@
+diff --git a/node_modules/react-countdown-simple/dist/cjs/index.d.ts b/node_modules/react-countdown-simple/dist/cjs/index.d.ts
+index 4a5ba6c..78d6508 100644
+--- a/node_modules/react-countdown-simple/dist/cjs/index.d.ts
++++ b/node_modules/react-countdown-simple/dist/cjs/index.d.ts
+@@ -1,6 +1,5 @@
+ import { FC } from 'react';
+ import { TFormatType, TRenderProps } from './types';
+-import './styles.css';
+ interface ICountdown {
+     disableTypes?: boolean;
+     formatType?: TFormatType;
+diff --git a/node_modules/react-countdown-simple/dist/cjs/index.js b/node_modules/react-countdown-simple/dist/cjs/index.js
+index 5392674..858d21c 100644
+--- a/node_modules/react-countdown-simple/dist/cjs/index.js
++++ b/node_modules/react-countdown-simple/dist/cjs/index.js
+@@ -32,8 +32,6 @@ var date_time_1 = __importDefault(require("./date-time"));
+ var colon_1 = __importDefault(require("./colon"));
+ // helper
+ var helper_1 = require("./helper");
+-// styles
+-require("./styles.css");
+ var Countdown = function (_a) {
+     var disableTypes = _a.disableTypes, formatType = _a.formatType, targetDate = _a.targetDate, renderer = _a.renderer;
+     var dateData = (0, helper_1.useCountdown)(targetDate);
+diff --git a/node_modules/react-countdown-simple/dist/esm/index.d.ts b/node_modules/react-countdown-simple/dist/esm/index.d.ts
+index 4a5ba6c..78d6508 100644
+--- a/node_modules/react-countdown-simple/dist/esm/index.d.ts
++++ b/node_modules/react-countdown-simple/dist/esm/index.d.ts
+@@ -1,6 +1,5 @@
+ import { FC } from 'react';
+ import { TFormatType, TRenderProps } from './types';
+-import './styles.css';
+ interface ICountdown {
+     disableTypes?: boolean;
+     formatType?: TFormatType;
+diff --git a/node_modules/react-countdown-simple/dist/esm/index.js b/node_modules/react-countdown-simple/dist/esm/index.js
+index 0af479e..e6b7906 100644
+--- a/node_modules/react-countdown-simple/dist/esm/index.js
++++ b/node_modules/react-countdown-simple/dist/esm/index.js
+@@ -4,8 +4,6 @@ import DateTime from './date-time';
+ import Colon from './colon';
+ // helper
+ import { getType, useCountdown } from './helper';
+-// styles
+-import './styles.css';
+ var Countdown = function (_a) {
+     var disableTypes = _a.disableTypes, formatType = _a.formatType, targetDate = _a.targetDate, renderer = _a.renderer;
+     var dateData = useCountdown(targetDate);
