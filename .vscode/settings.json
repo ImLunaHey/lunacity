@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "dflex",
+        "NEXTAUTH",
+        "nextui"
+    ],
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "dotenv.enableAutocloaking": true
+}
