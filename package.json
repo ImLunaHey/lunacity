@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev:wss": "tsup-node ./src/server/server.ts --onSuccess=\"NODE_ENV=development node dist/server.js\"",
+    "dev:wss": "tsup-node ./src/server/server.ts --onSuccess=\"DOT_NEXT_DIRECTORY='.next-ws' NODE_ENV=development node dist/server.js\"",
     "dev:next": "next dev",
     "dev": "run-p dev:*",
     "postinstall": "patch-package && prisma generate",

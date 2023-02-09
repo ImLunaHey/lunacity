@@ -7,6 +7,7 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
+  distDir: process.env.DOT_NEXT_DIRECTORY ?? '.next',
   reactStrictMode: true,
   /* If trying out the experimental appDir, comment the i18n config out
    * @see https://github.com/vercel/next.js/issues/41980 */
@@ -18,6 +19,10 @@ const config = {
     remotePatterns: [{
       hostname: '*'
     }]
+  },
+  publicRuntimeConfig: {
+    APP_URL: process.env.APP_URL,
+    WS_URL: process.env.WS_URL
   }
 };
 
