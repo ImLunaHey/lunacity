@@ -18,7 +18,10 @@
  */
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { type Session } from 'next-auth';
-
+import ws from 'ws';
+import { NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http';
+import { IncomingMessage } from 'http';
+import { getSession } from 'next-auth/react';
 import { getServerAuthSession } from '../auth';
 import { prisma } from '../db';
 
@@ -38,6 +41,20 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    prisma,
+  };
+};
+
+/**
+ * Create context for websocket
+ */
+export const createWebsocketContext = async (
+  opts: NodeHTTPCreateContextFnOptions<IncomingMessage, ws>,
+) => {
+  const session = await getSession(opts);
+
+  return {
+    session,
     prisma,
   };
 };
