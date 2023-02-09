@@ -1,5 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { handleTRPCError } from '../../../common/handle-trpc-error';
+import { bus } from '../../bus';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const pageRouter = createTRPCRouter({
@@ -22,165 +24,410 @@ export const pageRouter = createTRPCRouter({
   createPage: protectedProcedure
     .input(
       z.object({
-        name: z.string(),
+        displayName: z.string(),
         handle: z.string(),
+        description: z.string().optional(),
       })
     )
-    .mutation(async ({ ctx, input: { name, handle } }) => {
+    .mutation(async ({ ctx, input: { displayName, handle, description } }) => {
       // The handle must be at least 1 character long
-      if (handle.trim().length === 0) throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'The handle must be at least 1 character long.',
-      });
+      if (handle.trim().length === 0)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'The handle must be at least 1 character long.',
+        });
 
       // The handle must be no more than 25 characters long
-      if (handle.trim().length >= 26) throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'The handle must be no more than 25 character long.',
-      });
+      if (handle.trim().length >= 26)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'The handle must be no more than 25 character long.',
+        });
 
       // The handle must not be any of these reserved words
-      if (['null', 'undefined', 'signin', 'signout', 'signup', 'tos', ...'abcdefghijklmnopqrstuvwxyz', ...'abcdefghijklmnopqrstuvwxyz'.toUpperCase()].includes(handle)) throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'This handle is reserved, please contact @staff if you have a valid use case.',
-      });
+      if (
+        [
+          'null',
+          'undefined',
+          'signin',
+          'signout',
+          'signup',
+          'tos',
+          ...'abcdefghijklmnopqrstuvwxyz',
+          ...'abcdefghijklmnopqrstuvwxyz'.toUpperCase(),
+        ].includes(handle)
+      )
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'This handle is reserved, please contact @staff if you have a valid use case.',
+        });
 
       // Check if the handle is taken
-      const handleTaken = await prisma?.page.count({ where: { handle } }) ?? 0 >= 1;
-      if (handleTaken) throw new TRPCError({
-        code: 'CONFLICT',
-        message: `The handle "@${handle}" is taken.`,
-      });
+      const handleTaken =
+        (await prisma?.page.count({ where: { handle } })) ?? 0 >= 1;
+      if (handleTaken)
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: `The handle "@${handle}" is taken.`,
+        });
 
       // Create the page
       await ctx.prisma.page.create({
         data: {
-          name: name.trim() || `@${handle}`,
+          displayName: displayName.trim() || `@${handle}`,
           handle,
-          ownerId: ctx.session.user.id
+          description,
+          ownerId: ctx.session.user.id,
+          followedBy: {
+            create: {
+              followerId: ctx.session.user.id,
+            },
+          },
         },
       });
     }),
 
   pageExists: publicProcedure
-    .input(z.object({
-      handle: z.string()
-    }))
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
     .query(async ({ input: { handle } }) => {
-      const count = await prisma?.page.count({ where: { handle: handle.replace('@', '') } });
+      const count = await prisma?.page.count({
+        where: { handle: handle.replace('@', '') },
+      });
       return count ?? 0 >= 1;
     }),
 
-  getUsersPages: protectedProcedure
-    .query(({ ctx: { session, prisma } }) => {
-      return prisma?.page.findMany({
-        where: {
-          ownerId: session.user.id,
-        }
-      })
-    }),
+  getUsersPages: protectedProcedure.query(({ ctx: { session, prisma } }) => {
+    return prisma?.page.findMany({
+      where: {
+        ownerId: session.user.id,
+      },
+    });
+  }),
 
   getPageDetails: publicProcedure
-    .input(z.object({
-      handle: z.string()
-    }))
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
     .query(async ({ ctx: { session, prisma }, input }) => {
       const handle = input.handle.replace('@', '');
 
       // Get page details
       const page = await prisma.page.findFirst({
         where: {
-          handle
+          handle,
         },
         include: {
           // Get all infractions that end AFTER now
           infractions: {
             where: {
               endTimestamp: {
-                gte: new Date()
+                gte: new Date(),
+              },
+            },
+          }
+        },
+      });
+
+      // No page found for that handle
+      if (!page)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No page found for this handle.',
+        });
+
+
+      // If the user is signed in, check if the user's own page is following this page
+      const following = session?.user ? await prisma.page.findFirst({
+        where: {
+          handle, followedBy: {
+            some: {
+              follower: {
+                ownerId: session?.user.id
               }
-            }
-          },
-          followedBy: {
-            select: {
-              followerId: true
             }
           }
         }
-      });
+      }).then(following => following !== null) : false;
 
-      // If the user is signed out return public details
-      if (!session?.user?.id) return page;
-      
-      // If the user is signed in check if they have permission to get more details, if they don't then return public details
-      if (page?.ownerId !== session.user.id) return page;
+      // How many pages this page is following
+      const followingCount = session?.user ? await prisma.follows.aggregate({
+        where: {
+          followerId: page?.id
+        },
+        _count: true
+      }).then(result => result._count) : 0;
 
-      // If the user is the owner return more details
-      // TODO: The comment above
-      return page;
+      return {
+        ...page,
+        following,
+        followingCount,
+      }
     }),
 
-    getPagePosts: publicProcedure
-      .input(z.object({
-        handle: z.string()
-      }))
-      .query(async ({ ctx: { session, prisma }, input }) => {
-        const handle = input.handle.replace('@', '');
+  getPagePosts: publicProcedure
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
+    .query(async ({ ctx: { session, prisma }, input }) => {
+      const handle = input.handle.replace('@', '');
 
-        // Get all the posts for this page
-        const posts = await prisma.post.findMany({
-          where: {
-            page: {
-              handle
+      // Get all the posts for this page
+      const posts = await prisma.post.findMany({
+        where: {
+          page: {
+            handle,
+          },
+        },
+        include: {
+          tags: true,
+          page: {
+            include: {
+              owner: true,
+            },
+          },
+          media: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      // If the user is signed out return public posts
+      if (!session?.user?.id) return posts;
+
+      return posts;
+
+      // // If the user is signed in check if they have permission to get more posts, if they don't then return public post
+      // if (page?.ownerId !== session.user.id) return posts;
+
+      // // If the user is the owner return more details
+      // // TODO: The comment above
+      // return page;
+    }),
+
+  followPage: protectedProcedure
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
+    .mutation(async ({ ctx: { prisma, session }, input: { handle } }) => {
+      // Check if the user is signed in
+      if (!session)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You must be signed in to follow pages.',
+        });
+
+      // Get the page
+      const page = await prisma.page.findUnique({
+        where: {
+          handle,
+        },
+        include: {
+          owner: true
+        }
+      });
+
+      // No page found for that handle
+      if (!page)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No page found for this handle.',
+        });
+
+      // Get the current session's page
+      const sessionPage = await prisma.page.findUnique({
+        where: {
+          ownerId: session.user.id
+        }
+      });
+
+      // No page found for the current session
+      if (!sessionPage)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No page found for this handle.',
+        });
+
+      // Follow the page and send a notification to the page they followed
+      const [_, { id }] = await prisma.$transaction([
+        prisma.page.update({
+          where: { handle },
+          data: {
+            followerCount: {
+              increment: 1,
+            },
+            followedBy: {
+              create: {
+                followerId: sessionPage.id,
+              },
+            },
+          },
+        }),
+        prisma.notification.create({
+          data: {
+            type: 'followed',
+            notified: {
+              connect: {
+                id: page.owner.id
+              }
+            },
+            data: {
+              create: {
+                pageId: page.id
+              }
+            }
+          }
+        })
+      ]);
+
+      // Get the newly created notification
+      const notification = await prisma.notification.findUnique({
+        where: {
+          id
+        },
+        include: {
+          data: {
+            include: {
+              comment: true,
+              page: true,
+              post: true
             }
           },
-          include: {
-            tags: true,
-            page: true
-          }
-        });
-  
-        // If the user is signed out return public posts
-        if (!session?.user?.id) return posts;
+          notified: true
+        }
+      });
 
-        return posts;
-        
-        // // If the user is signed in check if they have permission to get more posts, if they don't then return public post
-        // if (page?.ownerId !== session.user.id) return posts;
-  
-        // // If the user is the owner return more details
-        // // TODO: The comment above
-        // return page;
-      }),
-    
-      followPage: protectedProcedure
-        .input(z.object({
-          handle: z.string()
-        }))
-        .mutation(({ ctx: { prisma, session }, input }) => {
-          // Check if the user is signed in
-          if (!session) throw new TRPCError({
+      bus.emit('newNotification', notification);
+    }),
+
+  unfollowPage: protectedProcedure
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
+    .mutation(async ({ ctx: { prisma, session }, input: { handle } }) => {
+      try {
+        // Check if the user is signed in
+        if (!session)
+          throw new TRPCError({
             code: 'FORBIDDEN',
-            message: 'You must be signed in to follow pages.',
+            message: 'You must be signed in to unfollow pages.',
           });
 
-          console.log(session);
+        // Get the page
+        const page = await prisma.page.findUnique({
+          where: {
+            handle,
+          },
+        });
 
-          // Follow the page
-          // const follower = await prisma.page.findFirstOrThrow({ where: { id: session.page.id } }); // This is the page we're signed-in as
-          // const following = await prisma.page.findFirstOrThrow({ where: { handle: input.handle } }); // This is the page we're following
-          // return prisma.page.update({
-          //   where: { id: from.id },
-          //   data: {
-          //     following: {
-          //       connect: {
-          //         followerId_followingId: {
-          //           followerId: follower.id,
-          //           followingId: following.id
-          //         }
-          //       }
-          //     }
-          //   }
-          // })
-        })
+        // No page found for that handle
+        if (!page)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'No page found for this handle.',
+          });
+
+        // Get the current session's page
+        const sessionPage = await prisma.page.findUnique({
+          where: {
+            ownerId: session.user.id
+          }
+        });
+
+        // No page found for the current session
+        if (!sessionPage)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'No page found for this handle.',
+          });
+
+        // Unfollow page + decrement follower count by 1
+        await prisma.$transaction([
+          prisma.follows.delete({
+            where: {
+              followerId_followingId: {
+                followerId: sessionPage.id,
+                followingId: page.id
+              },
+            },
+          }),
+          prisma.page.update({
+            where: {
+              id: page.id,
+            },
+            data: {
+              followerCount: {
+                decrement: 1,
+              },
+            },
+          }),
+        ]);
+      } catch (error: unknown) {
+        handleTRPCError(error);
+      }
+    }),
+
+  followingState: publicProcedure.input(z.object({
+    handle: z.string()
+  })).query(async ({ ctx: { session, prisma }, input: { handle } }) => {
+    // Check if the user is signed in
+    if (!session)
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'You must be signed-in to get your following state of a page.',
+      });
+
+    // Get the current session's page
+    const sessionPage = await prisma.page.findUnique({
+      where: {
+        ownerId: session.user?.id
+      }
+    });
+
+    // No page found for the current session
+    if (!sessionPage)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'No page found for this handle.',
+      });
+
+    // Get the page
+    const page = await prisma.page.findUnique({
+      where: {
+        handle,
+      },
+    });
+
+    // No page found for that handle
+    if (!page)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'No page found for this handle.',
+      });
+
+    // Check if the session user's page is following the handle provided
+    const follows = await prisma.follows.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: sessionPage.id,
+          followingId: page.id
+        }
+      }
+    });
+
+    return follows !== null;
+  })
 });
