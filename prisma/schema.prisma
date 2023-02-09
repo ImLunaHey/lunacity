@@ -14,12 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -27,87 +21,16 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  expires      DateTime
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  pageId       String?
-  page         Page?     @relation(fields: [pageId], references: [id], onDelete: Cascade)
-}
-
-model Page {
-  id            String       @id @default(uuid())
-  handle        String       @unique
-  name          String
-  ownerId       String
-  owner         User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  followerCount Int          @default(0)
-  posts         Post[]
-  infractions   Infraction[]
-  official      Boolean      @default(false)
-  followedBy    Follows[]    @relation("following")
-  following     Follows[]    @relation("follower")
-  description   String       @default("")
-  Session       Session[]
-}
-
-model Infraction {
-  id             String   @id @default(uuid())
-  pageId         String
-  page           Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  startTimestamp DateTime @default(now())
-  endTimestamp   DateTime
-  reason         String
-  severity       String
-}
-
-model Follows {
-  follower    Page   @relation("follower", fields: [followerId], references: [id])
-  followerId  String
-  following   Page   @relation("following", fields: [followingId], references: [id])
-  followingId String
-
-  @@id([followerId, followingId])
-}
-
-model Tag {
-  id    String @id @default(uuid())
-  name  String @unique
-  posts Post[]
-}
-
-model Post {
-  id     String @id @default(uuid())
-  type   String
-  body   String
-  pageId String
-  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  tags   Tag[]
-}
-
-model User {
-  id            String    @id @default(uuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  pages         Page[]
 }
 
 model VerificationToken {
@@ -116,4 +39,209 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  expires      DateTime
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String               @id @default(cuid())
+  handle        String?              @unique
+  email         String?              @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  reports       Report[]
+  notifications Notification[]
+  pagesFollowed PageFollowedByUser[]
+  page          Page?
+  infractions   UserInfractions[]
+}
+
+model Page {
+  id               String               @id @default(cuid())
+  handle           String               @unique
+  displayName      String
+  followerCount    Int                  @default(0)
+  posts            Post[]
+  infractions      PageInfractions[]
+  official         Boolean              @default(false)
+  description      String               @default("")
+  followedBy       Follows[]            @relation("following")
+  following        Follows[]            @relation("follower")
+  usersFollowing   PageFollowedByUser[]
+  ownerId          String               @unique
+  owner            User                 @relation(fields: [ownerId], references: [id])
+  NotificationData NotificationData[]
+}
+
+model PageInfractions {
+  id             String   @id @default(cuid())
+  pageId         String
+  page           Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  startTimestamp DateTime @default(now())
+  endTimestamp   DateTime
+  reason         String
+  severity       String
+}
+
+model UserInfractions {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startTimestamp DateTime @default(now())
+  endTimestamp   DateTime
+  reason         String
+  severity       String
+}
+
+model Follows {
+  // The page who is following
+  followerId String
+  follower   Page   @relation("follower", fields: [followerId], references: [id])
+
+  // Page they're following
+  followingId String
+  following   Page   @relation("following", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  posts Post[]
+}
+
+model Report {
+  id String @id @default(cuid())
+
+  // The person reporting this post
+  reporterId String
+  reporter   User   @relation(fields: [reporterId], references: [id])
+
+  // TODO: Should we maybe make this an enum?
+  // Why they're reporting this
+  reason String
+
+  // The post being reported
+  Post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+}
+
+model Media {
+  id String @id @default(cuid())
+
+  postId String
+  Post   Post   @relation(fields: [postId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id     String  @id @default(cuid())
+  type   String
+  title  String
+  body   String
+  media  Media[]
+  pageId String
+  page   Page    @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  tags   Tag[]
+
+  reports Report[]
+
+  // We cant use ENUMs as prisma still doesn't support them with SQLite3
+  // This can be null | 'sex' | 'drugs' | 'violence'
+  // null = SFW or educational
+  // sex = talks about sex in a non-educational manor
+  // drugs = talks about drugs in a non-educational manor
+  // violence = talks about violence in a non-educational manor
+  communityLabel String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  likes            PostLike[]
+  comments         Comment[]
+  NotificationData NotificationData[]
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+
+  likes            CommentLike[]
+  NotificationData NotificationData[]
+}
+
+model PostLike {
+  id String @id @default(cuid())
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+}
+
+model CommentLike {
+  id String @id @default(cuid())
+
+  commentId String
+  Comment   Comment @relation(fields: [commentId], references: [id])
+}
+
+model PageFollowedByUser {
+  id String @id @default(cuid())
+
+  page   Page   @relation(fields: [pageId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  pageId String
+  userId String
+}
+
+// A(User) [follow] -> B()
+// B(User) [follow_back] -> A
+// A(User) [comment] -> B(Post/Comment)
+// A(User) [like] -> B(Post/Comment)
+
+model Notification {
+  id String @id @default(cuid())
+
+  // We cant use ENUMs as prisma still doesn't support them with SQLite3
+  // followed | followed_back | posted_commented_on | post_liked | comment_liked
+  // What type of notification this is
+  type String
+
+  // Has this been read
+  read Boolean @default(false)
+
+  // Who got the notification
+  notifiedId String? @map("notified")
+  notified   User?   @relation(fields: [notifiedId], references: [id])
+
+  // The associated data for this notification
+  data NotificationData?
+}
+
+model NotificationData {
+  id String @id @default(cuid())
+
+  // The notification this data belongs to
+  notificationId String       @unique
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  // The associated model
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  pageId    String?
+  page      Page?    @relation(fields: [pageId], references: [id])
+  postId    String?
+  post      Post?    @relation(fields: [postId], references: [id])
 }
