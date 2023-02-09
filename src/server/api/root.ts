@@ -1,6 +1,9 @@
 import { createTRPCRouter } from './trpc';
 import { pageRouter } from './routers/page';
 import { tagRouter } from './routers/tag';
+import { postRouter } from './routers/post';
+import { userRouter } from './routers/user';
+import { notificationRouter } from './routers/notification';
 
 /**
  * This is the primary router for your server.
@@ -9,7 +12,10 @@ import { tagRouter } from './routers/tag';
  */
 export const appRouter = createTRPCRouter({
   page: pageRouter,
+  post: postRouter,
   tag: tagRouter,
+  user: userRouter,
+  notification: notificationRouter
 });
 
 // export type definition of API
