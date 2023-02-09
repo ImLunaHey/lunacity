@@ -1,5 +1,4 @@
-import EventEmitter from 'events';
-import TypedEmitter, { EventMap } from 'typed-emitter';
+import { EventMap } from 'typed-emitter';
 import { createClient } from 'redis';
 import superjson from 'superjson';
 import { Notification, NotificationData, Page, Post, User, Comment } from 'prisma/prisma-client';
@@ -40,15 +39,14 @@ const isCredentialsOptions = (options: Options): options is CredentialsOptions =
 const isClientOptions = (options: Options): options is ClientOptions => Object.keys(options)[0] === 'client';
 const isUrlOptions = (options: Options): options is UrlOptions => Object.keys(options)[0] === 'url';
 
-class RedisBus<Events extends EventMap> extends (EventEmitter as { new <T extends EventMap>(): TypedEmitter<T> })<Events> {
+class RedisBus<Events extends EventMap> {
     pub: ReturnType<typeof createClient>;
     sub: ReturnType<typeof createClient>;
 
     callbacks: Record<keyof Events, Events[keyof Events][]> = {} as Record<keyof Events, Events[keyof Events][]>;
+    connected: boolean = false;
 
     constructor(options: UrlOptions | CredentialsOptions | ClientOptions) {
-        super();
-
         if (isClientOptions(options)) {
             this.pub = options.clients.pub ?? createClient();
             this.sub = options.clients.sub ?? createClient();
@@ -62,18 +60,28 @@ class RedisBus<Events extends EventMap> extends (EventEmitter as { new <T extend
             throw new Error('One of clients, credentials, or url must be provided.');
         }
 
-        // @TODO: dont do this
-        // These should have a .connect method
-        this.pub.connect();
-        this.sub.connect();
+        // Connect to the bus
+        // @TODO: https://github.com/vercel/next.js/discussions/15341 if this changes we should move this to using await
+        this.connect();
+    }
+
+    /**
+     * Cause the underlying pub/sub connections to be connected
+     */
+    async connect() {
+        await Promise.all([
+            this.pub.connect(),
+            this.sub.connect(),
+        ]);
+
+        this.connected = true;
     }
 
     emit<Event extends keyof Events>(event: Event, ...args: Parameters<Events[Event]>) {
+        if (!this.connected) throw new Error('You must run .connect() on the bus before emitting');
+
         // Publish to redis
         this.pub.publish(String(event), JSON.stringify(superjson.serialize(args)));
-
-        // Publish to internal event bus
-        return super.emit(event, ...args);
     }
 
     on<Event extends keyof Events>(event: Event, listener: Events[Event]) {
