@@ -1,6 +1,6 @@
-import { type PrismaClient } from '@prisma/client';
+import { PrismaClient, type } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
-import { type Session } from 'next-auth';
+import { Session, type } from 'next-auth';
 import { z } from 'zod';
 
 /**
@@ -119,7 +119,7 @@ class PostService {
         return post;
     }
 
-    async getExporePosts(ctx: Context, input: z.infer<typeof GetExplorePostsInput>) {
+    async getExplorePosts(ctx: Context, input: z.infer<typeof GetExplorePostsInput>) {
         // If there's no cursor then return 0 + 50 new
         // If there is a cursor return cursor + 50 new
         //  Get 50 posts from pages that're SFW

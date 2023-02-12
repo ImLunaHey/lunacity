@@ -17,6 +17,6 @@ export const postRouter = createTRPCRouter({
   getExplorePosts: publicProcedure
     .input(GetExplorePostsInput)
     .query(async ({ ctx, input }) => {
-      return postService.getExporePosts(ctx, input);
+      return postService.getExplorePosts(ctx, input);
     })
 });

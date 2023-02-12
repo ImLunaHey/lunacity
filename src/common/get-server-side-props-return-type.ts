@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from 'next';
+import type { GetServerSidePropsContext } from 'next';
 
 export type GetServerSidePropsReturnType<T extends ({ }: GetServerSidePropsContext) => Promise<{
     props: Record<string, any>;
