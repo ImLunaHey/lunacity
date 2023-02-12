@@ -1,26 +1,26 @@
 import { withAuth } from '@app/common/with-auth';
 import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown, Loading } from '@nextui-org/react';
-import { Page } from '@prisma/client';
+import type { Page } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { api } from '../../utils/api';
 
 export const getServerSideProps = withAuth();
 
 const PageSelector: FC<{
   pages: Page[];
-  onChanged: (handle: string) => void;
+  onChanged: (handle?: string) => void;
 }> = ({ pages, onChanged }) => {
-  const [selected, setSelected] = useState<string | null>(pages[0]?.handle!);
-
-  // Don't mount unless we have all the data we need
-  if (!pages[0]?.handle || !selected) return null;
+  const [selected, setSelected] = useState<string | undefined>(pages[0]?.handle);
 
   useEffect(() => {
     onChanged(selected);
-  }, [selected]);
+  }, [onChanged, selected]);
+
+  // Don't mount unless we have all the data we need
+  if (!pages[0]?.handle || !selected) return null;
 
   return (
     <Dropdown>
@@ -117,7 +117,7 @@ function CreatePost() {
 
             {/* Select where to post */}
             <Grid.Container justify="center">
-              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => setHandle(handle)} />
+              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => handle && setHandle(handle)} />
             </Grid.Container>
 
             <Grid.Container gap={2} justify="center">

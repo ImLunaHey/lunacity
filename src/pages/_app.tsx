@@ -3,7 +3,6 @@ import { type Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { createTheme, Link, NextUIProvider } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
-import superjson from 'superjson';
 
 import { api } from '../utils/api';
 
@@ -29,7 +28,7 @@ const theme = createTheme({
 
 // If we're in dev mode show route changes as toasts
 if (process.env.NODE_ENV === 'development')
-  Router.events.on('routeChangeStart', (url) => {
+  Router.events.on('routeChangeStart', (url: string) => {
     toast(
       <span>
         Loading: <Link href={url}>{url}</Link>
@@ -93,22 +92,16 @@ const i18nInitData = {
   },
 };
 
-i18n
+void i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init(i18nInitData);
 
-const Application: AppType<{ session: Session | null; json?: any; meta?: any }> = ({
+const Application: AppType<{ session: Session | null; }> = ({
   Component: Page,
-  pageProps: { session, json, meta, ...props },
+  pageProps: { session, ...pageProps },
 }) => {
   const { t } = useTranslation();
   const addNotification = useNotificationStore((state) => state.addNotification);
-  // If we're using superjson in this page's getServerSideProps let's deserialize the props
-  // If we're not then just pass the props
-  const pageProps = {
-    ...props,
-    ...superjson.deserialize<{}>({ json, meta }),
-  };
 
   api.notification.getLiveNotifications.useSubscription(undefined, {
     onData({ notification }) {

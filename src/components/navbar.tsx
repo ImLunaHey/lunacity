@@ -17,13 +17,16 @@ export default function NavBar() {
   type Inputs = { query: string };
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    router.push({
+    void router.push({
       pathname: '/search',
       query: {
         query: data.query,
       },
     });
   };
+
+  // TODO: Fix this
+  if (!sessionData?.user?.page?.handle) return null;
 
   return (
     sessionData && (
@@ -59,7 +62,7 @@ export default function NavBar() {
           }}
         >
           <Navbar.Item className="w-full">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={void handleSubmit(onSubmit)}>
               <Input
                 aria-label="Search box"
                 clearable

@@ -13,11 +13,11 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-app.prepare().then(async () => {
+app.prepare().then(() => {
     const server = http.createServer((req, res) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const parsedUrl = parse(req.url!, true);
-        handle(req, res, parsedUrl);
+        void handle(req, res, parsedUrl);
     });
     const wss = new ws.Server({ server });
     const handler = applyWSSHandler({

@@ -2,10 +2,10 @@ import { withAuth } from '@app/common/with-auth';
 import { api } from '@app/utils/api';
 import { Loading } from '@nextui-org/react';
 import Head from 'next/head';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const getServerSideProps = withAuth<{ query: string }>(async (context) => ({
+export const getServerSideProps = withAuth<{ query: string }>((context) => ({
   props: {
     query: context.query.query,
   },
@@ -20,7 +20,7 @@ const Search: FC<{ query: string }> = ({ query }) => {
   return (
     <>
       <Head>
-        <title children={`Search results for: ${query}`}></title>
+        <title>{`Search results for: ${query}`}</title>
       </Head>
       <div>Search results for: {JSON.stringify(query)}</div>
       {results.data?.length === 0 && <div>{t('No results found.')}</div>}

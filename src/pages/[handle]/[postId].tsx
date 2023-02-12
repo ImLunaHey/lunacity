@@ -6,7 +6,7 @@ import Error from 'next/error';
 import { withAuth } from '@app/common/with-auth';
 
 // Return the postId from the url
-export const getServerSideProps = withAuth<{ handle: string; postId: string }>(async (context) => {
+export const getServerSideProps = withAuth<{ handle: string; postId: string }>((context) => {
   return {
     props: {
       postId: context.query.postId,

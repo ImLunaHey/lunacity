@@ -1,13 +1,13 @@
 import { Card, Text, Spacer, Input, Button } from '@nextui-org/react';
 import { type Page } from '@prisma/client';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { getSession, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { api } from '../utils/api';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateUsername } from '../common/generate-username';
-import { Entries } from 'type-fest';
+import type { Entries } from 'type-fest';
 import { useTranslation } from 'react-i18next';
 import { withAuth } from '@app/common/with-auth';
 
@@ -86,7 +86,7 @@ const Settings: NextPage<{
       onSuccess() {
         // Go back to the homepage
 
-        signOut({ callbackUrl: '/bye', redirect: false });
+        void signOut({ callbackUrl: '/bye', redirect: false });
       },
     });
   };
@@ -107,7 +107,7 @@ const Settings: NextPage<{
       <div className="flex flex-col items-center justify-center">
         {/* User settings */}
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={void handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"
@@ -144,7 +144,7 @@ const Settings: NextPage<{
               {...register('email', { required: true })}
               disabled={props.emailVerified}
               helperText={errors.handle?.message ?? ''}
-              placeholder={t('placeholder.email-address')!}
+              placeholder={t('placeholder.email-address') ?? 'placeholder.email-address'}
             />
             <Spacer y={2} />
             {/* {error && (
@@ -163,7 +163,7 @@ const Settings: NextPage<{
 
         {/* User page settings */}
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={void handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"

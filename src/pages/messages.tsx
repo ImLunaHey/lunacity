@@ -81,7 +81,7 @@ const Messages: NextPage = () => {
   return (
     <>
       {messageThreads.data.map((messageThread) => (
-        <Card className="p-8">
+        <Card className="p-8" key={messageThread.id}>
           <Card.Body>
             <Text h6 size={15} color="white" css={{ m: 0 }}>
               {messageThread.messages[0]?.body}

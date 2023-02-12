@@ -74,7 +74,7 @@ export const userRouter = createTRPCRouter({
         media: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   }),
@@ -86,14 +86,14 @@ export const userRouter = createTRPCRouter({
   })).mutation(async ({ ctx: { prisma, session }, input }) => {
 
     // If they're trying to update their handle
-    if (input.handle) {
-      const existingUserWithHandle = await prisma.user.findUnique({
-        where: {
-          handle: input.handle
-        }
-      });
-      // TODO: finish this
-    }
+    // if (input.handle) {
+    //   const existingUserWithHandle = await prisma.user.findUnique({
+    //     where: {
+    //       handle: input.handle
+    //     }
+    //   });
+    //   // TODO: finish this
+    // }
 
     await prisma.user.update({
       where: {

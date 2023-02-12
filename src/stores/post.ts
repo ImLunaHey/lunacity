@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { Post } from '@prisma/client';
+import type { Post } from '@prisma/client';
 
 type State = {
     posts: Post[];

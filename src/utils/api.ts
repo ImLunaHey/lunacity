@@ -13,7 +13,7 @@ import getConfig from 'next/config';
 import superJSON from 'superjson';
 import { type AppRouter } from '../server/api/root';
 
-const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
 const { APP_URL, WS_URL } = publicRuntimeConfig;
 const getEndingLink = (ctx: NextPageContext | undefined) => {
   if (typeof window === 'undefined') {

@@ -40,12 +40,13 @@ const isCredentialsOptions = (options: Options): options is CredentialsOptions =
 const isClientOptions = (options: Options): options is ClientOptions => Object.keys(options)[0] === 'client';
 const isUrlOptions = (options: Options): options is UrlOptions => Object.keys(options)[0] === 'url';
 
-class RedisBus<Events extends { [key: string]: any; }> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
     pub: ReturnType<typeof createClient>;
     sub: ReturnType<typeof createClient>;
 
     callbacks: Record<keyof Events, Events[keyof Events][]> = {} as Record<keyof Events, Events[keyof Events][]>;
-    connected: boolean = false;
+    connected = false;
 
     constructor(options: UrlOptions | CredentialsOptions | ClientOptions) {
         if (isClientOptions(options)) {
@@ -63,7 +64,7 @@ class RedisBus<Events extends { [key: string]: any; }> {
 
         // Connect to the bus
         // @TODO: https://github.com/vercel/next.js/discussions/15341 if this changes we should move this to using await
-        this.connect();
+        void this.connect();
     }
 
     /**
@@ -82,7 +83,7 @@ class RedisBus<Events extends { [key: string]: any; }> {
         if (!this.connected) throw new Error('You must run .connect() on the bus before emitting');
 
         // Publish to redis
-        this.pub.publish(String(event), JSON.stringify(superjson.serialize(args)));
+        void this.pub.publish(String(event), JSON.stringify(superjson.serialize(args)));
     }
 
     on<Event extends keyof Events>(event: Event, listener: Events[Event]) {
@@ -94,7 +95,7 @@ class RedisBus<Events extends { [key: string]: any; }> {
         if (Object.keys(this.callbacks).length >= 2) return this;
 
         // Subscribe to the redis event
-        this.sub.pSubscribe(String(event), (data) => {
+        void this.sub.pSubscribe(String(event), (data) => {
             try {
                 listener(superjson.parse<[Parameters<Events[Event]>, Event]>(data)[0]);
             } catch (error) {

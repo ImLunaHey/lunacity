@@ -10,6 +10,8 @@ const createBusObserver = <Event extends keyof BusEvents = keyof BusEvents>(even
     try {
       const handler: BusEvents[Event] = ({ userId, ...opts }) => {
         if (session.user.id !== userId) return;
+        // @TODO: Fix this maybe?
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
         emit.next(opts as any);
       };
 

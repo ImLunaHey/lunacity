@@ -1,6 +1,6 @@
-import { PrismaClient, type } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
-import { Session, type } from 'next-auth';
+import type { Session } from 'next-auth';
 import { z } from 'zod';
 
 /**
