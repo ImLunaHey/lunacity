@@ -119,4 +119,4 @@ class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
     }
 }
 
-export const bus = new RedisBus<BusEvents>({ url: 'redis://localhost:6379' });
+export const bus = new RedisBus<BusEvents>({ url: process.env.REDIS_URL ?? 'redis://localhost:6379' });
