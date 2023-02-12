@@ -123,7 +123,7 @@ class PostService {
         // If there's no cursor then return 0 + 50 new
         // If there is a cursor return cursor + 50 new
         //  Get 50 posts from pages that're SFW
-        const publicRecommendations = await prisma?.post.findMany({
+        const publicRecommendations = await ctx.prisma.post.findMany({
             take: 50,
             ...(input?.publicCursor
                 ? {
@@ -154,7 +154,7 @@ class PostService {
         // Authenticated user
         // Return explore + personal
         if (ctx.session?.user) {
-            const pages = await prisma?.post.findMany({
+            const pages = await ctx.prisma?.post.findMany({
                 where: {
                     page: {
                         followedBy: {
