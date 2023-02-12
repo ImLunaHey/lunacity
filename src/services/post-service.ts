@@ -179,7 +179,7 @@ class PostService {
             );
 
             // Get posts with tags
-            const personalRecommendations = await prisma?.post.findMany({
+            const personalRecommendations = await ctx.prisma?.post.findMany({
                 take: 50,
                 ...(input?.personalCursor
                     ? {
