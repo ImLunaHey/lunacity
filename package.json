@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev:wss": "tsup-node ./src/server/server.ts --onSuccess=\"DOT_NEXT_DIRECTORY='.next-ws' NODE_ENV=development node dist/server.js\"",
+    "build:wss": "tsup ./src/server/server.ts",
+    "build:next": "next build",
+    "dev:wss": "tsup ./src/server/server.ts --onSuccess=\"DOT_NEXT_DIRECTORY='.next-ws' NODE_ENV=development node dist/server.js\"",
     "dev:next": "next dev",
     "dev": "run-p dev:*",
     "postinstall": "patch-package && prisma generate",
     "lint": "next lint",
-    "start": "next start",
+    "start:wss": "node dist/server.js",
+    "start:next": "next start",
     "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest"
   },
   "dependencies": {
