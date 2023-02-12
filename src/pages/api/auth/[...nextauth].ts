@@ -5,8 +5,6 @@ import { env } from '../../../env/server.mjs';
 import { prisma } from '../../../server/db';
 import { generateUsername } from '../../../common/generate-username';
 
-const allowedEmails = ['staff@example.com', 'test@example.com'];
-
 // @TODO: make this not shit code
 // WARNING: BAD CODE IN THIS WHOLE BLOCK
 const handleNewUser = async (user: User) => {
@@ -63,7 +61,7 @@ export const authOptions: NextAuthOptions = {
     // @TODO: Use this to handle limited signup
     signIn({ user }) {
       if (!user.email) return false;
-      return allowedEmails.includes(user.email);
+      return true;
     },
     async session({ session, user }) {
       // Include user.id on session
