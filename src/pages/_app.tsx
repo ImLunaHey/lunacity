@@ -96,7 +96,7 @@ void i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init(i18nInitData);
 
-const Application: AppType<{ session: Session | null; }> = ({
+const Application: AppType<{ session: Session | null }> = ({
   Component: Page,
   pageProps: { session, ...pageProps },
 }) => {
@@ -127,6 +127,10 @@ const Application: AppType<{ session: Session | null; }> = ({
           <title>{t('site.title')}</title>
           <meta name="description" content="Social Media site" />
           <link rel="icon" href="/favicon.ico" />
+          {/* Analytics script */}
+          {typeof window !== 'undefined' && (
+            <script id="analytics" defer data-domain="lunacity.app" src="https://plausible.io/js/script.js"></script>
+          )}
         </Head>
         <Navbar {...pageProps} />
         <main className="container mx-auto mt-2 w-4/5 max-w-5xl">
