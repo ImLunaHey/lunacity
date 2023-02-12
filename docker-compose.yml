@@ -1,7 +1,7 @@
-version: '2'
+version: '3.8'
 
 services:
-  redis:
+  pubsub:
     image: docker.io/bitnami/redis:7.0
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
@@ -10,8 +10,21 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - 'redis_data:/bitnami/redis/data'
+      - 'pubsub_data:/bitnami/redis/data'
 
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db_data:/var/lib/postgresql/data
 volumes:
-  redis_data:
+  db_data:
+    driver: local
+
+  pubsub_data:
     driver: local
