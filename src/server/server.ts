@@ -39,4 +39,6 @@ app.prepare().then(async () => {
         `> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV
         }`,
     );
+}).catch(error => {
+    console.error('> Server crashed', error);
 });

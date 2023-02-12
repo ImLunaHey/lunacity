@@ -1,8 +1,9 @@
-import prettyMilliseconds from "pretty-ms";
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en-AU';
 
-export const humanTime = (date: Date) => {
-  const diff = new Date().getTime() - date.getTime();
-  const suffix = diff < 0 ? "from now" : "ago";
+TimeAgo.addLocale(en);
 
-  return `${prettyMilliseconds(diff, { compact: true })} ${suffix}`;
+export const humanTime = (timestamp: Date, locale = 'en-AU') => {
+  const timeAgo = new TimeAgo(locale);
+  return timeAgo.format(timestamp);
 };

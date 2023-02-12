@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -60,45 +60,94 @@ model User {
   reports       Report[]
   notifications Notification[]
   pagesFollowed PageFollowedByUser[]
-  page          Page?
-  infractions   UserInfractions[]
+
+  // Has this User been deactivated
+  deactivatedTimestamp DateTime?
+
+  // The user's own page
+  pageId String?
+  page   Page?   @relation("userPage")
+
+  // The pages a user is a moderator of
+  moderatorOf Page[]
+
+  // All the pages the user has created
+  pagesCreated Page[] @relation("pageOwner")
+}
+
+enum ProtectionType {
+  MASS_REPORTING
+}
+
+model Protection {
+  id   String         @id @default(cuid())
+  type ProtectionType
+
+  // When the protection starts
+  startTimestamp DateTime @default(now())
+
+  // When the protection ends
+  endTimestamp DateTime
+
+  // The page this protection applies to
+  pageId String
+  page   Page   @relation(fields: [pageId], references: [id])
 }
 
 model Page {
-  id               String               @id @default(cuid())
-  handle           String               @unique
-  displayName      String
-  followerCount    Int                  @default(0)
-  posts            Post[]
-  infractions      PageInfractions[]
-  official         Boolean              @default(false)
-  description      String               @default("")
-  followedBy       Follows[]            @relation("following")
-  following        Follows[]            @relation("follower")
-  usersFollowing   PageFollowedByUser[]
-  ownerId          String               @unique
-  owner            User                 @relation(fields: [ownerId], references: [id])
+  id             String               @id @default(cuid())
+  handle         String               @unique
+  displayName    String
+  followerCount  Int                  @default(0)
+  posts          Post[]
+  infractions    Infractions[]
+  official       Boolean              @default(false)
+  description    String               @default("")
+  followedBy     Follows[]            @relation("following")
+  following      Follows[]            @relation("follower")
+  usersFollowing PageFollowedByUser[]
+
+  // Has this Page been deactivated
+  deactivatedTimestamp DateTime?
+
+  // To what level is this page protected from reports?
+  protection Protection[]
+
+  // Who owns the page
+  ownerId String
+  owner   User   @relation("pageOwner", fields: [ownerId], references: [id])
+
+  // The moderators of the page
+  moderators User[]
+
+  // If this is a user page this will exist
+  userId String? @unique
+  user   User?   @relation("userPage", fields: [userId], references: [id])
+
+  // Reports towards this page
+  reports Report[]
+
+  // Messages threads this page is currently in
+  messageThreads MessageThread[]
+
+  // Extra junk connections
   NotificationData NotificationData[]
+  Message          Message[]
 }
 
-model PageInfractions {
-  id             String   @id @default(cuid())
+enum InfractionSeverity {
+  WARNING
+  BAN
+}
+
+model Infractions {
+  id             String             @id @default(cuid())
   pageId         String
-  page           Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  startTimestamp DateTime @default(now())
+  page           Page               @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  startTimestamp DateTime           @default(now())
   endTimestamp   DateTime
-  reason         String
-  severity       String
-}
-
-model UserInfractions {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  startTimestamp DateTime @default(now())
-  endTimestamp   DateTime
-  reason         String
-  severity       String
+  reason         ReportReason
+  severity       InfractionSeverity
 }
 
 model Follows {
@@ -110,6 +159,8 @@ model Follows {
   followingId String
   following   Page   @relation("following", fields: [followingId], references: [id])
 
+  createdAt DateTime @default(now())
+
   @@id([followerId, followingId])
 }
 
@@ -119,20 +170,40 @@ model Tag {
   posts Post[]
 }
 
+enum ReportReason {
+  SPAM // bot spam
+  ABUSE // Hate speech
+  ILLEGAL // selling drugs
+  HELP // Self harm
+  UNDERAGE // The poster is underage
+  UNLABELLED_BOT // A bot account that isnt marked as such
+  MISINFORMATION // Intentional misinformation (not satire)
+  CUSTOM // This should also have a customReason on the associated Report
+}
+
 model Report {
   id String @id @default(cuid())
 
   // The person reporting this post
-  reporterId String
   reporter   User   @relation(fields: [reporterId], references: [id])
+  reporterId String
 
-  // TODO: Should we maybe make this an enum?
   // Why they're reporting this
-  reason String
+  reason       ReportReason
+  // If reason is CUSTOM this should be the free form text
+  customReason String?
 
   // The post being reported
-  Post   Post?   @relation(fields: [postId], references: [id])
+  post   Post?   @relation(fields: [postId], references: [id])
   postId String?
+
+  // The comment being reported
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+
+  // The page being reported
+  page   Page?   @relation(fields: [pageId], references: [id])
+  pageId String?
 }
 
 model Media {
@@ -143,6 +214,13 @@ model Media {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+}
+
+enum CommunityLabel {
+  EVERYONE // SFW or educational @default
+  SEX // talks about sex in a non-educational manner
+  DRUGS // talks about drugs in a non-educational manner
+  VIOLENCE // talks about violence in a non-educational manner
 }
 
 model Post {
@@ -157,20 +235,21 @@ model Post {
 
   reports Report[]
 
-  // We cant use ENUMs as prisma still doesn't support them with SQLite3
-  // This can be null | 'sex' | 'drugs' | 'violence'
-  // null = SFW or educational
-  // sex = talks about sex in a non-educational manor
-  // drugs = talks about drugs in a non-educational manor
-  // violence = talks about violence in a non-educational manor
-  communityLabel String?
+  communityLabel CommunityLabel @default(EVERYONE)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  likes            PostLike[]
+  reactions        PostReaction[]
   comments         Comment[]
   NotificationData NotificationData[]
+}
+
+model PostReaction {
+  id String @id @default(cuid())
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
 }
 
 model Comment {
@@ -179,18 +258,13 @@ model Comment {
   postId String
   post   Post   @relation(fields: [postId], references: [id])
 
-  likes            CommentLike[]
+  reports Report[]
+
+  reactions        CommentReaction[]
   NotificationData NotificationData[]
 }
 
-model PostLike {
-  id String @id @default(cuid())
-
-  postId String
-  post   Post   @relation(fields: [postId], references: [id])
-}
-
-model CommentLike {
+model CommentReaction {
   id String @id @default(cuid())
 
   commentId String
@@ -211,13 +285,19 @@ model PageFollowedByUser {
 // A(User) [comment] -> B(Post/Comment)
 // A(User) [like] -> B(Post/Comment)
 
+enum NotificationType {
+  FOLLOWED
+  FOLLOWED_BACK
+  POSTED_COMMENTED_ON
+  POST_LIKED
+  COMMENT_LIKED
+}
+
 model Notification {
   id String @id @default(cuid())
 
-  // We cant use ENUMs as prisma still doesn't support them with SQLite3
-  // followed | followed_back | posted_commented_on | post_liked | comment_liked
   // What type of notification this is
-  type String
+  type NotificationType
 
   // Has this been read
   read Boolean @default(false)
@@ -244,4 +324,28 @@ model NotificationData {
   page      Page?    @relation(fields: [pageId], references: [id])
   postId    String?
   post      Post?    @relation(fields: [postId], references: [id])
+}
+
+model MessageThread {
+  id String @id @default(cuid())
+
+  // The pages in this message thread
+  participants Page[]
+
+  // All of the messages
+  messages Message[]
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  messageThread   MessageThread @relation(fields: [messageThreadId], references: [id])
+  messageThreadId String
+
+  // Who created this message
+  page   Page   @relation(fields: [pageId], references: [id])
+  pageId String
+
+  // The text of the message
+  body String
 }

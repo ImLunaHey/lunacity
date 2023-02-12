@@ -1,4 +1,4 @@
-import { Page } from '@prisma/client';
+import { type Page } from '@prisma/client';
 import { type DefaultSession } from 'next-auth';
 
 declare module 'next-auth' {

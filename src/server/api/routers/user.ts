@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const userRouter = createTRPCRouter({
   // infinitePosts: t
@@ -42,7 +42,7 @@ export const userRouter = createTRPCRouter({
     // Get the current session's page
     const sessionPage = await prisma.page.findUnique({
       where: {
-        ownerId: session.user.id
+        userId: session.user.id
       }
     });
 
@@ -81,7 +81,8 @@ export const userRouter = createTRPCRouter({
 
   updateSettings: protectedProcedure.input(z.object({
     handle: z.string().optional(),
-    email: z.string().optional()
+    email: z.string().optional(),
+    displayName: z.string().optional()
   })).mutation(async ({ ctx: { prisma, session }, input }) => {
 
     // If they're trying to update their handle
@@ -90,7 +91,8 @@ export const userRouter = createTRPCRouter({
         where: {
           handle: input.handle
         }
-      })
+      });
+      // TODO: finish this
     }
 
     await prisma.user.update({
@@ -101,10 +103,22 @@ export const userRouter = createTRPCRouter({
         handle: input.handle,
         page: {
           update: {
-            handle: input.handle
+            handle: input.handle,
+            displayName: input.displayName,
           }
         }
       }
     })
-  })
+  }),
+
+  deactivateAccount: protectedProcedure.mutation(async ({ ctx: { prisma, session } }) => {
+    await prisma.user.update({
+      where: {
+        id: session.user.id
+      },
+      data: {
+        deactivatedTimestamp: new Date()
+      }
+    })
+  }),
 });

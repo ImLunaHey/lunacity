@@ -1,22 +1,39 @@
 import { Card, Grid, Button, Spacer, Text, Badge } from '@nextui-org/react';
+import Link from 'next/link';
+import { type FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { humanTime } from '../common/human-time';
-import { RouterOutputs } from '../utils/api';
+import { type RouterOutputs } from '../utils/api';
 import { FollowButton } from './follow-button';
 import { TagCloud } from './tag-cloud';
 import { UserAvatar } from './user-avatar';
 
 export type SinglePostProps = RouterOutputs['post']['getPostDetails'];
 
+const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, updatedAt }) => {
+  const { t } = useTranslation();
+
+  // If the updated time isn't the same as the created time then it's been updated
+  const hasUpdated = createdAt.getTime() !== updatedAt?.getTime();
+  const time = hasUpdated ? updatedAt : createdAt;
+
+  // Dont render if we don't have at least one of the two "createdAt" or "updatedAt"
+  if (!time) return null;
+
+  return (
+    <Badge>
+      {hasUpdated ? t('Updated') : t('Posted')} {humanTime(time)}
+    </Badge>
+  );
+};
+
 export const TextPost: React.FC<SinglePostProps> = (props) => {
   if (!props) return null;
 
-  // If the updated time isn't the same as the created time then it's been updated
-  const hasUpdated = props.createdAt.getTime() !== props.updatedAt.getTime();
-
   return (
-    <Card css={{ p: '$6', mb: '$8' }}>
+    <Card css={{ p: '$6', mb: '$8' }} role="region">
       <Card.Header>
         <UserAvatar
           official={props.page.official}
@@ -27,36 +44,24 @@ export const TextPost: React.FC<SinglePostProps> = (props) => {
         {/* Follow button */}
         <FollowButton handle={props.page.handle} />
         <Spacer x={0.2} />
-        <Badge>
-          {hasUpdated ? 'Updated' : 'Posted'}{' '}
-          {humanTime(hasUpdated ? props.updatedAt : props.createdAt)}
-        </Badge>
+        {/* Created/Updated at */}
+        <Link href={`/@${props.page.handle}/${props.id}`}>
+          <TimeAgo createdAt={props.createdAt} updatedAt={props.updatedAt} />
+        </Link>
       </Card.Header>
-      <Card.Body css={{ py: '$2' }}>
+      <Card.Body css={{ py: '$2' }} className="break-words">
         <Text>{props.title}</Text>
-        <ReactMarkdown remarkPlugins={[[remarkGfm]]}>
-          {props.body}
-        </ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[[remarkGfm]]}>{props.body}</ReactMarkdown>
       </Card.Body>
       <Card.Footer>
         <Grid.Container alignItems="flex-start" gap={0.5}>
           <Grid>
-            <Button
-              className="min-w-0"
-              size="xs"
-              color="default"
-              aria-label="Favourite"
-            >
+            <Button className="min-w-0" size="xs" color="default" aria-label="Favourite">
               🔖
             </Button>
           </Grid>
           <Grid>
-            <Button
-              className="min-w-0"
-              size="xs"
-              color="default"
-              aria-label="Star post"
-            >
+            <Button className="min-w-0" size="xs" color="default" aria-label="Star post">
               ⭐
             </Button>
           </Grid>

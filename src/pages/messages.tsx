@@ -1,6 +1,11 @@
-import { Card, Grid, Input, Text } from '@nextui-org/react';
+import { withAuth } from '@app/common/with-auth';
+import { api } from '@app/utils/api';
+import { Card, Loading, Text, Container, Row } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
+import { NextPage } from 'next';
 import React, { FC } from 'react';
+
+export const getServerSideProps = withAuth();
 
 export const SendIcon: FC<{
   size?: number;
@@ -53,22 +58,39 @@ export const SendButton = styled('button', {
   },
 });
 
-function Messages() {
+// <Input
+//   className="w-full"
+//   clearable
+//   contentRightStyling={false}
+//   placeholder="Type your message..."
+//   contentRight={
+//     <SendButton>
+//       <SendIcon />
+//     </SendButton>
+//   }
+// />
+
+const Messages: NextPage = () => {
+  const messageThreads = api.message.getAllMessageThreads.useQuery();
+
+  // Show loading state while we fetch the message threads
+  if (messageThreads.isLoading) return <Loading />;
+
+  if (!messageThreads.data) return <div>No message threads found.</div>;
+
   return (
-    <Card>
-      <Input
-        className="w-full"
-        clearable
-        contentRightStyling={false}
-        placeholder="Type your message..."
-        contentRight={
-          <SendButton>
-            <SendIcon />
-          </SendButton>
-        }
-      />
-    </Card>
+    <>
+      {messageThreads.data.map((messageThread) => (
+        <Card className="p-8">
+          <Card.Body>
+            <Text h6 size={15} color="white" css={{ m: 0 }}>
+              {messageThread.messages[0]?.body}
+            </Text>
+          </Card.Body>
+        </Card>
+      ))}
+    </>
   );
-}
+};
 
 export default Messages;

@@ -1,18 +1,17 @@
 import { Card, Text, Spacer, Input, Button } from '@nextui-org/react';
-import { Page } from '@prisma/client';
-import { GetServerSidePropsContext, NextPage } from 'next';
-import { getSession, useSession } from 'next-auth/react';
+import { type Page } from '@prisma/client';
+import { NextPage } from 'next';
+import { getSession, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { api } from '../utils/api';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateUsername } from '../common/generate-username';
-import { Entries, Simplify } from 'type-fest';
+import { Entries } from 'type-fest';
 import { useTranslation } from 'react-i18next';
+import { withAuth } from '@app/common/with-auth';
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = withAuth(async (context) => {
   const session = await getSession(context);
   if (!session?.user) return { props: {} };
 
@@ -29,19 +28,20 @@ export const getServerSideProps = async (
     },
   });
 
-  if (!user) return null;
+  if (!user) return { props: {} };
 
   return {
     props: {
       ...user,
       emailVerified: user.emailVerified !== null,
-    },
+    } as const,
   };
-};
+});
 
 type Inputs = {
   handle: string;
   email: string;
+  displayName: string;
 };
 
 const Settings: NextPage<{
@@ -55,19 +55,17 @@ const Settings: NextPage<{
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, dirtyFields },
   } = useForm<Inputs>({
     defaultValues: {
       handle: props.handle,
       email: props.email,
+      displayName: props.page.displayName,
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const modifiedData = Object.fromEntries(
-      (Object.entries(dirtyFields) as Entries<Partial<typeof dirtyFields>>).map(
-        ([field]) => [field, data[field]]
-      )
+      (Object.entries(dirtyFields) as Entries<Partial<typeof dirtyFields>>).map(([field]) => [field, data[field]])
     ) as Partial<Inputs>;
 
     // Post to server
@@ -83,8 +81,19 @@ const Settings: NextPage<{
     });
   };
 
+  const onDeactivateAccountPress = () => {
+    deactivateAccount.mutate(undefined, {
+      onSuccess() {
+        // Go back to the homepage
+
+        signOut({ callbackUrl: '/bye', redirect: false });
+      },
+    });
+  };
+
   const { status } = useSession();
   const updateSettings = api.user.updateSettings.useMutation();
+  const deactivateAccount = api.user.deactivateAccount.useMutation();
 
   // Don't show for unauthenticated users
   if (status !== 'authenticated') return null;
@@ -96,6 +105,7 @@ const Settings: NextPage<{
         <title>{t('page.settings.title')}</title>
       </Head>
       <div className="flex flex-col items-center justify-center">
+        {/* User settings */}
         <Card css={{ mw: '420px', p: '20px' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Text
@@ -106,7 +116,7 @@ const Settings: NextPage<{
                 mb: '20px',
               }}
             >
-              {t('page.settings.heading')}
+              {t('page.settings.user-settings')}
             </Text>
             {/* Handle */}
             <Input
@@ -143,14 +153,60 @@ const Settings: NextPage<{
                 <Spacer y={1} />
               </>
             )} */}
-            <Button
-              className="min-w-full"
-              type="submit"
-              disabled={updateSettings.isLoading}
-            >
+            <Button className="min-w-full" type="submit" disabled={updateSettings.isLoading}>
               {t('update-settings')}
             </Button>
           </form>
+        </Card>
+
+        <Spacer y={0.5} />
+
+        {/* User page settings */}
+        <Card css={{ mw: '420px', p: '20px' }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Text
+              size={24}
+              weight="bold"
+              css={{
+                as: 'center',
+                mb: '20px',
+              }}
+            >
+              {t('page.settings.user-page-settings')}
+            </Text>
+            {/* Display name */}
+            <Input
+              clearable
+              bordered
+              fullWidth
+              color="primary"
+              status="default"
+              size="lg"
+              {...register('displayName', { required: true, maxLength: 25 })}
+              helperText={errors.handle?.message ?? ''}
+              placeholder={generateUsername()}
+            />
+
+            <Spacer y={2} />
+
+            <Button className="min-w-full" type="submit" disabled={updateSettings.isLoading}>
+              {t('update-settings')}
+            </Button>
+          </form>
+        </Card>
+
+        <Spacer y={0.5} />
+
+        <Card css={{ mw: '420px', p: '20px' }}>
+          <Button
+            onPress={onDeactivateAccountPress}
+            color="error"
+            className="min-w-full"
+            type="submit"
+            disabled={deactivateAccount.isLoading}
+          >
+            {t('page.settings.deactivate-account')}
+          </Button>
         </Card>
       </div>
     </>

@@ -1,4 +1,4 @@
-import NextAuth, { User, type NextAuthOptions } from 'next-auth';
+import NextAuth, { type User, type NextAuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { env } from '../../../env/server.mjs';
@@ -25,7 +25,12 @@ const handleNewUser = async (user: User) => {
           page: {
             create: {
               handle: generatedHandle,
-              displayName: `@${generatedHandle}`
+              displayName: `@${generatedHandle}`,
+              owner: {
+                connect: {
+                  id: user.id
+                }
+              }
             }
           }
         },
@@ -34,10 +39,12 @@ const handleNewUser = async (user: User) => {
       // If this works then return the generated one.
       handle = generatedHandle;
       break;
-    } catch {
+    } catch (error) {
       if (errorCount === 0) break;
       errorCount--;
       // Add error reporting here to show how often this happens
+
+      console.log(error);
     }
   }
 };
@@ -47,6 +54,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ isNewUser, user }) {
       // Handle first signin
       if (isNewUser) {
+        console.log('new user', user);
         await handleNewUser(user);
       }
     },

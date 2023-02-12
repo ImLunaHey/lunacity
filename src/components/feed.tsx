@@ -10,31 +10,21 @@ type FeedProps = {
   publicCursor?: string;
   personalCursor?: string;
   className?: string;
-  fetchData: (opts?: {
-    personalCursor?: string;
-    publicCursor?: string;
-  }) => () => void;
+  fetchData?: (opts?: { personalCursor?: string; publicCursor?: string }) => () => void;
 };
 
-const getUniqueItemsInArray = (
-  items: SinglePostProps[]
-): Exclude<SinglePostProps, null>[] => {
+const getUniqueItemsInArray = (items: SinglePostProps[]): Exclude<SinglePostProps, null>[] => {
   const seen: Record<string, boolean> = {};
   return (items as Exclude<SinglePostProps, null>[]).filter((item) =>
     seen.hasOwnProperty(item.id) ? false : (seen[item.id] = true)
   );
 };
 
-const Feed: React.FC<FeedProps> = ({
-  items,
-  className,
-  fetchData = (opts) => () => undefined,
-  personalCursor,
-  publicCursor,
-}) => {
+const Feed: React.FC<FeedProps> = ({ items, fetchData = (opts) => () => undefined, personalCursor, publicCursor }) => {
   const { t } = useTranslation();
   if (!items) return null;
   const uniqueItems = getUniqueItemsInArray(items);
+
   return (
     <InfiniteScroll
       next={fetchData({ publicCursor, personalCursor })}

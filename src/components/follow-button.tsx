@@ -1,9 +1,11 @@
+'use client';
+
 import { Button, Loading } from '@nextui-org/react';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { api } from '../utils/api';
 import ErrorComponent from '../components/error';
 import { useSession } from 'next-auth/react';
-import { TRPCClientErrorLike } from '@trpc/client';
+import { type TRPCClientErrorLike } from '@trpc/client';
 import { useTranslation } from 'react-i18next';
 
 type handleErrorProps = {
@@ -21,7 +23,7 @@ const handleError = ({ error, setError }: handleErrorProps) => {
 export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
   const { t } = useTranslation();
   const session = useSession();
-  const followingState = api.page.followingState.useQuery({ handle });
+  const followingState = api.page.followingState.useQuery({ handle }, { enabled: session.status === 'authenticated' });
   const followPage = api.page.followPage.useMutation();
   const unfollowPage = api.page.unfollowPage.useMutation();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +36,11 @@ export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
     handleError({ error, setError });
     setIsLoading(false);
   };
-  const onSuccess = async () => {
-    await followingState.refetch();
-    setIsLoading(false);
+  const onSuccess = () => {
+    // @TODO: handle if this fails fetching
+    void followingState.refetch().then(() => {
+      setIsLoading(false);
+    });
   };
 
   // @TODO: This needs a debounce
@@ -72,8 +76,10 @@ export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
   // If we hit an error show it
   if (error) return <ErrorComponent {...error} />;
 
+  if (session.status === 'loading') return <Loading />;
+
   // Unauthenticated users cannot follow/unfollow
-  if (!session) return null;
+  if (session.status === 'unauthenticated') return null;
 
   // Show the follow button
   return (

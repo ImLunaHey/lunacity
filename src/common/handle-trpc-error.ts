@@ -1,12 +1,6 @@
+import { PrismaClientInitializationError, PrismaClientKnownRequestError, PrismaClientRustPanicError, PrismaClientUnknownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { TRPCError } from '@trpc/server';
-import {
-  PrismaClientValidationError,
-  PrismaClientExtensionError,
-  PrismaClientInitializationError,
-  PrismaClientKnownRequestError,
-  PrismaClientRustPanicError,
-  PrismaClientUnknownRequestError,
-} from '@prisma/client/runtime';
+
 
 const camelToSnakeCase = (string: string) =>
   string.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`).replace('_', '');
@@ -14,7 +8,6 @@ const camelToSnakeCase = (string: string) =>
 export const handleTRPCError = (error: unknown) => {
   if (
     error instanceof PrismaClientValidationError ||
-    error instanceof PrismaClientExtensionError ||
     error instanceof PrismaClientInitializationError ||
     error instanceof PrismaClientKnownRequestError ||
     error instanceof PrismaClientRustPanicError ||

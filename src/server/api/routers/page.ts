@@ -73,18 +73,25 @@ export const pageRouter = createTRPCRouter({
         });
 
       // Create the page
-      await ctx.prisma.page.create({
+      const userPage = await ctx.prisma.page.create({
         data: {
           displayName: displayName.trim() || `@${handle}`,
           handle,
           description,
-          ownerId: ctx.session.user.id,
-          followedBy: {
-            create: {
-              followerId: ctx.session.user.id,
-            },
-          },
+          owner: {
+            connect: {
+              id: ctx.session.user.id
+            }
+          }
         },
+      });
+
+      // Make page follow itself
+      await ctx.prisma.follows.create({
+        data: {
+          followerId: userPage.id,
+          followingId: userPage.id
+        }
       });
     }),
 
@@ -101,10 +108,20 @@ export const pageRouter = createTRPCRouter({
       return count ?? 0 >= 1;
     }),
 
-  getUsersPages: protectedProcedure.query(({ ctx: { session, prisma } }) => {
+  getUsersPages: protectedProcedure.query(async ({ ctx: { session, prisma } }) => {
     return prisma?.page.findMany({
       where: {
-        ownerId: session.user.id,
+        OR: [{
+          ownerId: session.user.id,
+        }, {
+          moderators: {
+            every: {
+              id: session.user.id
+            }
+          }
+        }, {
+          userId: session.user.id,
+        }]
       },
     });
   }),
@@ -149,7 +166,7 @@ export const pageRouter = createTRPCRouter({
           handle, followedBy: {
             some: {
               follower: {
-                ownerId: session?.user.id
+                userId: session?.user.id
               }
             }
           }
@@ -164,11 +181,46 @@ export const pageRouter = createTRPCRouter({
         _count: true
       }).then(result => result._count) : 0;
 
+      // How many pages this page has following it
+      const followerCount = session?.user ? await prisma.follows.aggregate({
+        where: {
+          followingId: page?.id
+        },
+        _count: true
+      }).then(result => result._count) : 0;
+
       return {
         ...page,
         following,
         followingCount,
+        followerCount,
       }
+    }),
+
+  getPageFollowing: publicProcedure
+    .input(
+      z.object({
+        handle: z.string(),
+      })
+    )
+    .query(async ({ ctx: { prisma }, input }) => {
+      const handle = input.handle.replace('@', '');
+
+      // Get a list of pages who follow this page
+      return prisma.follows.findMany({
+        where: {
+          following: {
+            handle
+          }
+        },
+        include: {
+          follower: true,
+          following: true
+        },
+        orderBy: [{
+          createdAt: 'asc'
+        }]
+      });
     }),
 
   getPagePosts: publicProcedure
@@ -246,14 +298,14 @@ export const pageRouter = createTRPCRouter({
         });
 
       // Get the current session's page
-      const sessionPage = await prisma.page.findUnique({
+      const userPage = await prisma.page.findFirst({
         where: {
-          ownerId: session.user.id
+          userId: session.user.id
         }
       });
 
-      // No page found for the current session
-      if (!sessionPage)
+      // No page found for the current session's user
+      if (!userPage)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'No page found for this handle.',
@@ -264,19 +316,16 @@ export const pageRouter = createTRPCRouter({
         prisma.page.update({
           where: { handle },
           data: {
-            followerCount: {
-              increment: 1,
-            },
             followedBy: {
               create: {
-                followerId: sessionPage.id,
+                followerId: userPage.id,
               },
             },
           },
         }),
         prisma.notification.create({
           data: {
-            type: 'followed',
+            type: 'FOLLOWED',
             notified: {
               connect: {
                 id: page.owner.id
@@ -284,7 +333,7 @@ export const pageRouter = createTRPCRouter({
             },
             data: {
               create: {
-                pageId: page.id
+                pageId: userPage.id
               }
             }
           }
@@ -301,14 +350,17 @@ export const pageRouter = createTRPCRouter({
             include: {
               comment: true,
               page: true,
-              post: true
+              post: true,
             }
           },
           notified: true
         }
       });
 
-      bus.emit('newNotification', notification);
+      bus.emit('newNotification', {
+        userId: page.owner.id,
+        notification
+      });
     }),
 
   unfollowPage: protectedProcedure
@@ -341,40 +393,28 @@ export const pageRouter = createTRPCRouter({
           });
 
         // Get the current session's page
-        const sessionPage = await prisma.page.findUnique({
+        const userPage = await prisma.page.findFirst({
           where: {
-            ownerId: session.user.id
+            userId: session.user.id
           }
         });
 
         // No page found for the current session
-        if (!sessionPage)
+        if (!userPage)
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'No page found for this handle.',
           });
 
-        // Unfollow page + decrement follower count by 1
-        await prisma.$transaction([
-          prisma.follows.delete({
-            where: {
-              followerId_followingId: {
-                followerId: sessionPage.id,
-                followingId: page.id
-              },
+        // Unfollow the page
+        await prisma.follows.delete({
+          where: {
+            followerId_followingId: {
+              followerId: userPage.id,
+              followingId: page.id
             },
-          }),
-          prisma.page.update({
-            where: {
-              id: page.id,
-            },
-            data: {
-              followerCount: {
-                decrement: 1,
-              },
-            },
-          }),
-        ]);
+          },
+        });
       } catch (error: unknown) {
         handleTRPCError(error);
       }
@@ -391,14 +431,14 @@ export const pageRouter = createTRPCRouter({
       });
 
     // Get the current session's page
-    const sessionPage = await prisma.page.findUnique({
+    const userPage = await prisma.page.findFirst({
       where: {
-        ownerId: session.user?.id
+        userId: session.user?.id
       }
     });
 
     // No page found for the current session
-    if (!sessionPage)
+    if (!userPage)
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'No page found for this handle.',
@@ -422,7 +462,7 @@ export const pageRouter = createTRPCRouter({
     const follows = await prisma.follows.findUnique({
       where: {
         followerId_followingId: {
-          followerId: sessionPage.id,
+          followerId: userPage.id,
           followingId: page.id
         }
       }

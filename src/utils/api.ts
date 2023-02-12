@@ -8,10 +8,10 @@
 import { createWSClient, httpBatchLink, loggerLink, splitLink, wsLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
-import { NextPageContext } from 'next';
+import { type NextPageContext } from 'next';
 import getConfig from 'next/config';
 import superJSON from 'superjson';
-import { AppRouter } from '../server/api/root';
+import { type AppRouter } from '../server/api/root';
 
 const { publicRuntimeConfig } = getConfig();
 const { APP_URL, WS_URL } = publicRuntimeConfig;

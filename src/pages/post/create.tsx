@@ -1,20 +1,13 @@
-import {
-  Card,
-  Text,
-  Spacer,
-  Input,
-  Button,
-  Grid,
-  Textarea,
-  Dropdown,
-  Loading,
-} from '@nextui-org/react';
+import { withAuth } from '@app/common/with-auth';
+import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown, Loading } from '@nextui-org/react';
 import { Page } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { api } from '../../utils/api';
+
+export const getServerSideProps = withAuth();
 
 const PageSelector: FC<{
   pages: Page[];
@@ -62,17 +55,14 @@ function CreatePost() {
   const [body, setBody] = useState('');
   const [error, setError] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [selectedPostType, setSelectedPostType] = useState<'text' | 'image'>(
-    'text'
-  );
+  const [selectedPostType, setSelectedPostType] = useState<'text' | 'image'>('text');
   const { status } = useSession();
   const router = useRouter();
   const createPost = api.post.createPost.useMutation();
   const getUsersPages = api.page.getUsersPages.useQuery();
 
   // Redirect unauthenticated users to the signin page
-  if (status === 'unauthenticated')
-    return void router.push('/api/auth/signin?callbackUrl=/post/create');
+  if (status === 'unauthenticated') return void router.push('/api/auth/signin?callbackUrl=/post/create');
 
   // Show loading element while session is loaded
   if (status === 'loading' || getUsersPages.isLoading) return <Loading />;
@@ -127,10 +117,7 @@ function CreatePost() {
 
             {/* Select where to post */}
             <Grid.Container justify="center">
-              <PageSelector
-                pages={getUsersPages.data ?? []}
-                onChanged={(handle) => setHandle(handle)}
-              />
+              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => setHandle(handle)} />
             </Grid.Container>
 
             <Grid.Container gap={2} justify="center">
@@ -138,9 +125,7 @@ function CreatePost() {
                 <Grid key={postType}>
                   <Button
                     onPress={() => setSelectedPostType(postType)}
-                    color={
-                      selectedPostType === postType ? 'success' : 'primary'
-                    }
+                    color={selectedPostType === postType ? 'success' : 'primary'}
                     auto
                   >
                     {postType}
@@ -259,11 +244,7 @@ function CreatePost() {
                 <Spacer y={1} />
               </>
             )}
-            <Button
-              className="min-w-full"
-              type="submit"
-              disabled={createPost.isLoading}
-            >
+            <Button className="min-w-full" type="submit" disabled={createPost.isLoading}>
               Post!
             </Button>
           </form>

@@ -1,8 +1,9 @@
 import { type AppType } from 'next/app';
 import { type Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import { createTheme, Loading, NextUIProvider, Text } from '@nextui-org/react';
+import { createTheme, Link, NextUIProvider } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
+import superjson from 'superjson';
 
 import { api } from '../utils/api';
 
@@ -13,6 +14,8 @@ import i18n from 'i18next';
 import { useTranslation, initReactI18next } from 'react-i18next';
 import Navbar from '../components/navbar';
 import { FollowedNotification } from '@app/components/notifications/followed-notification';
+import { Router } from 'next/router';
+import { useNotificationStore } from '@app/stores/notification';
 
 // 2. Call `createTheme` and pass your custom theme values
 const theme = createTheme({
@@ -24,76 +27,103 @@ const theme = createTheme({
   },
 });
 
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    // the translations
-    // (tip move them in a JSON file and import them,
-    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
-    resources: {
-      en: {
-        translation: {
-          'update-settings': 'Update settings',
-          'create-post': 'Create a post',
-          'create-page': 'Create a page',
-          'no-more-posts': 'Yay! You have seen it all',
-          unfollow: 'Unfollow',
-          follow: 'Follow',
-          signup: 'Signup',
-          signin: 'Signin',
-          signout: 'Signout',
-          site: {
-            title: 'Social Media Platform',
+// If we're in dev mode show route changes as toasts
+if (process.env.NODE_ENV === 'development')
+  Router.events.on('routeChangeStart', (url) => {
+    toast(
+      <span>
+        Loading: <Link href={url}>{url}</Link>
+      </span>,
+      { delay: 100 }
+    );
+  });
+
+const i18nInitData = {
+  // the translations
+  // (tip move them in a JSON file and import them,
+  // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
+  resources: {
+    en: {
+      translation: {
+        'update-settings': 'Update settings',
+        'create-post': 'Create a post',
+        'create-page': 'Create a page',
+        'no-more-posts': 'Yay! You have seen it all',
+        unfollow: 'Unfollow',
+        follow: 'Follow',
+        signup: 'Signup',
+        signin: 'Signin',
+        signout: 'Signout',
+        site: {
+          title: 'Social Media Platform',
+        },
+        page: {
+          home: {
+            title: 'Home',
           },
-          page: {
-            home: {
-              title: 'Home',
-            },
-            settings: {
-              title: 'Settings',
-              heading: 'Settings',
-            },
-            explore: {
-              title: 'Explore',
-            },
-            messages: {
-              title: 'Messages',
-            },
-            analytics: {
-              title: 'Analytics',
-            },
-            help: {
-              title: 'Analytics',
-            },
+          settings: {
+            title: 'Settings',
+            heading: 'Settings',
+            'user-settings': 'User Settings',
+            'user-page-settings': 'User Page Settings',
+            'page-settings': 'Page Settings',
+            'deactivate-account': 'Deactivate Account',
+          },
+          explore: {
+            title: 'Explore',
+          },
+          messages: {
+            title: 'Messages',
+          },
+          analytics: {
+            title: 'Analytics',
+          },
+          help: {
+            title: 'Help & Feedback',
           },
         },
       },
     },
-    lng: 'en', // if you're using a language detector, do not define the lng option
-    fallbackLng: 'en',
+  },
+  lng: 'en', // if you're using a language detector, do not define the lng option
+  fallbackLng: 'en',
 
-    interpolation: {
-      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
-    },
-  });
+  interpolation: {
+    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+  },
+};
 
-const Application: AppType<{ session: Session | null }> = ({
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init(i18nInitData);
+
+const Application: AppType<{ session: Session | null; json?: any; meta?: any }> = ({
   Component: Page,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, json, meta, ...props },
 }) => {
   const { t } = useTranslation();
+  const addNotification = useNotificationStore((state) => state.addNotification);
+  // If we're using superjson in this page's getServerSideProps let's deserialize the props
+  // If we're not then just pass the props
+  const pageProps = {
+    ...props,
+    ...superjson.deserialize<{}>({ json, meta }),
+  };
 
   api.notification.getLiveNotifications.useSubscription(undefined, {
-    onData(notification) {
+    onData({ notification }) {
       // @TODO: This should be a jsx per type
       if (!notification) return;
 
-      if (notification.type === 'followed')
-        toast(<FollowedNotification page={notification?.data?.page} />);
+      // Save the notification to the store
+      addNotification(notification);
+
+      if (notification.type === 'FOLLOWED') toast(<FollowedNotification notification={notification} />, { delay: 100 });
     },
     onError(err) {
       console.log({ err });
     },
+    enabled: session?.user?.id !== undefined,
   });
 
   return (

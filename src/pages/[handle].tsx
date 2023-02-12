@@ -3,15 +3,7 @@ import Head from 'next/head';
 import ErrorPage from 'next/error';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
-import {
-  Badge,
-  Button,
-  Card,
-  Grid,
-  Loading,
-  Spacer,
-  Tooltip,
-} from '@nextui-org/react';
+import { Badge, Button, Card, Grid, Loading, Spacer, Tooltip } from '@nextui-org/react';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -21,23 +13,11 @@ import { UserAvatar } from '../components/user-avatar';
 import prettyMilliseconds from 'pretty-ms';
 import { getSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
-import type { Infraction } from '@prisma/client';
+import type { Infractions } from '@prisma/client';
 import { FollowButton } from '../components/follow-button';
 import PlanSelector from '@app/components/plan-selector';
-
-// Return the handle from the url
-export function getServerSideProps(
-  context: GetServerSidePropsContext<{ handle: string }>
-) {
-  return {
-    props: {
-      handle: context.query.handle
-        ?.toString()
-        ?.replace('@', '')
-        .replace('/', ''),
-    },
-  };
-}
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 const renderer = ({
   days,
@@ -77,7 +57,7 @@ type ProfileHeaderProps = {
   displayName: string;
   handle: string;
   official: boolean;
-  infractions: Infraction[];
+  infractions: Infractions[];
   following: boolean;
   followerCount: number;
   followingCount: number;
@@ -93,9 +73,8 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   followerCount,
   followingCount,
 }) => {
-  const isBanned =
-    infractions.filter((infraction) => infraction.severity === 'ban').length >=
-    1;
+  const { t } = useTranslation();
+  const isBanned = infractions.filter((infraction) => infraction.severity === 'BAN').length >= 1;
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
@@ -131,64 +110,60 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <Spacer x={0.2} />
 
             {/* Follow count */}
-            <Badge isSquared size="xs">
-              Following: {followingCount}
-            </Badge>
+            <Link href={`/@${handle}/following`} className="inline-flex">
+              <Badge isSquared size="sm">
+                {t('Following')}: {followingCount}
+              </Badge>
+            </Link>
             <Spacer x={0.2} />
 
             {/* Follower count */}
-            <Badge isSquared size="xs">
-              <div>Followers: {followerCount}</div>
-            </Badge>
+            <Link href={`/@${handle}/followers`} className="inline-flex">
+              <Badge isSquared size="sm">
+                {t('Followers')}: {followerCount}
+              </Badge>
+            </Link>
             <Spacer x={0.2} />
 
             {/* Infractions */}
-            {infractions.map(
-              ({ id, startTimestamp, endTimestamp, reason, severity }) => (
-                <Tooltip
-                  content={
-                    <div>
-                      Reason: {reason}
-                      <br />
-                      Length:{' '}
-                      {prettyMilliseconds(
-                        new Date(endTimestamp).getTime() -
-                          new Date(startTimestamp).getTime(),
-                        { compact: true }
-                      )}
-                    </div>
-                  }
-                  placement="top"
-                  key={id}
-                >
-                  <Badge
-                    size={'xs'}
-                    isSquared
-                    color={severity === 'ban' ? 'error' : 'warning'}
-                    disableOutline
-                  >
-                    {severity}:{' '}
-                    <Countdown
-                      targetDate={endTimestamp.toISOString()}
-                      renderer={renderer}
-                    />
-                  </Badge>
-                </Tooltip>
-              )
-            )}
+            {infractions.map(({ id, startTimestamp, endTimestamp, reason, severity }) => (
+              <Tooltip
+                content={
+                  <div>
+                    Reason: {reason}
+                    <br />
+                    Length:{' '}
+                    {prettyMilliseconds(new Date(endTimestamp).getTime() - new Date(startTimestamp).getTime(), {
+                      compact: true,
+                    })}
+                  </div>
+                }
+                placement="top"
+                key={id}
+              >
+                <Badge size={'xs'} isSquared color={severity === 'BAN' ? 'error' : 'warning'} disableOutline>
+                  {severity}: <Countdown targetDate={endTimestamp.toISOString()} renderer={renderer} />
+                </Badge>
+              </Tooltip>
+            ))}
           </Grid>
         </Grid.Container>
       </Card.Header>
       <Card.Body css={{ py: '$2' }}>
-        {!isBanned && description && (
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {description}
-          </ReactMarkdown>
-        )}
+        {!isBanned && description && <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>}
       </Card.Body>
     </Card>
   );
 };
+
+// Return the handle from the url
+export function getServerSideProps(context: GetServerSidePropsContext<{ handle: string }>) {
+  return {
+    props: {
+      handle: context.query.handle?.toString()?.replace('@', '').replace('/', ''),
+    },
+  };
+}
 
 const Page: NextPage<{ handle: string }> = ({ handle }) => {
   const [hidden, setHidden] = useState(true);

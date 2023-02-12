@@ -1,18 +1,19 @@
-import { EventMap } from 'typed-emitter';
 import { createClient } from 'redis';
 import superjson from 'superjson';
-import { Notification, NotificationData, Page, Post, User, Comment } from 'prisma/prisma-client';
+import type { Notification, NotificationData, Page, Post, User, Comment } from 'prisma/prisma-client';
 
 export type BusEvents = {
-    error: (error: Error) => void;
-    newNotification: (notification: (Notification & {
-        data: (NotificationData & {
-            page: Page | null;
-            post: Post | null;
-            comment: Comment | null;
+    newNotification: (data: {
+        userId: string;
+        notification: (Notification & {
+            data: (NotificationData & {
+                page: Page | null;
+                post: Post | null;
+                comment: Comment | null;
+            }) | null;
+            notified: User | null;
         }) | null;
-        notified: User | null;
-    }) | null) => void;
+    }) => void;
 }
 
 type ClientOptions = {
@@ -39,7 +40,7 @@ const isCredentialsOptions = (options: Options): options is CredentialsOptions =
 const isClientOptions = (options: Options): options is ClientOptions => Object.keys(options)[0] === 'client';
 const isUrlOptions = (options: Options): options is UrlOptions => Object.keys(options)[0] === 'url';
 
-class RedisBus<Events extends EventMap> {
+class RedisBus<Events extends { [key: string]: any; }> {
     pub: ReturnType<typeof createClient>;
     sub: ReturnType<typeof createClient>;
 

@@ -1,7 +1,27 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { observable } from '@trpc/server/observable';
-import { bus, BusEvents } from '../../bus';
+import { bus, type BusEvents } from '../../bus';
+
+// @TODO: fix this fuckery
+type BusSession = Parameters<Parameters<typeof protectedProcedure['subscription']>[0]>[0]['ctx']['session'];
+const createBusObserver = <Event extends keyof BusEvents = keyof BusEvents>(eventName: Event, session: BusSession) => {
+  return observable<Parameters<BusEvents[Event]>[0]>(emit => {
+    try {
+      const handler: BusEvents[Event] = ({ userId, ...opts }) => {
+        if (session.user.id !== userId) return;
+        emit.next(opts as any);
+      };
+
+      bus.on(eventName, handler);
+      return () => {
+        bus.off(eventName, handler);
+      };
+    } catch (error) {
+      console.log('error', error);
+    }
+  });
+}
 
 export const notificationRouter = createTRPCRouter({
   getAllNotifications: protectedProcedure
@@ -14,7 +34,7 @@ export const notificationRouter = createTRPCRouter({
     )
     .query(async ({ ctx: { prisma, session }, input }) => {
       const notifications = await prisma?.notification.findMany({
-        take: 10,
+        take: 100,
         where: {
           notifiedId: session.user.id
         },
@@ -40,19 +60,6 @@ export const notificationRouter = createTRPCRouter({
     }),
 
   getLiveNotifications: protectedProcedure.subscription(({ ctx: { session } }) => {
-    return observable<Parameters<BusEvents['newNotification']>[0]>(emit => {
-      try {
-        const onNewNotification: BusEvents['newNotification'] = (opts) => {
-          emit.next(opts as any);
-        };
-
-        bus.on('newNotification', onNewNotification);
-        return () => {
-          bus.off('newNotification', onNewNotification);
-        };
-      } catch (error) {
-        console.log('error', error);
-      }
-    });
+    return createBusObserver('newNotification', session);
   })
 });

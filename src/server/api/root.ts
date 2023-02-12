@@ -1,9 +1,11 @@
 import { createTRPCRouter } from './trpc';
-import { pageRouter } from './routers/page';
-import { tagRouter } from './routers/tag';
-import { postRouter } from './routers/post';
-import { userRouter } from './routers/user';
-import { notificationRouter } from './routers/notification';
+import { searchRouter } from '@app/server/api/routers/search';
+import { notificationRouter } from '@app/server/api/routers/notification';
+import { pageRouter } from '@app/server/api/routers/page';
+import { postRouter } from '@app/server/api/routers/post';
+import { tagRouter } from '@app/server/api/routers/tag';
+import { userRouter } from '@app/server/api/routers/user';
+import { messageRouter } from '@app/server/api/routers/message';
 
 /**
  * This is the primary router for your server.
@@ -15,7 +17,9 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   tag: tagRouter,
   user: userRouter,
-  notification: notificationRouter
+  notification: notificationRouter,
+  search: searchRouter,
+  message: messageRouter,
 });
 
 // export type definition of API

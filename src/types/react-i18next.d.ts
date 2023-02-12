@@ -1,7 +1,7 @@
 // import the original type declarations
 import 'react-i18next';
 // import all namespaces (for the default language, only)
-import ns1 from 'locales/en/translation.json';
+import type ns1 from 'locales/en/translation.json';
 
 declare module 'react-i18next' {
     interface CustomTypeOptions {
@@ -11,5 +11,5 @@ declare module 'react-i18next' {
         resources: {
             ns1: typeof ns1;
         };
-    };
-};
+    }
+}

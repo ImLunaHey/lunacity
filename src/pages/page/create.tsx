@@ -1,4 +1,6 @@
+import { withAuth } from '@app/common/with-auth';
 import { Card, Text, Spacer, Input, Button, Textarea } from '@nextui-org/react';
+import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -6,8 +8,10 @@ import { useState } from 'react';
 import { generateUsername } from '../../common/generate-username';
 import { api } from '../../utils/api';
 
+export const getServerSideProps = withAuth();
+
 // @TODO: Replace the useState calls with useForm
-function CreatePage() {
+const CreatePage: NextPage = () => {
   const [displayName, setDisplayName] = useState('');
   const [handle, setHandle] = useState('');
   const [description, setDescription] = useState('');
@@ -126,11 +130,7 @@ function CreatePage() {
                 <Spacer y={1} />
               </>
             )}
-            <Button
-              className="min-w-full"
-              type="submit"
-              disabled={createPage.isLoading}
-            >
+            <Button className="min-w-full" type="submit" disabled={createPage.isLoading}>
               Create Page
             </Button>
           </form>
@@ -138,6 +138,6 @@ function CreatePage() {
       </div>
     </>
   );
-}
+};
 
 export default CreatePage;
