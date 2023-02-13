@@ -47,8 +47,8 @@ const Feed: React.FC<FeedProps> = ({ items, fetchData = (opts) => () => undefine
       //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
       // }
     >
-      {uniqueItems.map((item) => (
-        <SinglePost {...item} key={item.id} />
+      {uniqueItems.map((post) => (
+        <SinglePost post={post} key={post.id} />
       ))}
     </InfiniteScroll>
   );

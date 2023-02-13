@@ -18,7 +18,7 @@ const Post: NextPage<{ postId: string }> = ({ postId }) => {
   const post = api.post.getPostDetails.useQuery({ postId });
   if (post.isLoading) return <Loading />;
   if (!post.data) return <Error statusCode={404} title="No post exists with this ID"></Error>;
-  return <SinglePost {...post.data} />;
+  return <SinglePost post={post.data} />;
 };
 
 export default Post;
