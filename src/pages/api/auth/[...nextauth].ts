@@ -52,7 +52,6 @@ export const authOptions: NextAuthOptions = {
     async signIn({ isNewUser, user }) {
       // Handle first signin
       if (isNewUser) {
-        console.log('new user', user);
         await handleNewUser(user);
       }
     },
