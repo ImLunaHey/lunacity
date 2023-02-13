@@ -9,7 +9,7 @@ const Logo: FC = () => {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="806.87 667.45 530.58 686.57"
-        className={'h-6 w-6'}
+        className="h-6 w-6"
       >
         {' '}
         <g id="document" transform="matrix(1,0,0,1,1024.0,1024.0)">

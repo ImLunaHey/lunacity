@@ -7,11 +7,12 @@ import { SearchIcon } from '../icons/search-icon';
 import { Notifications } from './notifications';
 import { useTranslation } from 'react-i18next';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import Logo from '@app/components/logo';
 
 export default function NavBar() {
   const { data: sessionData } = useSession();
-  const { t } = useTranslation();
   const router = useRouter();
+  const { t } = useTranslation();
 
   // Search box
   type Inputs = { query: string };
@@ -32,11 +33,10 @@ export default function NavBar() {
     sessionData && (
       <Navbar isBordered variant="sticky">
         <Navbar.Brand css={{ mr: '$4' }}>
-          {/* TODO: Add a logo here */}
-          {/* <AcmeLogo /> */}
+          <Logo />
           <Link href="/">
             <Text b color="inherit" css={{ mr: '$11' }} hideIn="xs">
-              ACME
+              Lunacity
             </Text>
           </Link>
           <Navbar.Content hideIn="xs" variant="highlight">
