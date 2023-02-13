@@ -5,7 +5,7 @@ import { Button, Loading, Spacer } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const UnauthenticatedPage: FC = () => {
@@ -33,10 +33,7 @@ export const AuthenticatedPage: FC = () => {
       </Head>
       <div className="flex flex-col">
         <div className="flex flex-row-reverse">
-          <Link
-            className="rounded-md bg-white p-2 text-black"
-            href="/post/create"
-          >
+          <Link className="rounded-md bg-white p-2 text-black" href="/post/create">
             {t('create-post')}
           </Link>
         </div>
