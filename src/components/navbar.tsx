@@ -62,7 +62,8 @@ export default function NavBar() {
           }}
         >
           <Navbar.Item className="w-full">
-            <form onSubmit={void handleSubmit(onSubmit)}>
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Input
                 aria-label="Search box"
                 clearable

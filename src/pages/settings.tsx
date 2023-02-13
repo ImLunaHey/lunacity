@@ -108,7 +108,8 @@ const Settings: NextPage<{
       <div className="flex flex-col items-center justify-center">
         {/* User settings */}
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form onSubmit={void handleSubmit(onSubmit)}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"
@@ -164,7 +165,8 @@ const Settings: NextPage<{
 
         {/* User page settings */}
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form onSubmit={void handleSubmit(onSubmit)}>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"
