@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagCloud it renders an error message 1`] = `
+<div>
+  <span
+    class="nextui-c-gyluqH nextui-badge-root"
+  >
+    <span
+      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+    >
+      <a
+        class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-idoMxUs-css nextui-link text-white"
+        href="/tags/testing"
+      >
+        #testing
+      </a>
+    </span>
+  </span>
+</div>
+`;
