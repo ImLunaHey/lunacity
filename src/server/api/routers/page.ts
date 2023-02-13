@@ -115,12 +115,10 @@ export const pageRouter = createTRPCRouter({
           ownerId: session.user.id,
         }, {
           moderators: {
-            every: {
+            some: {
               id: session.user.id
             }
           }
-        }, {
-          userId: session.user.id,
         }]
       },
     });
