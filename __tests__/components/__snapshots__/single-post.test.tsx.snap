@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SinglePost it doesnt render when there is no post data 1`] = `<div />`;
+
+exports[`SinglePost it renders a gallery post 1`] = `<div />`;
+
+exports[`SinglePost it renders a text post 1`] = `
+<div>
+  <div>
+    __TEXT_POST__MOCK__
+  </div>
+</div>
+`;
+
+exports[`SinglePost it renders a video post 1`] = `<div />`;
+
+exports[`SinglePost it renders an image post 1`] = `
+<div>
+  <div
+    class="nextui-c-BDLTQ nextui-c-jMTBsW nextui-c-gulvcB nextui-c-BDLTQ-eZMbDJ-variant-shadow nextui-c-BDLTQ-fmlsco-borderWeight-light nextui-c-BDLTQ-cuwTXc-disableAnimation-false nextui-c-BDLTQ-ichoWUJ-css"
+    role="section"
+    tabindex="-1"
+  >
+    <div
+      class="nextui-c-jxECYO"
+    >
+      <div
+        class="nextui-c-ijHtNE nextui-c-gulvcB nextui-c-ijHtNE-iPJLV-css"
+      >
+        <span
+          class="nextui-c-gEEnVX nextui-c-gulvcB nextui-c-gEEnVX-eeabkr-color-primary nextui-c-gEEnVX-duCSmO-textColor-default nextui-c-gEEnVX-iHugVF-size-md nextui-c-gEEnVX-krOtXB-borderWeight-normal nextui-c-gEEnVX-dbZNQr-bordered-true nextui-c-gEEnVX-bAEoQm-rounded-true nextui-c-gEEnVX-MtAEf-cv nextui-c-gEEnVX-iPJLV-css nextui-user-avatar"
+          data-state="loading"
+        >
+          <span
+            class="nextui-avatar-bg"
+          />
+          <img
+            alt="Avatar for @test-user"
+            class="nextui-avatar-img nextui-avatar--loading"
+            data-state="loading"
+            src="https://nextui.org/images/card-example-5.jpeg"
+          />
+        </span>
+        <div
+          class="nextui-c-kNKVvs nextui-user-info"
+        >
+          <span
+            class="nextui-c-eGlVTL nextui-user-name"
+          >
+            @test-user
+          </span>
+          <span
+            class="nextui-c-eCZQvV nextui-user-desc"
+          >
+            <a
+              class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hQWhoE-color-primary nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-ivnGVk-css nextui-link nextui-user-link"
+              href="/@test-user"
+              rel="noopener"
+              role="link"
+              tabindex="0"
+              target="_self"
+            >
+              @
+              test-user
+            </a>
+          </span>
+        </div>
+      </div>
+      <div
+        class="nextui-c-kRHeuF nextui-c-kRHeuF-idjRAkN-css nextui-grid-item nextui-grid-container"
+      >
+        <div
+          class="nextui-c-kRHeuF nextui-c-kRHeuF-icxokNG-css nextui-grid-item xs"
+        >
+          <h4
+            class="nextui-c-PJLV nextui-c-PJLV-ijnlmIz-css"
+          >
+            @test-user
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      class="nextui-c-eFfoBo nextui-c-eFfoBo-ijkKNOw-css"
+    >
+      <div
+        style="position: relative; width: 100%;"
+      />
+      <div
+        class="nextui-c-kRHeuF nextui-c-kRHeuF-ifczaKB-css nextui-grid-item nextui-grid-container"
+      >
+        <div
+          class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
+        >
+          <span
+            class="nextui-c-gyluqH nextui-badge-root"
+          >
+            <span
+              class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+            >
+              <a
+                class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-idoMxUs-css nextui-link text-white"
+                href="/tags/test-tag"
+              >
+                #test-tag
+              </a>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="nextui-c-cakKrd"
+    >
+      <div
+        class="nextui-c-kRHeuF nextui-c-kRHeuF-ifczaKB-css nextui-grid-item nextui-grid-container"
+      >
+        <div
+          class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
+        >
+          <button
+            aria-label="Favourite"
+            class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
+            data-state="ready"
+            type="button"
+          >
+            <span
+              class="nextui-button-text"
+            >
+              🔖
+            </span>
+          </button>
+        </div>
+        <div
+          class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
+        >
+          <button
+            aria-label="Star post"
+            class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
+            data-state="ready"
+            type="button"
+          >
+            <span
+              class="nextui-button-text"
+            >
+              ⭐
+            </span>
+          </button>
+        </div>
+        <div
+          class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
+        >
+          <button
+            aria-label="Comment on post"
+            class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
+            data-state="ready"
+            type="button"
+          >
+            <span
+              class="nextui-button-text"
+            >
+              💬
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
