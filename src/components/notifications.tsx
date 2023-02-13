@@ -1,6 +1,6 @@
 import { useNotificationStore } from '@app/stores/notification';
 import { Dropdown, Navbar, Badge, styled, Loading } from '@nextui-org/react';
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { NotificationIcon } from '../icons/notification-icon';
 import { api } from '../utils/api';
 import { FollowedNotification } from './notifications/followed-notification';
