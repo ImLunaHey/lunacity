@@ -1,0 +1,196 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar it renders nothing when unauthenticated 1`] = `<div />`;
+
+exports[`Navbar it renders the navbar when authenticated 1`] = `
+<div>
+  <nav
+    class="nextui-c-hhqfap nextui-c-hhqfap-ehawcb-variant-sticky nextui-c-hhqfap-beFEYN-maxWidth-lg nextui-c-hhqfap-hemDFs-isBordered-true nextui-c-hhqfap-kAwfsS-disableShadow-false nextui-c-hhqfap-gqZKcP-disableBlur-false nextui-c-hhqfap-iPJLV-css nextui-navbar"
+  >
+    <div
+      class="nextui-c-egxOLa nextui-navbar-container"
+    >
+      <span
+        class="nextui-c-fyNvBR nextui-c-PJLV nextui-c-fyNvBR-illEebI-css nextui-navbar-brand"
+      >
+        <a
+          href="/"
+        >
+          <b
+            class="nextui-c-PJLV nextui-c-PJLV-ghzjVU-hideIn-xs nextui-c-PJLV-ilaJdKq-css"
+          >
+            ACME
+          </b>
+        </a>
+        <ul
+          class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-PJLV-ghzjVU-hideIn-xs nextui-c-jklhtj-illCOkV-css nextui-navbar-content"
+          style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: 0px;"
+        >
+          <li
+            class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-cdrGrt-isActive-true nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-yrlUe-hwFizd-cv nextui-c-kOXsPe-ifcTEZe-css nextui-navbar-item"
+            id="static-id-0"
+          >
+            <a
+              class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+              href="/"
+              id="static-id-0"
+              role="link"
+              tabindex="0"
+            >
+              🏡 
+            </a>
+          </li>
+          <li
+            class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifcTEZe-css nextui-navbar-item"
+            id="static-id-2"
+          >
+            <a
+              class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+              href="/explore"
+              id="static-id-2"
+              role="link"
+              tabindex="0"
+            >
+              🌏 
+            </a>
+          </li>
+          <li
+            class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-ifcTEZe-css nextui-navbar-item"
+            id="static-id-4"
+          >
+            <a
+              class="nextui-c-kzikkm nextui-c-gulvcB nextui-c-kzikkm-hfnKRU-color-default nextui-c-kzikkm-isWIbj-animated-true nextui-c-kzikkm-iejNGLI-css nextui-link nextui-navbar-link"
+              href="/messages"
+              id="static-id-4"
+              role="link"
+              tabindex="0"
+            >
+              📩 
+            </a>
+          </li>
+        </ul>
+      </span>
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-jklhtj-ijztoav-css nextui-navbar-content w-full"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item w-full"
+          id="static-id-6"
+        >
+          <form
+            id="static-id-6"
+          >
+            <div
+              class="nextui-c-iwmZdB nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-gOvjVW-size-md nextui-c-iwmZdB-ihzSmcs-css nextui-input-main-container nextui-input-main-container--normal"
+              data-state="normal"
+            >
+              <div
+                class="nextui-c-boZsAS nextui-c-boZsAS-fjttfO-isTextarea-false nextui-c-boZsAS-iNKybL-animated-true nextui-input-container nextui-input-container--normal nextui-input-container--input w-full"
+              >
+                <label
+                  class="nextui-c-eXOOPO nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-ccrOPm-underlined-false nextui-c-eXOOPO-lkBNdM-isTextarea-false nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--shadow"
+                >
+                  <span
+                    class="nextui-c-PJLV nextui-c-iFHsrU nextui-input-placeholder"
+                  >
+                    Search...
+                  </span>
+                  <span
+                    class="nextui-c-PJLV nextui-input-content nextui-input-content--left"
+                  >
+                    <svg
+                      fill="none"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      width="16"
+                    >
+                      <path
+                        d="M11.5 21a9.5 9.5 0 1 0 0-19 9.5 9.5 0 0 0 0 19ZM22 22l-2-2"
+                        stroke="var(--nextui-colors-accents6)"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    aria-label="Search box"
+                    aria-multiline="false"
+                    aria-placeholder="Search..."
+                    aria-readonly="false"
+                    aria-required="false"
+                    autocomplete="off"
+                    class="nextui-c-jeuecp nextui-c-jeuecp-bVyrVm-hasLeftContent-true nextui-input nextui-input-left-content"
+                    data-state="normal"
+                    id="static-id-8"
+                    name="query"
+                    placeholder="Search..."
+                    type="text"
+                    value=""
+                  />
+                  <button
+                    aria-label="clear"
+                    class="nextui-c-ctQnhE nextui-input-clear-button"
+                    lang="en"
+                    type="button"
+                  >
+                    <span
+                      class="nextui-c-gDSmsE nextui-c-gulvcB"
+                    >
+                      <svg
+                        class=""
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <path
+                          d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </label>
+              </div>
+              <div
+                class="nextui-c-gJvMas nextui-input-helper-text-container"
+              />
+            </div>
+          </form>
+        </li>
+      </ul>
+      <ul
+        class="nextui-c-jklhtj nextui-c-dGYPDG nextui-c-PJLV nextui-c-jklhtj-idJpuyv-css nextui-navbar-content"
+        style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
+      >
+        <div>
+          __NOTIFICATIONS__MOCK__
+        </div>
+        <li
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item"
+          id="static-id-9"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="nextui-c-gEEnVX nextui-c-gulvcB nextui-c-gEEnVX-eeabkr-color-primary nextui-c-gEEnVX-duCSmO-textColor-default nextui-c-gEEnVX-iHugVF-size-md nextui-c-gEEnVX-krOtXB-borderWeight-normal nextui-c-gEEnVX-dbZNQr-bordered-true nextui-c-gEEnVX-bAEoQm-rounded-true nextui-c-gEEnVX-MtAEf-cv nextui-c-gEEnVX-ifMkvH-css"
+            data-state="loading"
+            id="static-id-9"
+            type="button"
+          >
+            <span
+              class="nextui-avatar-bg"
+            />
+            <img
+              class="nextui-avatar-img nextui-avatar--loading"
+              data-state="loading"
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+            />
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+`;
