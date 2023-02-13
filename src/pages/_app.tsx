@@ -19,11 +19,6 @@ import { useNotificationStore } from '@app/stores/notification';
 // 2. Call `createTheme` and pass your custom theme values
 const theme = createTheme({
   type: 'dark',
-  theme: {
-    colors: {
-      test: '#000000',
-    },
-  },
 });
 
 // If we're in dev mode show route changes as toasts
@@ -50,9 +45,9 @@ const i18nInitData = {
         'no-more-posts': 'Yay! You have seen it all',
         unfollow: 'Unfollow',
         follow: 'Follow',
-        signup: 'Signup',
-        signin: 'Signin',
-        signout: 'Signout',
+        signup: 'Sign up',
+        signin: 'Sign in',
+        signout: 'Sign out',
         site: {
           title: 'Social Media Platform',
         },
