@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bye when unauthenticated it renders a goodbye message 1`] = `
+<div>
+  <div>
+    Bye 👋
+  </div>
+</div>
+`;
