@@ -2,6 +2,9 @@ import Feed from '@app/components/feed';
 import { render } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
+import { createMockPost } from '__tests__/__utils__/mocks/create-mock-post';
+import { createMockPage } from '__tests__/__utils__/mocks/create-mock-page';
+import { createMockUser } from '__tests__/__utils__/mocks/create-mock-user';
 
 // Mock next-auth with defaults
 jest.mock('next/config', () => ({
@@ -27,8 +30,35 @@ jest.mock('../../src/components/text-post', () => ({
 }));
 
 describe('Feed', () => {
-    it('renders', () => {
+    it('renders nothing when there are no items', () => {
         const { container } = render(<Feed items={[]} />);
         expect(container).toMatchSnapshot();
+    });
+
+    it('renders posts when there are items', () => {
+        const { container } = render(<Feed items={[{
+            ...createMockPost(),
+            page: {
+                ...createMockPage(),
+                owner: createMockUser()
+            },
+            media: [],
+            tags: []
+        }]} />);
+        expect(container).toMatchSnapshot();
+    });
+
+    it('renders all of the posts', () => {
+        const { container } = render(<Feed items={Array.from({ length: 20 }).map(() => ({
+            ...createMockPost(),
+            page: {
+                ...createMockPage(),
+                owner: createMockUser()
+            },
+            media: [],
+            tags: []
+        }))} />);
+
+        expect(container.firstChild?.firstChild?.childNodes.length).toBe(21);
     });
 });

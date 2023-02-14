@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Feed renders 1`] = `
+exports[`Feed renders nothing when there are no items 1`] = `
 <div>
   <div
     class="infinite-scroll-component__outerdiv"
@@ -9,6 +9,30 @@ exports[`Feed renders 1`] = `
       class="infinite-scroll-component "
       style="height: auto; overflow: auto;"
     >
+      <p
+        style="text-align: center;"
+      >
+        <b>
+          no-more-posts
+        </b>
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Feed renders posts when there are items 1`] = `
+<div>
+  <div
+    class="infinite-scroll-component__outerdiv"
+  >
+    <div
+      class="infinite-scroll-component "
+      style="height: auto; overflow: auto;"
+    >
+      <div>
+        __TEXT_POST__MOCK__
+      </div>
       <p
         style="text-align: center;"
       >
