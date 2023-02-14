@@ -1,7 +1,10 @@
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import Navbar from '../../src/components/navbar';
 import { SessionProvider } from 'next-auth/react';
+
+import Navbar from '../../src/components/navbar';
+
+import '@testing-library/jest-dom';
+
 import type { Session } from 'next-auth';
 import React from 'react';
 import { replaceDynamicIds } from '../__utils__/replace-dynamic-ids';
@@ -25,7 +28,7 @@ jest.mock('next/router', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({
-    t: jest.fn(),
+    t: jest.fn((text: string) => text)
   })),
 }));
 
