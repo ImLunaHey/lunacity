@@ -5,7 +5,7 @@ export const SearchIcon = ({
   height = 24,
   ...props
 }: {
-  size: number;
+  size?: number;
   fill?: string;
   width?: number;
   height?: number;
