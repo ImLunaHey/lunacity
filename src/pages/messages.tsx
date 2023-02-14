@@ -1,9 +1,9 @@
 import { withAuth } from '@app/common/with-auth';
 import { api } from '@app/utils/api';
-import { Card, Loading, Text, Container, Row } from '@nextui-org/react';
+import { Card, Loading, Text } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
-import { NextPage } from 'next';
-import React, { FC } from 'react';
+import { type NextPage } from 'next';
+import React, { type FC } from 'react';
 
 export const getServerSideProps = withAuth();
 

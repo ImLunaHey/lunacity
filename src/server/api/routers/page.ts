@@ -5,22 +5,6 @@ import { bus } from '../../bus';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const pageRouter = createTRPCRouter({
-  // hello: publicProcedure
-  //   .input(z.object({ text: z.string() }))
-  //   .query(({ input }) => {
-  //     return {
-  //       greeting: `Hello ${input.text}`,
-  //     };
-  //   }),
-
-  // getAll: publicProcedure.query(({ ctx }) => {
-  //   return ctx.prisma.example.findMany();
-  // }),
-
-  // getSecretMessage: protectedProcedure.query(() => {
-  //   return "you can now see this secret message!";
-  // }),
-
   createPage: protectedProcedure
     .input(
       z.object({
@@ -65,7 +49,7 @@ export const pageRouter = createTRPCRouter({
 
       // Check if the handle is taken
       const handleTaken =
-        (await prisma?.page.count({ where: { handle } })) ?? 0 >= 1;
+        (await ctx.prisma?.page.count({ where: { handle } })) ?? 0 >= 1;
       if (handleTaken)
         throw new TRPCError({
           code: 'CONFLICT',
@@ -101,8 +85,8 @@ export const pageRouter = createTRPCRouter({
         handle: z.string(),
       })
     )
-    .query(async ({ input: { handle } }) => {
-      const count = await prisma?.page.count({
+    .query(async ({ ctx, input: { handle } }) => {
+      const count = await ctx.prisma?.page.count({
         where: { handle: handle.replace('@', '') },
       });
       return count ?? 0 >= 1;
@@ -310,7 +294,7 @@ export const pageRouter = createTRPCRouter({
         });
 
       // Follow the page and send a notification to the page they followed
-      const [_, { id }] = await prisma.$transaction([
+      const [, { id }] = await prisma.$transaction([
         prisma.page.update({
           where: { handle },
           data: {

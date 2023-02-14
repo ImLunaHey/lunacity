@@ -20,7 +20,7 @@ const getUniqueItemsInArray = (items: SinglePostProps[]): Exclude<SinglePostProp
   );
 };
 
-const Feed: React.FC<FeedProps> = ({ items, fetchData = (opts) => () => undefined, personalCursor, publicCursor }) => {
+const Feed: React.FC<FeedProps> = ({ items, fetchData = () => () => undefined, personalCursor, publicCursor }) => {
   const { t } = useTranslation();
   if (!items) return null;
   const uniqueItems = getUniqueItemsInArray(items);
@@ -36,16 +36,16 @@ const Feed: React.FC<FeedProps> = ({ items, fetchData = (opts) => () => undefine
           <b>{t('no-more-posts')}</b>
         </p>
       }
-      // // below props only if you need pull down functionality
-      // refreshFunction={fetchData()}
-      // pullDownToRefresh
-      // pullDownToRefreshThreshold={50}
-      // pullDownToRefreshContent={
-      //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-      // }
-      // releaseToRefreshContent={
-      //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-      // }
+    // // below props only if you need pull down functionality
+    // refreshFunction={fetchData()}
+    // pullDownToRefresh
+    // pullDownToRefreshThreshold={50}
+    // pullDownToRefreshContent={
+    //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+    // }
+    // releaseToRefreshContent={
+    //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+    // }
     >
       {uniqueItems.map((post) => (
         <SinglePost post={post} key={post.id} />

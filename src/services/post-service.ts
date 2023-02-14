@@ -11,8 +11,7 @@ const shuffleArray = <T>(arr: T[]): T[] => {
     const newArr = arr.slice();
     for (let i = newArr.length - 1; i > 0; i--) {
         const rand = Math.floor(Math.random() * (i + 1));
-        // @TODO: Fix the as any for the love of jebus
-        [newArr[i] as any, newArr[rand] as any] = [newArr[rand], newArr[i]];
+        [newArr[i] as unknown, newArr[rand] as unknown] = [newArr[rand], newArr[i]];
     }
     return newArr;
 };

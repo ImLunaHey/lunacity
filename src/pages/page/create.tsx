@@ -1,6 +1,6 @@
 import { withAuth } from '@app/common/with-auth';
 import { Card, Text, Spacer, Input, Button, Textarea } from '@nextui-org/react';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

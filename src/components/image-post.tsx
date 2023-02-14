@@ -1,7 +1,7 @@
-import { SinglePostProps } from '@app/components/single-post';
+import type { SinglePostProps } from '@app/components/single-post';
 import { TagCloud } from '@app/components/tag-cloud';
 import { UserAvatar } from '@app/components/user-avatar';
-import { Card, Grid, Button, Text, Image } from '@nextui-org/react';
+import { Card, Grid, Button, Text } from '@nextui-org/react';
 
 export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
   if (!post) return null;

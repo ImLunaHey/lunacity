@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 const Logo: FC = () => {
   return (

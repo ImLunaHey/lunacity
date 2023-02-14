@@ -1,5 +1,5 @@
 import { Card, Grid, Row, Text } from '@nextui-org/react';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 const PlanSelector: FC<{ hidden: boolean }> = ({ hidden }) => {
   const list = [

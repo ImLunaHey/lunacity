@@ -39,9 +39,7 @@ export const AuthenticatedPage: FC = () => {
         </div>
         <Spacer y={0.5} />
         <Feed
-          fetchData={(opts) => () => undefined}
           className="clear-both mt-2"
-          // @TODO: Fix this, currently the types arent using the trpc returned types
           items={posts.data ?? []}
         />
       </div>

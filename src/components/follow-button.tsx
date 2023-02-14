@@ -9,6 +9,7 @@ import { type TRPCClientErrorLike } from '@trpc/client';
 import { useTranslation } from 'react-i18next';
 
 type handleErrorProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: TRPCClientErrorLike<any>;
   setError: (error: { statusCode: number; message: string } | null) => void;
 };
@@ -32,6 +33,7 @@ export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
     message: string;
   } | null>(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onError = (error: TRPCClientErrorLike<any>) => {
     handleError({ error, setError });
     setIsLoading(false);

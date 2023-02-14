@@ -1,5 +1,5 @@
 import { FollowButton } from '@app/components/follow-button';
-import { SinglePostProps } from '@app/components/single-post';
+import type { SinglePostProps } from '@app/components/single-post';
 import { TagCloud } from '@app/components/tag-cloud';
 import { TimeAgo } from '@app/components/time-ago';
 import { UserAvatar } from '@app/components/user-avatar';

@@ -1,6 +1,6 @@
 import { humanTime } from '@app/common/human-time';
 import { Badge } from '@nextui-org/react';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, updatedAt }) => {
