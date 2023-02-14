@@ -16,7 +16,7 @@ jest.mock('next/config', () => ({
   }),
 }));
 
-// Mock notifications component
+// Mock text-post component
 jest.mock('../../src/components/text-post', () => ({
   __esModule: true,
   TextPost: () => <div>__TEXT_POST__MOCK__</div>,
