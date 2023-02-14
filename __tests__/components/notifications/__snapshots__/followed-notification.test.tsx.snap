@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FollowedNotification renders nothing if no data is provided 1`] = `<div />`;
+
+exports[`FollowedNotification returns x followed you 1`] = `
+<div>
+  <a
+    class="text-xs text-gray-500 hover:text-white"
+    href="/@test-page"
+  >
+    @test-page
+     
+    followed-you
+  </a>
+</div>
+`;
