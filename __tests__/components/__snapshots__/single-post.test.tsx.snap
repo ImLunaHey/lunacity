@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SinglePost it doesnt render when there is no post data 1`] = `<div />`;
+exports[`SinglePost doesnt render when there is no post data 1`] = `<div />`;
 
-exports[`SinglePost it renders a gallery post 1`] = `<div />`;
+exports[`SinglePost renders a gallery post 1`] = `<div />`;
 
-exports[`SinglePost it renders a text post 1`] = `
+exports[`SinglePost renders a text post 1`] = `
 <div>
   <div>
     __TEXT_POST__MOCK__
@@ -12,9 +12,9 @@ exports[`SinglePost it renders a text post 1`] = `
 </div>
 `;
 
-exports[`SinglePost it renders a video post 1`] = `<div />`;
+exports[`SinglePost renders a video post 1`] = `<div />`;
 
-exports[`SinglePost it renders an image post 1`] = `
+exports[`SinglePost renders an image post 1`] = `
 <div>
   <div
     class="nextui-c-BDLTQ nextui-c-jMTBsW nextui-c-gulvcB nextui-c-BDLTQ-eZMbDJ-variant-shadow nextui-c-BDLTQ-fmlsco-borderWeight-light nextui-c-BDLTQ-cuwTXc-disableAnimation-false nextui-c-BDLTQ-ichoWUJ-css"

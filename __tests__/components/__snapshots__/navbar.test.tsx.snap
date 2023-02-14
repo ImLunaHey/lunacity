@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Navbar it renders nothing when unauthenticated 1`] = `<div />`;
+exports[`Navbar renders nothing when unauthenticated 1`] = `<div />`;
 
-exports[`Navbar it renders the navbar when authenticated 1`] = `
+exports[`Navbar renders the navbar when authenticated 1`] = `
 <div>
   <nav
     class="nextui-c-hhqfap nextui-c-hhqfap-ehawcb-variant-sticky nextui-c-hhqfap-beFEYN-maxWidth-lg nextui-c-hhqfap-hemDFs-isBordered-true nextui-c-hhqfap-kAwfsS-disableShadow-false nextui-c-hhqfap-gqZKcP-disableBlur-false nextui-c-hhqfap-iPJLV-css nextui-navbar"

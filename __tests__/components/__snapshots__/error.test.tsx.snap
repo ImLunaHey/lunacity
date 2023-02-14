@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error it renders an error message 1`] = `
+exports[`Error renders an error message 1`] = `
 <div>
   <div
     class="relative rounded border border-red-500 bg-red-500 px-4 py-3 text-white"

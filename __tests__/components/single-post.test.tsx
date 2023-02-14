@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { SinglePost } from '@app/components/single-post';
-import { Media, Page, Post, Tag, User } from '@prisma/client';
+import { render } from '@testing-library/react';
+
+import '@testing-library/jest-dom';
+
+import type { Media, Page, Post, Tag, User } from '@prisma/client';
 
 // Mock next-auth with defaults
 jest.mock('next/config', () => ({
@@ -59,20 +61,20 @@ describe('SinglePost', () => {
     title: '',
   } satisfies
     | (Post & {
-        page: Page & {
-          owner: User;
-        };
-        media: Media[];
-        tags: Tag[];
-      })
+      page: Page & {
+        owner: User;
+      };
+      media: Media[];
+      tags: Tag[];
+    })
     | null;
 
-  it('it doesnt render when there is no post data', () => {
+  it('doesnt render when there is no post data', () => {
     const { container } = render(<SinglePost post={null} />);
     expect(container).toMatchSnapshot();
   });
 
-  it('it renders a gallery post', () => {
+  it('renders a gallery post', () => {
     const { container } = render(
       <SinglePost
         post={{
@@ -84,7 +86,7 @@ describe('SinglePost', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('it renders an image post', () => {
+  it('renders an image post', () => {
     const { container } = render(
       <SinglePost
         post={{
@@ -96,7 +98,7 @@ describe('SinglePost', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('it renders a text post', () => {
+  it('renders a text post', () => {
     const { container } = render(
       <SinglePost
         post={{
@@ -108,7 +110,7 @@ describe('SinglePost', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('it renders a video post', () => {
+  it('renders a video post', () => {
     const { container } = render(
       <SinglePost
         post={{

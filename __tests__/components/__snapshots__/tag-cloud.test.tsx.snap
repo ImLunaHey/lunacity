@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TagCloud it renders an error message 1`] = `
+exports[`TagCloud renders an error message 1`] = `
 <div>
   <span
     class="nextui-c-gyluqH nextui-badge-root"

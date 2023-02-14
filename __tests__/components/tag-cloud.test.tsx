@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { TagCloud } from '../../src/components/tag-cloud';
 
 describe('TagCloud', () => {
-  it('it renders an error message', () => {
+  it('renders an error message', () => {
     const { container } = render(
       <TagCloud
         tags={[

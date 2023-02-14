@@ -36,7 +36,7 @@ jest.mock('../../src/components/notifications', () => ({
 }));
 
 describe('Navbar', () => {
-  it('it renders nothing when unauthenticated', () => {
+  it('renders nothing when unauthenticated', () => {
     const { container } = render(
       <SessionProvider session={null}>
         <Navbar />
@@ -45,7 +45,7 @@ describe('Navbar', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('it renders the navbar when authenticated', () => {
+  it('renders the navbar when authenticated', () => {
     const mockSession = {
       expires: '1',
       user: {
