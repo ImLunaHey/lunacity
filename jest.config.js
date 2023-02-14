@@ -25,6 +25,7 @@ const customJestConfig = {
     testEnvironment: 'jest-environment-jsdom',
     "collectCoverageFrom": [
         "src/**/*.tsx",
+        "src/**/*.ts",
     ],
     coverageThreshold: {
         global: {
