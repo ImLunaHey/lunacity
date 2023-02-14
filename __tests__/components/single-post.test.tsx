@@ -69,7 +69,19 @@ describe('SinglePost', () => {
     })
     | null;
 
-  it('doesnt render when there is no post data', () => {
+  it('renders nothing if this is an unsupported post type', () => {
+    const { container } = render(
+      <SinglePost
+        post={{
+          ...mockedPost,
+          type: 'not-supported',
+        }}
+      />
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('renders nothing when there is no post data', () => {
     const { container } = render(<SinglePost post={null} />);
     expect(container).toMatchSnapshot();
   });

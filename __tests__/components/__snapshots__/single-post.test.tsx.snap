@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SinglePost doesnt render when there is no post data 1`] = `<div />`;
-
 exports[`SinglePost renders a gallery post 1`] = `<div />`;
 
 exports[`SinglePost renders a text post 1`] = `
@@ -168,3 +166,7 @@ exports[`SinglePost renders an image post 1`] = `
   </div>
 </div>
 `;
+
+exports[`SinglePost renders nothing if this is an unsupported post type 1`] = `<div />`;
+
+exports[`SinglePost renders nothing when there is no post data 1`] = `<div />`;
