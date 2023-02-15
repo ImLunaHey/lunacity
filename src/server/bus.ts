@@ -1,4 +1,4 @@
-import { createClient } from 'redis';
+import Redis from 'ioredis';
 import superjson from 'superjson';
 import type { Notification, NotificationData, Page, Post, User, Comment } from 'prisma/prisma-client';
 
@@ -18,8 +18,8 @@ export type BusEvents = {
 
 type ClientOptions = {
     clients: {
-        pub?: ReturnType<typeof createClient>,
-        sub?: ReturnType<typeof createClient>
+        pub?: Redis,
+        sub?: Redis
     }
 };
 
@@ -42,41 +42,25 @@ const isUrlOptions = (options: Options): options is UrlOptions => Object.keys(op
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
-    pub: ReturnType<typeof createClient>;
-    sub: ReturnType<typeof createClient>;
+    pub: Redis;
+    sub: Redis;
 
     callbacks: Record<keyof Events, Events[keyof Events][]> = {} as Record<keyof Events, Events[keyof Events][]>;
     connected = false;
 
     constructor(options: UrlOptions | CredentialsOptions | ClientOptions) {
         if (isClientOptions(options)) {
-            this.pub = options.clients.pub ?? createClient();
-            this.sub = options.clients.sub ?? createClient();
+            this.pub = options.clients.pub ?? new Redis();
+            this.sub = options.clients.sub ?? new Redis();
         } else if (isCredentialsOptions(options)) {
-            this.pub = createClient({ username: options.credentials.username });
-            this.sub = createClient({ username: options.credentials.username });
+            this.pub = new Redis({ username: options.credentials.username });
+            this.sub = new Redis({ username: options.credentials.username });
         } else if (isUrlOptions(options)) {
-            this.pub = createClient({ url: options.url });
-            this.sub = createClient({ url: options.url });
+            this.pub = new Redis(options.url);
+            this.sub = new Redis(options.url);
         } else {
             throw new Error('One of clients, credentials, or url must be provided.');
         }
-
-        // Connect to the bus
-        // @TODO: https://github.com/vercel/next.js/discussions/15341 if this changes we should move this to using await
-        void this.connect();
-    }
-
-    /**
-     * Cause the underlying pub/sub connections to be connected
-     */
-    async connect() {
-        await Promise.all([
-            this.pub.connect(),
-            this.sub.connect(),
-        ]);
-
-        this.connected = true;
     }
 
     emit<Event extends keyof Events>(event: Event, ...args: Parameters<Events[Event]>) {
@@ -95,13 +79,22 @@ class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
         if (Object.keys(this.callbacks).length >= 2) return this;
 
         // Subscribe to the redis event
-        void this.sub.pSubscribe(String(event), (data) => {
-            try {
-                listener(superjson.parse<[Parameters<Events[Event]>, Event]>(data)[0]);
-            } catch (error) {
-                // @TODO: handle the error?
-                console.log('Failed processing result from pSubscribe for %s', String(event), error);
+        this.sub.subscribe(String(event), (error, count) => {
+            if (error) {
+                // Just like other commands, subscribe() can fail for some reasons, ex network issues.
+                console.error("Failed to subscribe: %s", error.message);
+            } else {
+                // `count` represents the number of channels this client are currently subscribed to.
+                console.log(
+                    `Subscribed successfully! This client is currently subscribed to ${count} channels.`
+                );
             }
+        });
+
+        // When we get a message for this event call the corresponding handler
+        this.sub.on('message', (channel, message) => {
+            if (channel !== String(event)) return;
+            listener(superjson.parse<[Parameters<Events[Event]>, Event]>(message)[0]);
         });
 
         return this;
