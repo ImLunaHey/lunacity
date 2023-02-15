@@ -1,11 +1,11 @@
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { api } from '@app/utils/api';
 import { Loading } from '@nextui-org/react';
 import Head from 'next/head';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const getServerSideProps = withAuth<{ query: string }>((context) => ({
+export const getServerSideProps = withPrivateAccess<{ query: string }>((context) => ({
   props: {
     query: context.query.query,
   },

@@ -1,4 +1,4 @@
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown, Loading } from '@nextui-org/react';
 import type { Page } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { type FC, useEffect, useState } from 'react';
 import { api } from '../../utils/api';
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withPrivateAccess();
 
 const PageSelector: FC<{
   pages: Page[];

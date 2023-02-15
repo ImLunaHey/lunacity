@@ -1,11 +1,11 @@
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { api } from '@app/utils/api';
 import { Card, Loading, Text } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { type NextPage } from 'next';
 import React, { type FC } from 'react';
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withPrivateAccess();
 
 export const SendIcon: FC<{
   size?: number;

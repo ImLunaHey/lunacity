@@ -1,9 +1,9 @@
 import { api } from '../utils/api';
 import { TagCloud } from '../components/tag-cloud';
 import { Loading } from '@nextui-org/react';
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withPrivateAccess();
 
 const Tags = () => {
   const tags = api.tag.getAllTags.useQuery();

@@ -1,4 +1,4 @@
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { Card, Text, Spacer, Input, Button, Textarea } from '@nextui-org/react';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { generateUsername } from '../../common/generate-username';
 import { api } from '../../utils/api';
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withPrivateAccess();
 
 // @TODO: Replace the useState calls with useForm
 const CreatePage: NextPage = () => {

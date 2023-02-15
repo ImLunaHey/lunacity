@@ -1,7 +1,7 @@
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { type FC } from 'react';
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withPrivateAccess();
 
 const Analytics: FC = () => {
   return <div>Analytics</div>;

@@ -9,10 +9,10 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateUsername } from '../common/generate-username';
 import type { Entries } from 'type-fest';
 import { useTranslation } from 'react-i18next';
-import { withAuth } from '@app/common/with-auth';
+import { withPrivateAccess } from '@app/common/with-private-access';
 import { prisma } from '@app/server/db';
 
-export const getServerSideProps = withAuth(async (context) => {
+export const getServerSideProps = withPrivateAccess(async (context) => {
   const session = await getSession(context);
   if (!session?.user) return { props: {} };
 
