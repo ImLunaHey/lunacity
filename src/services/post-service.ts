@@ -1,20 +1,7 @@
-import type { PrismaClient } from '@prisma/client';
+import { shuffleArray } from '@app/common/shuffle-array';
+import { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
 import { TRPCError } from '@trpc/server';
-import type { Session } from 'next-auth';
 import { z } from 'zod';
-
-/**
- * Shuffle an array of items
- * @Source: https://stackoverflow.com/a/46161940
- */
-const shuffleArray = <T>(arr: T[]): T[] => {
-    const newArr = arr.slice();
-    for (let i = newArr.length - 1; i > 0; i--) {
-        const rand = Math.floor(Math.random() * (i + 1));
-        [newArr[i] as unknown, newArr[rand] as unknown] = [newArr[rand], newArr[i]];
-    }
-    return newArr;
-};
 
 export const CreatePostInput = z.object({
     // Which page to make the post on
@@ -46,13 +33,8 @@ export const GetExplorePostsInput = z.object({
     personalCursor: z.string().optional(),
 }).optional();
 
-type Context = {
-    prisma: PrismaClient;
-    session: Session | null;
-}
-
 class PostService {
-    async createPost(ctx: Context, input: z.infer<typeof CreatePostInput>) {
+    async createPost(ctx: PrivateServiceContext, input: z.infer<typeof CreatePostInput>) {
         const page = await ctx.prisma.page.findUnique({
             where: {
                 handle: input.page.handle,
@@ -90,7 +72,7 @@ class PostService {
         });
     }
 
-    async getPostDetails(ctx: Context, input: z.infer<typeof GetPostDetailsInput>) {
+    async getPostDetails(ctx: PublicServiceContext, input: z.infer<typeof GetPostDetailsInput>) {
         // Get post details
         const post = await ctx.prisma.post.findFirst({
             where: {
@@ -118,7 +100,7 @@ class PostService {
         return post;
     }
 
-    async getExplorePosts(ctx: Context, input: z.infer<typeof GetExplorePostsInput>) {
+    async getExplorePosts(ctx: PublicServiceContext, input: z.infer<typeof GetExplorePostsInput>) {
         // If there's no cursor then return 0 + 50 new
         // If there is a cursor return cursor + 50 new
         //  Get 50 posts from pages that're SFW
