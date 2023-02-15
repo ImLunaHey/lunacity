@@ -46,7 +46,6 @@ class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
     sub: Redis;
 
     callbacks: Record<keyof Events, Events[keyof Events][]> = {} as Record<keyof Events, Events[keyof Events][]>;
-    connected = false;
 
     constructor(options: UrlOptions | CredentialsOptions | ClientOptions) {
         if (isClientOptions(options)) {
@@ -64,8 +63,6 @@ class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
     }
 
     emit<Event extends keyof Events>(event: Event, ...args: Parameters<Events[Event]>) {
-        if (!this.connected) throw new Error('You must run .connect() on the bus before emitting');
-
         // Publish to redis
         void this.pub.publish(String(event), JSON.stringify(superjson.serialize(args)));
     }
@@ -79,20 +76,21 @@ class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
         if (Object.keys(this.callbacks).length >= 2) return this;
 
         // Subscribe to the redis event
-        this.sub.subscribe(String(event), (error, count) => {
+        void this.sub.subscribe(String(event), (error, count) => {
             if (error) {
                 // Just like other commands, subscribe() can fail for some reasons, ex network issues.
-                console.error("Failed to subscribe: %s", error.message);
+                console.error('Failed to subscribe: %s', error.message);
             } else {
                 // `count` represents the number of channels this client are currently subscribed to.
                 console.log(
-                    `Subscribed successfully! This client is currently subscribed to ${count} channels.`
+                    `Subscribed successfully! This client is currently subscribed to ${count as number} channels.`
                 );
             }
         });
 
         // When we get a message for this event call the corresponding handler
-        this.sub.on('message', (channel, message) => {
+        // @TODO: raise a PR with ioredis to make this a typed eventEmitter
+        this.sub.on('message', (channel: string, message: string) => {
             if (channel !== String(event)) return;
             listener(superjson.parse<[Parameters<Events[Event]>, Event]>(message)[0]);
         });
