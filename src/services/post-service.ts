@@ -1,5 +1,5 @@
 import { shuffleArray } from '@app/common/shuffle-array';
-import { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
+import type { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 

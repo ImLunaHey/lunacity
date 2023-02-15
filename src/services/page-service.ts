@@ -1,6 +1,6 @@
 import { handleTRPCError } from '@app/common/handle-trpc-error';
 import { bus } from '@app/server/bus';
-import { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
+import type { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
