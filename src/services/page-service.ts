@@ -5,8 +5,8 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 export const CreatePageInput = z.object({
-    displayName: z.string(),
     handle: z.string(),
+    displayName: z.string().optional(),
     description: z.string().optional(),
 });
 
@@ -75,7 +75,7 @@ class PageService {
 
         // Check if the handle is taken
         const handleTaken =
-            (await ctx.prisma?.page.count({ where: { handle: input.handle } })) ?? 0 >= 1;
+            (await ctx.prisma.page.count({ where: { handle: input.handle } }) ?? 0) >= 1;
         if (handleTaken)
             throw new TRPCError({
                 code: 'CONFLICT',
@@ -85,7 +85,7 @@ class PageService {
         // Create the page
         const userPage = await ctx.prisma.page.create({
             data: {
-                displayName: input.displayName.trim() || `@${input.handle}`,
+                displayName: input.displayName?.trim() || `@${input.handle}`,
                 handle: input.handle,
                 description: input.description,
                 owner: {
@@ -109,13 +109,13 @@ class PageService {
         const count = await ctx.prisma?.page.count({
             where: { handle: input.handle.replace('@', '') },
         });
-        return count ?? 0 >= 1;
+        return (count ?? 0) >= 1;
     }
 
     getUsersPages(ctx: PrivateServiceContext) {
         if (!ctx.session.user) throw new Error('A session is required to find your pages.');
 
-        return prisma?.page.findMany({
+        return ctx.prisma?.page.findMany({
             where: {
                 OR: [{
                     ownerId: ctx.session.user.id,
