@@ -1,0 +1,13 @@
+diff --git a/node_modules/prisma-mock/lib/index.js b/node_modules/prisma-mock/lib/index.js
+index 9cc17c6..206dd75 100644
+--- a/node_modules/prisma-mock/lib/index.js
++++ b/node_modules/prisma-mock/lib/index.js
+@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
+ };
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const client_1 = require("@prisma/client");
+-const runtime_1 = require("@prisma/client/runtime");
++const runtime_1 = require("@prisma/client/runtime/library");
+ const jest_mock_extended_1 = require("jest-mock-extended");
+ const defaults_1 = __importStar(require("./defaults"));
+ const shallowCompare_1 = require("./utils/shallowCompare");
