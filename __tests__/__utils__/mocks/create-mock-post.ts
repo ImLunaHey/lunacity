@@ -1,7 +1,7 @@
 import type { Post } from '@prisma/client';
 import { randomUUID } from 'crypto';
 
-export const createMockPost = (post?: Partial<Post>) => ({
+export const createMockPost = (post: Partial<Post> = {}) => ({
     id: randomUUID(),
     type: 'text',
     title: 'Test Post',
