@@ -1,7 +1,7 @@
 import { Card, Grid, Row, Text } from '@nextui-org/react';
 import type { FC } from 'react';
 
-const PlanSelector: FC<{ hidden: boolean }> = ({ hidden }) => {
+export const PlanSelector: FC<{ hidden: boolean }> = ({ hidden }) => {
   const list = [
     {
       title: 'Orange',
@@ -81,5 +81,3 @@ const PlanSelector: FC<{ hidden: boolean }> = ({ hidden }) => {
     </Grid.Container>
   );
 };
-
-export default PlanSelector;

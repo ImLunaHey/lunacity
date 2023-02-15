@@ -15,7 +15,7 @@ import { getSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 import type { Infractions } from '@prisma/client';
 import { FollowButton } from '../components/follow-button';
-import PlanSelector from '@app/components/plan-selector';
+import { PlanSelector } from '@app/components/plan-selector';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
