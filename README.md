@@ -4,11 +4,11 @@ Lunacity is a project that [insert brief project description here].
 
 Website: https://lunacity.app/
 
-| <!-- -->         | <!-- -->                                                                                                                                                     |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Releases**     | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ImLunaHey/Lunacity?logo=GitHub)](https://github.com/ImLunaHey/Lunacity/releases) |
-| **Security**     | [![Snyk Known Vulnerabilities](https://snyk.io/test/github/ImLunaHey/LunaCity/badge.svg)](https://snyk.io/test/github/ImLunaHey/LunaCity)                    |
-| **Build Status** | [![build](https://github.com/cicirello/Chips-n-Salsa/workflows/build/badge.svg)](https://github.com/cicirello/Chips-n-Salsa/actions/workflows/build.yml)     |
+| <!-- -->         | <!-- -->                                                                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Releases**     | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ImLunaHey/Lunacity?logo=GitHub)](https://github.com/ImLunaHey/Lunacity/releases)    |
+| **Security**     | [![Snyk Known Vulnerabilities](https://snyk.io/test/github/ImLunaHey/LunaCity/badge.svg)](https://snyk.io/test/github/ImLunaHey/LunaCity)                       |
+| **Build Status** | [![Node.js CI](https://github.com/ImLunaHey/lunacity/actions/workflows/test.yaml/badge.svg)](https://github.com/ImLunaHey/lunacity/actions/workflows/test.yaml) |
 
 ## Table of Contents
 
