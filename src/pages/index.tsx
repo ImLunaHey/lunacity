@@ -1,6 +1,6 @@
-import { GetServerSidePropsContext, type NextPage } from 'next';
+import { type NextPage } from 'next';
 import Head from 'next/head';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Button, Loading, Spacer } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';

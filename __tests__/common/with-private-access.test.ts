@@ -26,11 +26,12 @@ describe('withPrivateAccess', () => {
     });
 
     it('renders the children elements when authenticated', async () => {
+        const sessionExpiration = new Date().toISOString();
         jest.mocked(getSession).mockImplementation(() => new Promise(resolve => resolve({
             user: {
                 id: '123'
             },
-            expires: new Date().toISOString()
+            expires: sessionExpiration
         })));
 
         const fn = withPrivateAccess();
@@ -40,7 +41,14 @@ describe('withPrivateAccess', () => {
             query: {},
             resolvedUrl: ''
         })).resolves.toStrictEqual({
-            props: {}
+            props: {
+                session: {
+                    expires: sessionExpiration,
+                    user: {
+                        id: '123',
+                    },
+                },
+            },
         });
     });
 });

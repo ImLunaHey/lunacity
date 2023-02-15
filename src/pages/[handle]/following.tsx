@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { api } from '@app/utils/api';
 import { Badge, Loading } from '@nextui-org/react';
 import Error from 'next/error';

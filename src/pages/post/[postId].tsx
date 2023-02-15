@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { SinglePost } from '@app/components/single-post';
 import { api } from '@app/utils/api';
 import { Loading } from '@nextui-org/react';

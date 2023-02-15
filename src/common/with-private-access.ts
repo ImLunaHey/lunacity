@@ -1,6 +1,6 @@
 import type { Dict } from '@trpc/server';
 import type { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { Session } from 'next-auth';
+import type { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
 type Callback = (context: Parameters<GetServerSideProps>[0] & { session: Session }) => ReturnType<GetServerSideProps> | Awaited<ReturnType<GetServerSideProps>>;
