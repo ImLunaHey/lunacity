@@ -3,15 +3,16 @@ import { SinglePost } from '@app/components/single-post';
 import { api } from '@app/utils/api';
 import { Loading } from '@nextui-org/react';
 import Error from 'next/error';
+import { withPublicAccess } from '@app/common/with-public-access';
 
 // Return the handle from the url
-export function getServerSideProps(context: GetServerSidePropsContext<{ postId: string }>) {
+export const getServerSideProps = withPublicAccess((context) => {
   return {
     props: {
       postId: context.query.postId,
     },
   };
-}
+});
 
 const Post: NextPage<{ postId: string }> = ({ postId }) => {
   const post = api.post.getPostDetails.useQuery({ postId });

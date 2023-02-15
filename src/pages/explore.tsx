@@ -1,9 +1,12 @@
+import { withPublicAccess } from '@app/common/with-public-access';
 import { Loading } from '@nextui-org/react';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Feed from '../components/feed';
 import { api } from '../utils/api';
+
+export const getServerSideProps = withPublicAccess();
 
 const Explore: NextPage = () => {
   const { status } = useSession();

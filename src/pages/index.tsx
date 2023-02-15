@@ -1,12 +1,15 @@
-import { type NextPage } from 'next';
+import { GetServerSidePropsContext, type NextPage } from 'next';
 import Head from 'next/head';
-import { signIn, useSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import { Button, Loading, Spacer } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { withPublicAccess } from '@app/common/with-public-access';
+
+export const getServerSideProps = withPublicAccess();
 
 export const UnauthenticatedPage: FC = () => {
   const { t } = useTranslation();
@@ -38,10 +41,7 @@ export const AuthenticatedPage: FC = () => {
           </Link>
         </div>
         <Spacer y={0.5} />
-        <Feed
-          className="clear-both mt-2"
-          items={posts.data ?? []}
-        />
+        <Feed className="clear-both mt-2" items={posts.data ?? []} />
       </div>
     </>
   );

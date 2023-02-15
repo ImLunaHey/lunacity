@@ -18,6 +18,16 @@ import { FollowButton } from '../components/follow-button';
 import { PlanSelector } from '@app/components/plan-selector';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { withPublicAccess } from '@app/common/with-public-access';
+
+// Return the handle from the url
+export const getServerSideProps = withPublicAccess((context) => {
+  return {
+    props: {
+      handle: context.query.handle?.toString()?.replace('@', '').replace('/', ''),
+    },
+  };
+});
 
 const renderer = ({
   days,
@@ -155,15 +165,6 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
     </Card>
   );
 };
-
-// Return the handle from the url
-export function getServerSideProps(context: GetServerSidePropsContext<{ handle: string }>) {
-  return {
-    props: {
-      handle: context.query.handle?.toString()?.replace('@', '').replace('/', ''),
-    },
-  };
-}
 
 const Page: NextPage<{ handle: string }> = ({ handle }) => {
   const [hidden, setHidden] = useState(true);

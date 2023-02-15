@@ -49,7 +49,7 @@ const PageSelector: FC<{
   );
 };
 
-function CreatePost() {
+const CreatePost = () => {
   const [handle, setHandle] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -252,6 +252,6 @@ function CreatePost() {
       </div>
     </>
   );
-}
+};
 
 export default CreatePost;

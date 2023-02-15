@@ -3,15 +3,16 @@ import { api } from '@app/utils/api';
 import { Badge, Loading } from '@nextui-org/react';
 import Error from 'next/error';
 import { humanTime } from '@app/common/human-time';
+import { withPublicAccess } from '@app/common/with-public-access';
 
 // Return the handle from the url
-export function getServerSideProps(context: GetServerSidePropsContext<{ handle: string; postId: string }>) {
+export const getServerSideProps = withPublicAccess((context) => {
   return {
     props: {
       handle: context.query.handle?.toString()?.replace('@', '').replace('/', ''),
     },
   };
-}
+});
 
 const Following: NextPage<{ handle: string }> = ({ handle }) => {
   const page = api.page.getPageFollowing.useQuery({ handle });

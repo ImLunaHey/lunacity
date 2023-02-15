@@ -6,7 +6,7 @@ import Error from 'next/error';
 import { withPrivateAccess } from '@app/common/with-private-access';
 
 // Return the postId from the url
-export const getServerSideProps = withPrivateAccess<{ handle: string; postId: string }>((context) => {
+export const getServerSideProps = withPrivateAccess((context) => {
   return {
     props: {
       postId: context.query.postId,
