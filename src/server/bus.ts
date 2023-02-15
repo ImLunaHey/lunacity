@@ -41,7 +41,7 @@ const isClientOptions = (options: Options): options is ClientOptions => Object.k
 const isUrlOptions = (options: Options): options is UrlOptions => Object.keys(options)[0] === 'url';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
+export class RedisBus<Events extends { [key: string]: (...args: any) => any; }> {
     pub: Redis;
     sub: Redis;
 
