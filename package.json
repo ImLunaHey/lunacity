@@ -13,7 +13,8 @@
     "start:wss": "node dist/server.js",
     "start:next": "next start",
     "test": "jest --watch",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "release": "bumpp && gith push --follow-tags"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
@@ -64,6 +65,7 @@
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "autoprefixer": "^10.4.7",
+    "bumpp": "^8.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.30.0",
     "eslint-config-next": "13.1.2",
