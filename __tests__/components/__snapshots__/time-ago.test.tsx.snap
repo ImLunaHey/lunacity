@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimeAgo renders createdAt time if no updatedAt is provided 1`] = `<div />`;
+
+exports[`TimeAgo renders createdAt time if no updatedAt is the same as createdAt 1`] = `
+<div>
+  <span
+    class="nextui-c-gyluqH nextui-badge-root"
+  >
+    <span
+      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-gTzoIO-isSquared-false nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+    >
+      Posted
+       
+      now
+    </span>
+  </span>
+</div>
+`;
+
+exports[`TimeAgo renders updatedAt time if no updatedAt is different to createdAt 1`] = `
+<div>
+  <span
+    class="nextui-c-gyluqH nextui-badge-root"
+  >
+    <span
+      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-gTzoIO-isSquared-false nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+    >
+      Updated
+       
+      now
+    </span>
+  </span>
+</div>
+`;
