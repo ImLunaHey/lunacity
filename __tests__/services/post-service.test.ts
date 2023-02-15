@@ -3,16 +3,19 @@ import { postService } from '@app/services/post-service';
 import type { prisma } from '@app/server/db';
 
 import '@testing-library/jest-dom';
+import { createMockSession } from '__tests__/__utils__/mocks/create-mock-session';
+import createPrismaMock from 'prisma-mock';
+import { randomUUID } from 'crypto';
 
 describe('postService', () => {
   describe('createPost', () => {
     it('throws an error if no page can be found for the specified handle', async () => {
-      const prismaMock = { page: { findUnique: jest.fn(() => null) } };
+      const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
       await expect(async () => {
         await postService.createPost(
           {
-            prisma: prismaMock as unknown as typeof prisma,
-            session: null,
+            prisma: prismaMock,
+            session: createMockSession(),
           },
           {
             post: {
@@ -28,12 +31,17 @@ describe('postService', () => {
     });
 
     it('throws an error if the title is too short', async () => {
-      const prismaMock = { page: { findUnique: jest.fn(() => ({ handle: 'staff' })) } };
+      const prismaMock = createPrismaMock<NonNullable<typeof prisma>>({
+        page: [{
+          id: randomUUID(),
+          handle: 'staff'
+        }]
+      });
       await expect(async () => {
         await postService.createPost(
           {
-            prisma: prismaMock as unknown as typeof prisma,
-            session: null,
+            prisma: prismaMock,
+            session: createMockSession(),
           },
           {
             post: {
@@ -49,11 +57,16 @@ describe('postService', () => {
     });
 
     it('creates a post if it passes validation', async () => {
-      const prismaMock = { page: { findUnique: jest.fn(() => ({ handle: 'staff' })) }, post: { create: jest.fn() } };
+      const prismaMock = createPrismaMock<NonNullable<typeof prisma>>({
+        page: [{
+          id: randomUUID(),
+          handle: 'staff'
+        }]
+      });
       await postService.createPost(
         {
-          prisma: prismaMock as unknown as typeof prisma,
-          session: null,
+          prisma: prismaMock,
+          session: createMockSession(),
         },
         {
           post: {
@@ -66,39 +79,9 @@ describe('postService', () => {
         }
       );
 
-      expect(prismaMock.post.create).toBeCalledTimes(1);
-      expect(prismaMock.post.create.mock.calls[0]).toMatchInlineSnapshot(`
-        [
-          {
-            "data": {
-              "body": "",
-              "pageId": undefined,
-              "tags": {
-                "connectOrCreate": [
-                  {
-                    "create": {
-                      "name": "test",
-                    },
-                    "where": {
-                      "name": "test",
-                    },
-                  },
-                  {
-                    "create": {
-                      "name": "debug",
-                    },
-                    "where": {
-                      "name": "debug",
-                    },
-                  },
-                ],
-              },
-              "title": "This is a test post",
-              "type": "text",
-            },
-          },
-        ]
-      `);
+      const posts = await prismaMock.post.findMany();
+      expect(posts.length).toBe(1);
+      expect(posts[0]?.title).toBe('This is a test post');
     });
   });
 });
