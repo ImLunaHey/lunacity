@@ -1,5 +1,5 @@
 import { pageService } from '@app/services/page-service';
-import createPrismaMock from "prisma-mock"
+import createPrismaMock from 'prisma-mock'
 import '@testing-library/jest-dom';
 import { createMockSession } from '__tests__/__utils__/mocks/create-mock-session';
 import { generateUsername } from '@app/common/generate-username';
@@ -219,4 +219,136 @@ describe('pageService', () => {
             expect(userPages[0]?.handle).toBe('staff');
         });
     });
+
+    describe('getPageDetails', () => {
+        it('throws error if no page exists with that handle', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await expect(async () => {
+                await pageService.getPageDetails({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'non-existant-handle'
+                });
+            }).rejects.toThrow('No page found for this handle.');
+        });
+
+        // Doesn't work yet as .aggregate needs to be implemented in prisma-mock
+        // See: https://github.com/demonsters/prisma-mock/issues/17
+        it.failing('returns page details', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.page.create({
+                data: {
+                    handle: 'staff',
+                    displayName: '@staff',
+                    owner: {
+                        create: {
+                            id: randomUUID()
+                        }
+                    },
+                    moderators: {
+                        create: createMockUser({
+                            id: session.user.id
+                        })
+                    }
+                }
+            });
+            const pageDetails = await pageService.getPageDetails({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            });
+
+            expect(pageDetails).toStrictEqual(1);
+        });
+    });
+
+    describe('getPageFollowing', () => {
+        it('throws an error if no page exists with that handle', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await expect(async () => {
+                await pageService.getPageFollowing({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'non-existant-handle'
+                });
+            }).rejects.toThrow('No page found for this handle.');
+        });
+
+        it('returns an empty list if no one is following this page', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.page.create({
+                data: {
+                    handle: 'staff',
+                    displayName: '@staff',
+                    owner: {
+                        create: {
+                            id: randomUUID()
+                        }
+                    },
+                    moderators: {
+                        create: createMockUser({
+                            id: session.user.id
+                        })
+                    }
+                }
+            });
+            const following = await pageService.getPageFollowing({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            });
+
+            expect(following).toStrictEqual([]);
+        });
+
+        it('returns a list of the pages following the page', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    owner: {
+                        create: {
+                            id: randomUUID()
+                        }
+                    },
+                    moderators: {
+                        create: createMockUser({
+                            id: session.user.id
+                        })
+                    },
+                    following: {
+                        create: {
+                            followingId: pageId
+                        }
+                    }
+                }
+            });
+            const following = await pageService.getPageFollowing({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            });
+
+            expect(following.length).toBe(1);
+            expect(following[0]).toHaveProperty('createdAt');
+            expect(following[0]).toHaveProperty('follower');
+            expect(following[0]).toHaveProperty('followerId');
+            expect(following[0]).toHaveProperty('following');
+            expect(following[0]).toHaveProperty('followingId');
+        });
+    });
 });
+

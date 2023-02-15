@@ -157,7 +157,6 @@ class PageService {
                 message: 'No page found for this handle.',
             });
 
-
         // If the user is signed in, check if the user's own page is following this page
         const following = ctx.session?.user ? await ctx.prisma.page.findFirst({
             where: {
@@ -195,8 +194,22 @@ class PageService {
         }
     }
 
-    getPageFollowing(ctx: PublicServiceContext, input: z.infer<typeof GetPageFollowingInput>) {
+    async getPageFollowing(ctx: PublicServiceContext, input: z.infer<typeof GetPageFollowingInput>) {
         const handle = input.handle.replace('@', '');
+
+        // Check page exists
+        const page = await ctx.prisma.page.findFirst({
+            where: {
+                handle,
+            }
+        });
+
+        // No page found for that handle
+        if (!page)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No page found for this handle.',
+            });
 
         // Get a list of pages who follow this page
         return ctx.prisma.follows.findMany({
