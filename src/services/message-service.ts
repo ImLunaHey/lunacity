@@ -2,7 +2,7 @@ import type { PrivateServiceContext } from '@app/types/service';
 
 class MessageService {
     async getAllMessageThreads(ctx: PrivateServiceContext) {
-        return prisma?.messageThread.findMany({
+        return ctx.prisma?.messageThread.findMany({
             where: {
                 participants: {
                     some: {
