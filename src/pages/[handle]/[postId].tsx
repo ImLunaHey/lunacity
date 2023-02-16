@@ -3,10 +3,10 @@ import { SinglePost } from '@app/components/single-post';
 import { api } from '@app/utils/api';
 import { Loading } from '@nextui-org/react';
 import Error from 'next/error';
-import { withPrivateAccess } from '@app/common/with-private-access';
+import { withPublicAccess } from '@app/common/with-public-access';
 
 // Return the postId from the url
-export const getServerSideProps = withPrivateAccess((context) => {
+export const getServerSideProps = withPublicAccess((context) => {
   return {
     props: {
       postId: context.query.postId,
