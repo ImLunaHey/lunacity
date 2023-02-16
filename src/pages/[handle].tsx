@@ -5,14 +5,13 @@ import { api } from '../utils/api';
 import Feed from '../components/feed';
 import { Badge, Button, Card, Grid, Loading, Spacer, Tooltip } from '@nextui-org/react';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Countdown from 'react-countdown-simple';
 import { UserAvatar } from '../components/user-avatar';
 import prettyMilliseconds from 'pretty-ms';
-import { getSession } from 'next-auth/react';
-import type { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import type { Infractions } from '@prisma/client';
 import { FollowButton } from '../components/follow-button';
 import { PlanSelector } from '@app/components/plan-selector';
@@ -85,24 +84,10 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
 }) => {
   const { t } = useTranslation();
   const isBanned = infractions.filter((infraction) => infraction.severity === 'BAN').length >= 1;
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-
-  // Update session
-  useEffect(() => {
-    // TODO: this is a bit of a hack, make it less so?
-    getSession()
-      .then(setSession)
-      .then(() => void setIsLoading(false))
-      .catch(setError);
-  }, []);
-
-  // If we hit an error show it
-  if (error) return <span>{error}</span>;
+  const { data: session, status } = useSession();
 
   // Wait until we've checked for a valid session
-  if (isLoading) return <Loading />;
+  if (status === 'loading') return <Loading />;
 
   return (
     <Card css={{ p: '$6' }}>
