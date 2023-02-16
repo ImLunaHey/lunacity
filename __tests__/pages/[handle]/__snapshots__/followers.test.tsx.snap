@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getServerSideProps renders the followers page 1`] = `
+<div>
+  <div>
+    Followers for 
+    staff
+  </div>
+</div>
+`;
