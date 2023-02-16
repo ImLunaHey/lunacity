@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostId renders a loading state 1`] = `
+<div>
+  <div
+    class="nextui-c-bOoPrE nextui-c-bOoPrE-iWdsRK-color-default nextui-c-bOoPrE-fQoxSm-textColor-default"
+  >
+    <span
+      aria-label="Loading"
+      class="nextui-c-chTLhx nextui-c-chTLhx-cPGQpm-size-md nextui-c-chTLhx-jJwoeB-type-default nextui-c-chTLhx-iPJLV-css nextui-loading nextui-loading-default"
+    >
+      <i
+        class="_1"
+      />
+      <i
+        class="_2"
+      />
+      <i
+        class="_3"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`PostId renders a post with the provided ID 1`] = `
+<div>
+  <div>
+    __TEXT_POST__MOCK__
+  </div>
+</div>
+`;
+
+exports[`PostId throws an error when no postId is provided 1`] = `
+<div>
+  <div
+    style="font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", "Fira Sans", Avenir, "Helvetica Neue", "Lucida Grande", sans-serif; height: 100vh; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+  >
+    <div>
+      <style>
+        
+                body { margin: 0; color: #000; background: #fff; }
+                .next-error-h1 {
+                  border-right: 1px solid rgba(0, 0, 0, .3);
+                }
+
+                @media (prefers-color-scheme: dark) {
+                  body { color: #fff; background: #000; }
+                  .next-error-h1 {
+                    border-right: 1px solid rgba(255, 255, 255, .3);
+                  }
+                }
+      </style>
+      <h1
+        class="next-error-h1"
+        style="display: inline-block; margin: 0px 20px 0px 0px; padding: 0px 23px 0px 0px; font-size: 24px; font-weight: 500; vertical-align: top; line-height: 49px;"
+      >
+        404
+      </h1>
+      <div
+        style="display: inline-block; text-align: left; line-height: 49px; height: 49px; vertical-align: middle;"
+      >
+        <h2
+          style="font-size: 14px; font-weight: normal; line-height: 49px; margin: 0px; padding: 0px;"
+        >
+          No post exists with this ID
+          .
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+`;
