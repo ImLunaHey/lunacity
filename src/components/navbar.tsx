@@ -1,5 +1,5 @@
 import { useSSR } from '@nextui-org/react';
-import React from 'react';
+import React, { type FC } from 'react';
 import { Navbar, Text, Input, Dropdown, Avatar } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -10,8 +10,98 @@ import { useTranslation } from 'react-i18next';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import Logo from '@app/components/logo';
 
+const DropdownMenu: FC = () => {
+  const { data: session } = useSession();
+  const { t } = useTranslation();
+  if (!session?.user?.page?.handle) {
+    return (
+      <Dropdown.Menu aria-label="User menu actions" color="secondary">
+        <Dropdown.Item textValue="Create page" key="profile" className="p-0">
+          <Link className="m-0 block h-full w-full p-2 text-white" href="/page/create">
+            <Text b color="inherit" css={{ d: 'flex' }}>
+              Create page
+            </Text>
+          </Link>
+        </Dropdown.Item>
+        <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
+          <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
+            {t('page.settings.title')}
+          </Link>
+        </Dropdown.Item>
+        <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
+          <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
+            {t('page.help.title')}
+          </Link>
+        </Dropdown.Item>
+        <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
+          <a
+            className="m-0 block h-full w-full text-gray-400 hover:text-white"
+            onClick={() => void signOut({ callbackUrl: '/' })}
+          >
+            {t('signout')}
+          </a>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    );
+  }
+
+  return (
+    <Dropdown.Menu aria-label="User menu actions" color="secondary">
+      <Dropdown.Item textValue={`@${session.user?.page?.handle}`} key="profile" className="p-0">
+        <Link className="m-0 block h-full w-full p-2 text-white" href={`/${session.user?.page?.handle}`}>
+          <Text b color="inherit" css={{ d: 'flex' }}>
+            @{session.user?.page?.handle}
+          </Text>
+        </Link>
+      </Dropdown.Item>
+      <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
+        <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
+          {t('page.settings.title')}
+        </Link>
+      </Dropdown.Item>
+      <Dropdown.Item textValue="Analytics" key="analytics">
+        <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/analytics">
+          {t('page.analytics.title')}
+        </Link>
+      </Dropdown.Item>
+      <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
+        <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
+          {t('page.help.title')}
+        </Link>
+      </Dropdown.Item>
+      <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
+        <a
+          className="m-0 block h-full w-full text-gray-400 hover:text-white"
+          onClick={() => void signOut({ callbackUrl: '/' })}
+        >
+          {t('signout')}
+        </a>
+      </Dropdown.Item>
+    </Dropdown.Menu>
+  );
+};
+
+const UserMenu: FC = () => {
+  return (
+    <Dropdown placement="bottom-right">
+      <Navbar.Item>
+        <Dropdown.Trigger>
+          <Avatar
+            bordered
+            as="button"
+            color="primary"
+            size="md"
+            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          />
+        </Dropdown.Trigger>
+      </Navbar.Item>
+      <DropdownMenu />
+    </Dropdown>
+  );
+};
+
 export default function NavBar() {
-  const { data: sessionData } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
   const { t } = useTranslation();
   const { isBrowser } = useSSR();
@@ -28,12 +118,12 @@ export default function NavBar() {
     });
   };
 
-  // TODO: Fix this
-  if (!sessionData?.user?.page?.handle) return null;
-
   // Dont render the navbar when we're within SSR
   // See: https://github.com/nextui-org/nextui/issues/779
   if (!isBrowser) return null;
+
+  // If there's no session at all don't render
+  if (!session) return null;
 
   return (
     <Navbar isBordered variant="sticky">
@@ -66,7 +156,7 @@ export default function NavBar() {
           },
         }}
       >
-        <Navbar.Item className="w-full">
+        <Navbar.Item className="mr-3 w-full">
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
@@ -96,53 +186,7 @@ export default function NavBar() {
         }}
       >
         <Notifications />
-
-        {/* User menu */}
-        <Dropdown placement="bottom-right">
-          <Navbar.Item>
-            <Dropdown.Trigger>
-              <Avatar
-                bordered
-                as="button"
-                color="primary"
-                size="md"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-              />
-            </Dropdown.Trigger>
-          </Navbar.Item>
-          <Dropdown.Menu aria-label="User menu actions" color="secondary">
-            <Dropdown.Item textValue={`@${sessionData.user?.page?.handle}`} key="profile" className="p-0">
-              <Link className="m-0 block h-full w-full p-2 text-white" href={`/${sessionData.user?.page?.handle}`}>
-                <Text b color="inherit" css={{ d: 'flex' }}>
-                  @{sessionData.user?.page?.handle}
-                </Text>
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
-              <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
-                {t('page.settings.title')}
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item textValue="Analytics" key="analytics">
-              <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/analytics">
-                {t('page.analytics.title')}
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
-              <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
-                {t('page.help.title')}
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
-              <a
-                className="m-0 block h-full w-full text-gray-400 hover:text-white"
-                onClick={() => void signOut({ callbackUrl: '/' })}
-              >
-                {t('signout')}
-              </a>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <UserMenu />
       </Navbar.Content>
     </Navbar>
   );
