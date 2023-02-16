@@ -1,9 +1,9 @@
-import { Card, Text, Spacer, Input, Button } from '@nextui-org/react';
+import { Card, Text, Spacer, Input, Button, Modal } from '@nextui-org/react';
 import { type Page } from '@prisma/client';
 import type { NextPage } from 'next';
 import { getSession, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '../utils/api';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateUsername } from '../common/generate-username';
@@ -11,6 +11,10 @@ import type { Entries } from 'type-fest';
 import { useTranslation } from 'react-i18next';
 import { withPrivateAccess } from '@app/common/with-private-access';
 import { prisma } from '@app/server/db';
+import { refreshSession } from '@app/common/refresh-session';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
+import { useState } from 'react';
 
 export const getServerSideProps = withPrivateAccess(async (context) => {
   const session = await getSession(context);
@@ -45,17 +49,32 @@ type Inputs = {
   displayName: string;
 };
 
+const SettingsInput = z
+  .object({
+    handle: z
+      .string()
+      .regex(/^[a-zA-Z0-9_\-]+$/, 'Your handle can only contain letters, numbers, hyphens and underscores.')
+      .min(3, 'Your handle must be at least 3 characters long.')
+      .max(32, 'Your handle must be no more than 32 characters long.'),
+    displayName: z
+      .string()
+      .min(3, 'Your display name must be at least 3 characters long.')
+      .max(32, 'Your display name must be no more than 32 characters long.'),
+  })
+  .required();
+
 const Settings: NextPage<{
   handle: string;
   email: string;
   emailVerified: boolean;
   page: Page;
 }> = (props) => {
+  const { status } = useSession();
   const { t } = useTranslation();
-  const router = useRouter();
   const {
     register,
     handleSubmit,
+    reset: resetForm,
     formState: { errors, dirtyFields },
   } = useForm<Inputs>({
     defaultValues: {
@@ -63,6 +82,8 @@ const Settings: NextPage<{
       email: props.email,
       displayName: props.page.displayName,
     },
+    mode: 'all',
+    resolver: zodResolver(SettingsInput),
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const modifiedData = Object.fromEntries(
@@ -76,25 +97,39 @@ const Settings: NextPage<{
         // setError(error.message);
       },
       onSuccess() {
-        router.reload();
-        // TODO: tell user they did good :)
+        refreshSession();
+        resetForm(modifiedData);
+        toast.success(t('page.settings.update.success'));
       },
     });
   };
 
+  // Modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const modalCloseHandler = () => {
+    setModalVisible(false);
+  };
+
+  // Dectivate account
+  const deactivateAccount = api.user.deactivateAccount.useMutation();
   const onDeactivateAccountPress = () => {
+    setModalVisible(true);
+  };
+  const onDeactivateAccountConfirmPress = () => {
     deactivateAccount.mutate(undefined, {
       onSuccess() {
-        // Go back to the homepage
+        toast.success(t('page.settings.deactivate.success'));
 
-        void signOut({ callbackUrl: '/bye', redirect: false });
+        // Sign the user out of their current session
+        void signOut({ callbackUrl: '/bye', redirect: true });
       },
     });
   };
 
-  const { status } = useSession();
   const updateSettings = api.user.updateSettings.useMutation();
-  const deactivateAccount = api.user.deactivateAccount.useMutation();
+
+  const isLoading = deactivateAccount.isLoading || updateSettings.isLoading;
+  const submitDisabled = isLoading || Object.keys(errors).length !== 0 || Object.keys(dirtyFields).length === 0;
 
   // Don't show for unauthenticated users
   if (status !== 'authenticated') return null;
@@ -125,11 +160,11 @@ const Settings: NextPage<{
               clearable
               bordered
               fullWidth
-              color="primary"
+              color={errors.handle ? 'error' : 'primary'}
               status="default"
               size="lg"
               labelLeft="@"
-              {...register('handle', { required: true, maxLength: 25 })}
+              {...register('handle', { required: true })}
               helperText={errors.handle?.message ?? ''}
               placeholder={generateUsername()}
             />
@@ -143,9 +178,9 @@ const Settings: NextPage<{
               status="default"
               size="lg"
               labelLeft={props.emailVerified ? '✅' : '❌'}
-              {...register('email', { required: true })}
+              {...register('email')}
               disabled={props.emailVerified}
-              helperText={errors.handle?.message ?? ''}
+              helperText={errors.email?.message ?? ''}
               placeholder={t('placeholder.email-address') ?? 'placeholder.email-address'}
             />
             <Spacer y={2} />
@@ -155,7 +190,7 @@ const Settings: NextPage<{
                 <Spacer y={1} />
               </>
             )} */}
-            <Button className="min-w-full" type="submit" disabled={updateSettings.isLoading}>
+            <Button className="min-w-full" type="submit" disabled={submitDisabled}>
               {t('update-settings')}
             </Button>
           </form>
@@ -182,17 +217,17 @@ const Settings: NextPage<{
               clearable
               bordered
               fullWidth
-              color="primary"
+              color={errors.displayName ? 'error' : 'primary'}
               status="default"
               size="lg"
               {...register('displayName', { required: true, maxLength: 25 })}
-              helperText={errors.handle?.message ?? ''}
+              helperText={errors.displayName?.message ?? ''}
               placeholder={generateUsername()}
             />
 
             <Spacer y={2} />
 
-            <Button className="min-w-full" type="submit" disabled={updateSettings.isLoading}>
+            <Button className="min-w-full" type="submit" disabled={submitDisabled}>
               {t('update-settings')}
             </Button>
           </form>
@@ -206,12 +241,26 @@ const Settings: NextPage<{
             color="error"
             className="min-w-full"
             type="submit"
-            disabled={deactivateAccount.isLoading}
+            disabled={isLoading}
           >
             {t('page.settings.deactivate-account')}
           </Button>
         </Card>
       </div>
+
+      <Modal closeButton aria-labelledby="modal-title" open={modalVisible} onClose={modalCloseHandler}>
+        <Modal.Body>
+          <Text>Are you sure you want to deactivate your account?</Text>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto flat color="error" onPress={onDeactivateAccountConfirmPress}>
+            Deactivate
+          </Button>
+          <Button auto onPress={modalCloseHandler}>
+            Oops
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

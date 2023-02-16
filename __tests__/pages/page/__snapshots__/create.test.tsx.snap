@@ -130,14 +130,8 @@ exports[`Create renders a create page form 1`] = `
             </label>
           </div>
           <div
-            class="nextui-c-gJvMas nextui-c-gJvMas-bDGmTT-withValue-true nextui-input-helper-text-container"
-          >
-            <p
-              class="nextui-c-cwdhZi nextui-input-helper-text"
-            >
-              The display name
-            </p>
-          </div>
+            class="nextui-c-gJvMas nextui-input-helper-text-container"
+          />
         </div>
         <span
           aria-hidden="true"
@@ -159,7 +153,7 @@ exports[`Create renders a create page form 1`] = `
                 Add your socials here?
               </span>
               <textarea
-                aria-label="Page description"
+                aria-label="Description"
                 aria-multiline="true"
                 aria-placeholder="Add your socials here?"
                 aria-readonly="false"
@@ -176,14 +170,8 @@ exports[`Create renders a create page form 1`] = `
             </label>
           </div>
           <div
-            class="nextui-c-gJvMas nextui-c-gJvMas-bDGmTT-withValue-true nextui-input-helper-text-container"
-          >
-            <p
-              class="nextui-c-cwdhZi nextui-input-helper-text"
-            >
-              The page description
-            </p>
-          </div>
+            class="nextui-c-gJvMas nextui-input-helper-text-container"
+          />
         </div>
         <span
           aria-hidden="true"

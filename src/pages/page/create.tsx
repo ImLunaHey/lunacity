@@ -1,26 +1,72 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
 import { Card, Text, Spacer, Input, Button, Textarea } from '@nextui-org/react';
 import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { generateUsername } from '../../common/generate-username';
 import { api } from '../../utils/api';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { refreshSession } from '@app/common/refresh-session';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const getServerSideProps = withPrivateAccess();
 
-// @TODO: Replace the useState calls with useForm
+type Inputs = {
+  handle: string;
+  email: string;
+  displayName: string;
+  description: string;
+};
+
+const CreatePageInput = z
+  .object({
+    handle: z
+      .string()
+      .regex(/^[a-zA-Z0-9_\-]+$/, 'Your handle can only contain letters, numbers, hyphens and underscores.')
+      .min(3, 'Your handle must be at least 3 characters long.')
+      .max(32, 'Your handle must be no more than 32 characters long.'),
+    displayName: z
+      .string()
+      .min(3, 'Your display name must be at least 3 characters long.')
+      .max(32, 'Your display name must be no more than 32 characters long.'),
+    description: z.string().max(100, 'Your page description must be no more than 100 characters long.'),
+  })
+  .required();
+
 const CreatePage: NextPage = () => {
-  const [displayName, setDisplayName] = useState('');
-  const [handle, setHandle] = useState('');
-  const [description, setDescription] = useState('');
-  const [error, setError] = useState('');
-  const { status } = useSession();
+  const { t } = useTranslation();
   const router = useRouter();
   const createPage = api.page.createPage.useMutation();
+  const generatedUsername = generateUsername();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      handle: generatedUsername,
+      displayName: `@${generatedUsername}`,
+    },
+    mode: 'all',
+    resolver: zodResolver(CreatePageInput),
+  });
 
-  if (status !== 'authenticated') return null;
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // Post to server
+    createPage.mutate(data, {
+      onError(error) {
+        toast.error(error.message);
+      },
+      async onSuccess() {
+        refreshSession();
+        toast.success(t('page.create.success'));
+        await router.push(`/@${data.handle}`);
+      },
+    });
+  };
 
   return (
     <>
@@ -29,28 +75,8 @@ const CreatePage: NextPage = () => {
       </Head>
       <div className="flex flex-col items-center justify-center">
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-
-              // Post to server
-              createPage.mutate(
-                {
-                  displayName,
-                  handle,
-                  description,
-                },
-                {
-                  onError(error) {
-                    setError(error.message);
-                  },
-                  async onSuccess() {
-                    await router.push(`/@${handle}`);
-                  },
-                }
-              );
-            }}
-          >
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"
@@ -63,73 +89,46 @@ const CreatePage: NextPage = () => {
             </Text>
             {/* Handle */}
             <Input
+              aria-label="Handle"
               clearable
               bordered
               fullWidth
-              color="primary"
+              color={errors.handle ? 'error' : 'primary'}
               status="default"
               size="lg"
               labelLeft="@"
               maxLength={25}
-              value={handle}
-              onChange={(event) => {
-                setHandle(event.target.value);
-                setError('');
-              }}
-              onKeyDown={(event) => {
-                // Only allow a-z 0-9 _ and .
-                if (/^[a-z0-9_.]+$/.test(event.key)) return;
-                if (event.key === 'Backspace') return;
-                if (event.key === 'Enter') return;
-                if (event.key === 'Tab') return;
-                event.preventDefault();
-              }}
-              helperText="TODO: This text"
-              placeholder={generateUsername()}
+              {...register('handle')}
+              helperText={errors.handle?.message ?? ''}
             />
             <Spacer y={2} />
             {/* Display name */}
             <Input
+              aria-label="Display name"
               clearable
               bordered
               fullWidth
-              color="primary"
+              color={errors.displayName ? 'error' : 'primary'}
               size="lg"
               maxLength={50}
-              value={displayName}
-              onChange={(event) => {
-                setDisplayName(event.target.value);
-                setError('');
-              }}
-              placeholder={`@${handle}`}
-              helperText="The display name"
+              {...register('displayName')}
+              helperText={errors.displayName?.message ?? ''}
             />
             <Spacer y={2} />
             {/* Body */}
             <Textarea
-              aria-label="Post body"
+              aria-label="Description"
               bordered
               fullWidth
-              color="primary"
+              color={errors.description ? 'error' : 'primary'}
               size="lg"
               maxLength={100000}
-              value={description}
-              onChange={(event) => {
-                setDescription(event.target.value);
-                setError('');
-                return true;
-              }}
+              {...register('description', { required: true, maxLength: 25 })}
               // @TODO: make the placeholder better, wtf even is this?
               placeholder="Add your socials here?"
-              helperText="The page description"
+              helperText={errors.description?.message ?? ''}
             />
             <Spacer y={2} />
-            {error && (
-              <>
-                <p>{error}</p>
-                <Spacer y={1} />
-              </>
-            )}
             <Button className="min-w-full" type="submit" disabled={createPage.isLoading}>
               Create Page
             </Button>

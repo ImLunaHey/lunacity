@@ -110,7 +110,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
         style="--nextui--transitionDuration: 0ms; --nextui--opacity: 0; --nextui--width: 0px; --nextui--left: calc(var(--nextui--navbarContentItemHorizontalPadding) * 0.5 * -1);"
       >
         <li
-          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item w-full"
+          class="nextui-c-kOXsPe nextui-c-yrlUe nextui-c-PJLV nextui-c-yrlUe-kJGdUE-activeColor-default nextui-c-yrlUe-hYJzFf-underlineHeight-normal nextui-c-kOXsPe-iPJLV-css nextui-navbar-item mr-3 w-full"
           id="static-id-6"
         >
           <form

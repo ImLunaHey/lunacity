@@ -82,24 +82,34 @@ class PageService {
             });
 
         // Create the page
-        const userPage = await ctx.prisma.page.create({
+        const page = await ctx.prisma.page.create({
             data: {
                 displayName: input.displayName?.trim() || `@${input.handle}`,
                 handle: input.handle,
                 description: input.description,
                 owner: {
                     connect: {
-                        id: ctx.session?.user?.id
+                        id: ctx.session?.user?.id,
                     }
-                }
+                },
+                // If this user doesnt have a user page assign this new page as it
+                ...(
+                    !ctx.session.user.page ? {
+                        user: {
+                            connect: {
+                                id: ctx.session.user.id,
+                            },
+                        },
+                    } : {}
+                ),
             },
         });
 
         // Make page follow itself
         await ctx.prisma.follows.create({
             data: {
-                followerId: userPage.id,
-                followingId: userPage.id
+                followerId: page.id,
+                followingId: page.id
             }
         });
     }
