@@ -1,5 +1,5 @@
 import { withPublicAccess } from '@app/common/with-public-access';
-import { type FC } from 'react';
+import type { NextPage } from 'next';
 
 // Return the handle from the url
 export const getServerSideProps = withPublicAccess((context) => {
@@ -10,6 +10,6 @@ export const getServerSideProps = withPublicAccess((context) => {
   };
 });
 
-const Followers: FC = () => <div>Followers!</div>;
+const Followers: NextPage<{ handle: string }> = ({ handle }) => <div>Followers for {handle}</div>;
 
 export default Followers;
