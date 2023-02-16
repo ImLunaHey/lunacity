@@ -62,6 +62,14 @@ const i18nInitData = {
             'user-page-settings': 'User Page Settings',
             'page-settings': 'Page Settings',
             'deactivate-account': 'Deactivate Account',
+            update: {
+              success: 'Settings updated successfully',
+            },
+          },
+          page: {
+            create: {
+              success: 'Page created successfully',
+            },
           },
           explore: {
             title: 'Explore',

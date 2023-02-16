@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create renders a create page form 1`] = `
+<div>
+  <div
+    class="flex flex-col items-center justify-center"
+  >
+    <div
+      class="nextui-c-BDLTQ nextui-c-jMTBsW nextui-c-gulvcB nextui-c-BDLTQ-eZMbDJ-variant-shadow nextui-c-BDLTQ-fmlsco-borderWeight-light nextui-c-BDLTQ-cuwTXc-disableAnimation-false nextui-c-BDLTQ-ilimyxf-css"
+      role="section"
+      tabindex="-1"
+    >
+      <form>
+        <p
+          class="nextui-c-PJLV nextui-c-PJLV-hyvuql-weight-bold nextui-c-PJLV-ibsXxfh-css"
+        >
+          Create a new page
+        </p>
+        <div
+          class="nextui-c-iwmZdB nextui-c-iwmZdB-jTlWbp-color-primary nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-bkiCag-size-lg nextui-c-iwmZdB-ifGHEql-css nextui-input-main-container nextui-input-main-container--normal"
+          data-state="normal"
+        >
+          <div
+            class="nextui-c-boZsAS nextui-c-boZsAS-fjttfO-isTextarea-false nextui-c-boZsAS-iNKybL-animated-true nextui-input-container nextui-input-container--normal nextui-input-container--input"
+          >
+            <label
+              class="nextui-c-eXOOPO nextui-c-eXOOPO-dOamyD-bordered-true nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-ccrOPm-underlined-false nextui-c-eXOOPO-lkBNdM-isTextarea-false nextui-c-eXOOPO-eNajNl-cv nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--bordered nextui-input-wrapper--shadow"
+            >
+              <span
+                class="nextui-c-gieWTI nextui-c-gieWTI-ceZkzL-isRight-false nextui-c-gieWTI-cMnJPo-bordered-true nextui-c-gieWTI-gQKSQY-cv nextui-input-label--left"
+              >
+                @
+              </span>
+              <input
+                aria-label="Handle"
+                aria-multiline="false"
+                aria-placeholder=""
+                aria-readonly="false"
+                aria-required="false"
+                autocomplete="off"
+                class="nextui-c-jeuecp nextui-c-jeuecp-bXqash-bordered-true nextui-input"
+                data-state="normal"
+                id="static-id-0"
+                maxlength="25"
+                name="handle"
+                placeholder=""
+                type="text"
+                value=""
+              />
+              <button
+                aria-label="clear"
+                class="nextui-c-ctQnhE nextui-input-clear-button"
+                lang="en"
+                type="button"
+              >
+                <span
+                  class="nextui-c-gDSmsE nextui-c-gulvcB"
+                >
+                  <svg
+                    class=""
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <path
+                      d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </label>
+          </div>
+          <div
+            class="nextui-c-gJvMas nextui-input-helper-text-container"
+          />
+        </div>
+        <span
+          aria-hidden="true"
+          class="nextui-c-gNVTSf nextui-c-gNVTSf-hakyQ-inline-false nextui-c-gNVTSf-iijuxSl-css"
+        />
+        <div
+          class="nextui-c-iwmZdB nextui-c-iwmZdB-jTlWbp-color-primary nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-bkiCag-size-lg nextui-c-iwmZdB-ifGHEql-css nextui-input-main-container nextui-input-main-container--normal"
+          data-state="normal"
+        >
+          <div
+            class="nextui-c-boZsAS nextui-c-boZsAS-fjttfO-isTextarea-false nextui-c-boZsAS-iNKybL-animated-true nextui-input-container nextui-input-container--normal nextui-input-container--input"
+          >
+            <label
+              class="nextui-c-eXOOPO nextui-c-eXOOPO-dOamyD-bordered-true nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-ccrOPm-underlined-false nextui-c-eXOOPO-lkBNdM-isTextarea-false nextui-c-eXOOPO-eNajNl-cv nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--bordered nextui-input-wrapper--shadow"
+            >
+              <input
+                aria-label="Display name"
+                aria-multiline="false"
+                aria-placeholder=""
+                aria-readonly="false"
+                aria-required="false"
+                autocomplete="off"
+                class="nextui-c-jeuecp nextui-c-jeuecp-bXqash-bordered-true nextui-input"
+                data-state="normal"
+                id="static-id-1"
+                maxlength="50"
+                name="displayName"
+                placeholder=""
+                type="text"
+                value=""
+              />
+              <button
+                aria-label="clear"
+                class="nextui-c-ctQnhE nextui-input-clear-button"
+                lang="en"
+                type="button"
+              >
+                <span
+                  class="nextui-c-gDSmsE nextui-c-gulvcB"
+                >
+                  <svg
+                    class=""
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <path
+                      d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </label>
+          </div>
+          <div
+            class="nextui-c-gJvMas nextui-c-gJvMas-bDGmTT-withValue-true nextui-input-helper-text-container"
+          >
+            <p
+              class="nextui-c-cwdhZi nextui-input-helper-text"
+            >
+              The display name
+            </p>
+          </div>
+        </div>
+        <span
+          aria-hidden="true"
+          class="nextui-c-gNVTSf nextui-c-gNVTSf-hakyQ-inline-false nextui-c-gNVTSf-iijuxSl-css"
+        />
+        <div
+          class="nextui-c-iwmZdB nextui-c-iwmZdB-jTlWbp-color-primary nextui-c-iwmZdB-jTfqsF-helperColor-default nextui-c-iwmZdB-dpkacN-borderWeight-normal nextui-c-iwmZdB-bkiCag-size-lg nextui-c-iwmZdB-ifGHEql-css nextui-input-main-container nextui-input-main-container--normal"
+          data-state="normal"
+        >
+          <div
+            class="nextui-c-boZsAS nextui-c-boZsAS-iNKybL-animated-true nextui-input-container nextui-input-container--normal nextui-input-container--textarea"
+          >
+            <label
+              class="nextui-c-eXOOPO nextui-c-eXOOPO-dOamyD-bordered-true nextui-c-eXOOPO-iNKybL-shadow-true nextui-c-eXOOPO-ccrOPm-underlined-false nextui-c-eXOOPO-iLMmYc-isTextarea-true nextui-c-eXOOPO-eNajNl-cv nextui-c-eXOOPO-dpaosk-cv nextui-input-wrapper nextui-input-wrapper--normal nextui-input-wrapper--bordered nextui-input-wrapper--shadow"
+            >
+              <span
+                class="nextui-c-PJLV nextui-c-iFHsrU nextui-input-placeholder"
+              >
+                Add your socials here?
+              </span>
+              <textarea
+                aria-label="Page description"
+                aria-multiline="true"
+                aria-placeholder="Add your socials here?"
+                aria-readonly="false"
+                aria-required="false"
+                autocomplete="off"
+                class="nextui-c-jeuecp nextui-c-jeuecp-dYLnuG-isTextarea-true nextui-c-jeuecp-bXqash-bordered-true nextui-input-textarea"
+                data-state="normal"
+                id="static-id-2"
+                maxlength="100000"
+                name="description"
+                placeholder="Add your socials here?"
+                type="text"
+              />
+            </label>
+          </div>
+          <div
+            class="nextui-c-gJvMas nextui-c-gJvMas-bDGmTT-withValue-true nextui-input-helper-text-container"
+          >
+            <p
+              class="nextui-c-cwdhZi nextui-input-helper-text"
+            >
+              The page description
+            </p>
+          </div>
+        </div>
+        <span
+          aria-hidden="true"
+          class="nextui-c-gNVTSf nextui-c-gNVTSf-hakyQ-inline-false nextui-c-gNVTSf-iijuxSl-css"
+        />
+        <button
+          class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-gkIlwi-size-md nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-full"
+          data-state="ready"
+          type="submit"
+        >
+          <span
+            class="nextui-button-text"
+          >
+            Create Page
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;
