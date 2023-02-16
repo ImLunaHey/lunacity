@@ -96,6 +96,7 @@ model Page {
   id             String               @id @default(cuid())
   handle         String               @unique
   displayName    String
+  image          String?
   followerCount  Int                  @default(0)
   posts          Post[]
   infractions    Infractions[]

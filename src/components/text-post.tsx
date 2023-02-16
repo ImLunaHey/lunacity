@@ -15,7 +15,7 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
       <Card.Header>
         <UserAvatar
           official={post.page.official}
-          src={post.page.owner.image ?? 'https://nextui.org/images/card-example-5.jpeg'}
+          src={post.page.image ?? 'https://nextui.org/images/card-example-5.jpeg'}
           name={post.page.displayName ?? `@${post.page.handle}`}
           handle={post.page.handle}
         />

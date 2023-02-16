@@ -1,61 +1,10 @@
-import NextAuth, { type User, type NextAuthOptions } from 'next-auth';
+import NextAuth, { type NextAuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { env } from '../../../env/server.mjs';
 import { prisma } from '../../../server/db';
-import { generateUsername } from '../../../common/generate-username';
-
-// @TODO: make this not shit code
-// WARNING: BAD CODE IN THIS WHOLE BLOCK
-const handleNewUser = async (user: User) => {
-  // Attempt to create a page with a generated handle
-  let handle = generateUsername();
-  let errorCount = 5;
-  while (true) {
-    try {
-      const generatedHandle = handle ?? generateUsername();
-      await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          handle: generatedHandle,
-          page: {
-            create: {
-              handle: generatedHandle,
-              displayName: `@${generatedHandle}`,
-              owner: {
-                connect: {
-                  id: user.id
-                }
-              }
-            }
-          }
-        },
-      });
-
-      // If this works then return the generated one.
-      handle = generatedHandle;
-      break;
-    } catch (error) {
-      if (errorCount === 0) break;
-      errorCount--;
-      // Add error reporting here to show how often this happens
-
-      console.log(error);
-    }
-  }
-};
 
 export const authOptions: NextAuthOptions = {
-  events: {
-    async signIn({ isNewUser, user }) {
-      // Handle first signin
-      if (isNewUser) {
-        await handleNewUser(user);
-      }
-    },
-  },
   callbacks: {
     // @TODO: Use this to handle limited signup
     signIn({ user }) {
@@ -75,9 +24,7 @@ export const authOptions: NextAuthOptions = {
           }
         });
 
-        if (databaseUser?.handle)
-          session.user.handle = databaseUser.handle;
-
+        // Include user's main page on session
         if (databaseUser?.page)
           session.user.page = databaseUser.page;
       }
