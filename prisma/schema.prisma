@@ -51,10 +51,8 @@ model Session {
 
 model User {
   id            String               @id @default(cuid())
-  handle        String?              @unique
   email         String?              @unique
   emailVerified DateTime?
-  image         String?
   accounts      Account[]
   sessions      Session[]
   reports       Report[]
@@ -153,11 +151,11 @@ model Infractions {
 model Follows {
   // The page who is following
   followerId String
-  follower   Page   @relation("follower", fields: [followerId], references: [id])
+  follower   Page   @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
 
   // Page they're following
   followingId String
-  following   Page   @relation("following", fields: [followingId], references: [id])
+  following   Page   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -347,5 +345,5 @@ model Message {
   pageId String
 
   // The text of the message
-  body String
+  text String
 }
