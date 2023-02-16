@@ -108,7 +108,7 @@ export const userRouter = createTRPCRouter({
           }
         }
       }
-    })
+    });
   }),
 
   deactivateAccount: protectedProcedure.mutation(async ({ ctx: { prisma, session } }) => {
