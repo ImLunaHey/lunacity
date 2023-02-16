@@ -16,7 +16,6 @@
 - report -> report post
 - report -> report comment
 
-- database -> move to postgres
 - database -> enable full text search
 - database -> enable full text search index
 
