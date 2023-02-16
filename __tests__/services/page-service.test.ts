@@ -165,7 +165,7 @@ describe('pageService', () => {
                     prisma: prismaMock,
                     session: createMockSession({ user: undefined }),
                 });
-            }).rejects.toThrowError('A session is required to find your pages.');
+            }).rejects.toThrowError('Not signed in.');
 
             const pages = await prismaMock.page.findMany();
             expect(pages.length).toBe(1);
@@ -350,5 +350,281 @@ describe('pageService', () => {
             expect(following[0]).toHaveProperty('followingId');
         });
     });
-});
 
+    describe('followPage', () => {
+        it('throws an error if no page exists with that handle', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await expect(async () => {
+                await pageService.followPage({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'non-existant-handle'
+                });
+            }).rejects.toThrow('No page found for this handle.');
+        });
+
+        it('throws an error if the user is already following the page', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+            await prismaMock.follows.create({
+                data: {
+                    followerId: pageId,
+                    followingId: pageId,
+                }
+            });
+            await expect(async () => {
+                await pageService.followPage({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'staff'
+                });
+            }).rejects.toThrow('You are already following this page.');
+        });
+
+        it('returns 200 OK if follow was sucessful', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+
+            await expect(pageService.followPage({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            })).resolves.toBe(undefined);
+        });
+    });
+
+    describe('unfollowPage', () => {
+        it('throws an error if no page exists with that handle', async () => {
+            const session = createMockSession();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await expect(async () => {
+                await pageService.unfollowPage({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'non-existant-handle'
+                });
+            }).rejects.toThrow('No page found for this handle.');
+        });
+
+        it('throws an error if the user is isn\'t following the page', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+            await expect(async () => {
+                await pageService.unfollowPage({
+                    prisma: prismaMock,
+                    session,
+                }, {
+                    handle: 'staff'
+                });
+            }).rejects.toThrow('You are not following this page.');
+        });
+
+        it('returns 200 OK if the unfollowing succeeded', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+            await prismaMock.follows.create({
+                data: {
+                    followerId: pageId,
+                    followingId: pageId,
+                }
+            });
+            await expect(pageService.unfollowPage({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            })).resolves.toBe(undefined);
+        });
+    });
+
+    describe('getFollowingState', () => {
+        it('returns false if the user is not following the page', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+            await expect(pageService.getFollowingState({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            })).resolves.toBe(false);
+        });
+
+        it('returns true if the user is following the page', async () => {
+            const session = createMockSession();
+            const pageId = randomUUID();
+            const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
+            await prismaMock.user.create({
+                data: {
+                    id: session.user.id,
+                    handle: 'staff'
+                }
+            });
+            await prismaMock.page.create({
+                data: {
+                    id: pageId,
+                    handle: 'staff',
+                    displayName: '@staff',
+                    user: {
+                        create: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: session.user.id,
+                            handle: 'staff'
+                        }
+                    }
+                }
+            });
+            await prismaMock.follows.create({
+                data: {
+                    followerId: pageId,
+                    followingId: pageId,
+                }
+            });
+            await expect(pageService.getFollowingState({
+                prisma: prismaMock,
+                session,
+            }, {
+                handle: 'staff'
+            })).resolves.toBe(true);
+        });
+    });
+});

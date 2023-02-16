@@ -1,4 +1,3 @@
-import { handleTRPCError } from '@app/common/handle-trpc-error';
 import { bus } from '@app/server/bus';
 import type { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
 import { TRPCError } from '@trpc/server';
@@ -113,7 +112,8 @@ class PageService {
     }
 
     getUsersPages(ctx: PrivateServiceContext) {
-        if (!ctx.session.user) throw new Error('A session is required to find your pages.');
+        // TODO: make this error more descriptive
+        if (!ctx.session.user) throw new Error('Not signed in.');
 
         return ctx.prisma?.page.findMany({
             where: {
@@ -267,7 +267,7 @@ class PageService {
 
     async followPage(ctx: PrivateServiceContext, input: z.infer<typeof FollowPageInput>) {
         // Get the page
-        const page = await ctx.prisma.page.findUnique({
+        const pageToFollow = await ctx.prisma.page.findUnique({
             where: {
                 handle: input.handle,
             },
@@ -277,24 +277,38 @@ class PageService {
         });
 
         // No page found for that handle
-        if (!page)
+        if (!pageToFollow)
             throw new TRPCError({
                 code: 'NOT_FOUND',
                 message: 'No page found for this handle.',
             });
 
         // Get the current session's page
-        const userPage = await ctx.prisma.page.findFirst({
+        const sessionUserPage = await ctx.prisma.page.findUnique({
             where: {
                 userId: ctx.session.user?.id
             }
         });
 
         // No page found for the current session's user
-        if (!userPage)
+        if (!sessionUserPage)
             throw new TRPCError({
                 code: 'NOT_FOUND',
-                message: 'No page found for this handle.',
+                message: 'No user page found for this handle.',
+            });
+
+        const alreadyFollowing = await ctx.prisma.follows.findFirst({
+            where: {
+                // followerId: sessionUserPage.id,
+                // followingId: pageToFollow.id
+            }
+        });
+
+        // Already following this page
+        if (alreadyFollowing)
+            throw new TRPCError({
+                code: 'CONFLICT',
+                message: 'You are already following this page.',
             });
 
         // Follow the page and send a notification to the page they followed
@@ -304,7 +318,7 @@ class PageService {
                 data: {
                     followedBy: {
                         create: {
-                            followerId: userPage.id,
+                            followerId: sessionUserPage.id,
                         },
                     },
                 },
@@ -314,12 +328,12 @@ class PageService {
                     type: 'FOLLOWED',
                     notified: {
                         connect: {
-                            id: page.owner.id
+                            id: pageToFollow.owner.id
                         }
                     },
                     data: {
                         create: {
-                            pageId: userPage.id
+                            pageId: sessionUserPage.id
                         }
                     }
                 }
@@ -344,56 +358,67 @@ class PageService {
         });
 
         bus.emit('newNotification', {
-            userId: page.owner.id,
+            userId: pageToFollow.owner.id,
             notification
         });
     }
 
     async unfollowPage(ctx: PrivateServiceContext, input: z.infer<typeof UnfollowPageInput>) {
-        try {
-            // Get the page
-            const page = await ctx.prisma.page.findUnique({
-                where: {
-                    handle: input.handle,
+        // Get the page
+        const page = await ctx.prisma.page.findUnique({
+            where: {
+                handle: input.handle,
+            },
+        });
+
+        // No page found for that handle
+        if (!page)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No page found for this handle.',
+            });
+
+        // Get the current session's page
+        const userPage = await ctx.prisma.page.findFirst({
+            where: {
+                userId: ctx.session.user?.id
+            }
+        });
+
+        // No page found for the current session
+        if (!userPage)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No page found for this handle.',
+            });
+
+        // Get the following
+        const isFollowing = await ctx.prisma.follows.findFirst({
+            where: {
+                followerId: userPage.id,
+                followingId: page.id
+            },
+        });
+
+        // Check if the user is following this page
+        if (!isFollowing)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'You are not following this page.',
+            });
+
+        // Unfollow the page
+        await ctx.prisma.follows.delete({
+            where: {
+                followerId_followingId: {
+                    followerId: userPage.id,
+                    followingId: page.id
                 },
-            });
-
-            // No page found for that handle
-            if (!page)
-                throw new TRPCError({
-                    code: 'NOT_FOUND',
-                    message: 'No page found for this handle.',
-                });
-
-            // Get the current session's page
-            const userPage = await ctx.prisma.page.findFirst({
-                where: {
-                    userId: ctx.session.user?.id
-                }
-            });
-
-            // No page found for the current session
-            if (!userPage)
-                throw new TRPCError({
-                    code: 'NOT_FOUND',
-                    message: 'No page found for this handle.',
-                });
-
-            // Unfollow the page
-            await ctx.prisma.follows.delete({
-                where: {
-                    followerId_followingId: {
-                        followerId: userPage.id,
-                        followingId: page.id
-                    },
-                },
-            });
-        } catch (error: unknown) {
-            handleTRPCError(error);
-        }
+            },
+        });
     }
 
-    async followingState(ctx: PrivateServiceContext, input: z.infer<typeof FollowingStateInput>) {
+    async getFollowingState(ctx: PrivateServiceContext, input: z.infer<typeof FollowingStateInput>) {
         // Get the current session's page
         const userPage = await ctx.prisma.page.findFirst({
             where: {
