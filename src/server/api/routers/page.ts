@@ -49,8 +49,8 @@ export const pageRouter = createTRPCRouter({
       return pageService.unfollowPage(ctx, input);
     }),
 
-  followingState: protectedProcedure
+  getFollowingState: protectedProcedure
     .input(FollowingStateInput).query(async ({ ctx, input }) => {
-      return pageService.followingState(ctx, input);
+      return pageService.getFollowingState(ctx, input);
     }),
 });

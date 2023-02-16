@@ -24,7 +24,10 @@ const handleError = ({ error, setError }: handleErrorProps) => {
 export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
   const { t } = useTranslation();
   const session = useSession();
-  const followingState = api.page.followingState.useQuery({ handle }, { enabled: session.status === 'authenticated' });
+  const followingState = api.page.getFollowingState.useQuery(
+    { handle },
+    { enabled: session.status === 'authenticated' }
+  );
   const followPage = api.page.followPage.useMutation();
   const unfollowPage = api.page.unfollowPage.useMutation();
   const [isLoading, setIsLoading] = useState(false);
