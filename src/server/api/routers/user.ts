@@ -100,7 +100,6 @@ export const userRouter = createTRPCRouter({
         id: session.user.id
       },
       data: {
-        handle: input.handle,
         page: {
           update: {
             handle: input.handle,

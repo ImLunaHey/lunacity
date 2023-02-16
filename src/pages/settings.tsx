@@ -26,7 +26,6 @@ export const getServerSideProps = withPrivateAccess(async (context) => {
       id: session.user.id,
     },
     select: {
-      handle: true,
       email: true,
       emailVerified: true,
       page: true,
