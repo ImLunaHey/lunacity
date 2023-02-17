@@ -55,7 +55,7 @@ const i18nInitData = {
           home: {
             title: 'Home',
             welcome: {
-              title: 'Welcome to Lunacity',
+              title: 'Lunacity',
               message: 'A modern social media platform',
             },
           },
