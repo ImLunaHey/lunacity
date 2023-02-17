@@ -118,7 +118,7 @@ export default function NavBar() {
     });
   };
 
-  // Dont render the navbar when we're within SSR
+  // Don't render the navbar when we're within SSR
   // See: https://github.com/nextui-org/nextui/issues/779
   if (!isBrowser) return null;
 
