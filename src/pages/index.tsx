@@ -59,14 +59,14 @@ export const AuthenticatedPage: FC = () => {
   );
 };
 
-const Home: NextPage<{ onlineUserCount: number }> = ({ onlineUserCount }) => {
+const Home: NextPage = () => {
   const { status } = useSession();
 
   // Show loading while we fetch data
   if (status === 'loading') return <LoadingSpinner />;
 
   // Unauthenticated user
-  if (status === 'unauthenticated') return <UnauthenticatedPage onlineUserCount={onlineUserCount} />;
+  if (status === 'unauthenticated') return <UnauthenticatedPage />;
 
   // Authenticated user
   return <AuthenticatedPage />;
