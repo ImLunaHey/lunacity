@@ -8,7 +8,7 @@ exports[`TimeAgo renders createdAt time if no updatedAt is the same as createdAt
     class="nextui-c-gyluqH nextui-badge-root"
   >
     <span
-      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-gTzoIO-isSquared-false nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
     >
       Posted
        
@@ -24,7 +24,7 @@ exports[`TimeAgo renders updatedAt time if no updatedAt is different to createdA
     class="nextui-c-gyluqH nextui-badge-root"
   >
     <span
-      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-gTzoIO-isSquared-false nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
+      class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
     >
       Updated
        

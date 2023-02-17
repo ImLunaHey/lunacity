@@ -143,6 +143,12 @@ class PostService {
                 page: {
                     include: {
                         owner: true,
+                        _count: {
+                            select: {
+                                followedBy: true,
+                                following: true,
+                            }
+                        }
                     },
                 },
                 media: true,
@@ -210,6 +216,12 @@ class PostService {
                     page: {
                         include: {
                             owner: true,
+                            _count: {
+                                select: {
+                                    followedBy: true,
+                                    following: true,
+                                }
+                            }
                         },
                     },
                     media: true,
@@ -221,7 +233,17 @@ class PostService {
 
             // Authenticated user
             return {
-                posts: shuffleArray([...personalRecommendations, ...publicRecommendations]),
+                posts: shuffleArray([...personalRecommendations, ...publicRecommendations]).map(post => {
+                    const { _count, ...page } = post.page;
+                    return {
+                        ...post,
+                        page: {
+                            ...page,
+                            followerCount: _count.followedBy,
+                            followingCount: _count.following,
+                        }
+                    };
+                }),
                 personalCursor: personalRecommendations[49]?.id,
                 publicCursor: publicRecommendations[49]?.id,
             };
@@ -229,7 +251,17 @@ class PostService {
 
         // Unauthenticated user
         return {
-            posts: shuffleArray(publicRecommendations),
+            posts: shuffleArray(publicRecommendations).map(post => {
+                const { _count, ...page } = post.page;
+                return {
+                    ...post,
+                    page: {
+                        ...page,
+                        followerCount: _count.followedBy,
+                        followingCount: _count.following,
+                    }
+                };
+            }),
             publicCursor: publicRecommendations[49]?.id,
         };
     }

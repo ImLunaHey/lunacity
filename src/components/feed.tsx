@@ -15,9 +15,7 @@ type FeedProps = {
 
 const getUniqueItemsInArray = (items: SinglePostProps[]): Exclude<SinglePostProps, null>[] => {
   const seen: Record<string, boolean> = {};
-  return (items as Exclude<SinglePostProps, null>[]).filter((item) =>
-    seen.hasOwnProperty(item.id) ? false : (seen[item.id] = true)
-  );
+  return items.filter((item) => (seen.hasOwnProperty(item.id) ? false : (seen[item.id] = true)));
 };
 
 const Feed: React.FC<FeedProps> = ({ items, fetchData = () => () => undefined, personalCursor, publicCursor }) => {

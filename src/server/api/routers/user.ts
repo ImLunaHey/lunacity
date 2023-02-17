@@ -35,11 +35,11 @@ export const userRouter = createTRPCRouter({
   //     };
   //   })
 
-  getAllPosts: protectedProcedure.query(async ({ ctx: { prisma, session } }) => {
+  getAllPosts: protectedProcedure.query(async ({ ctx }) => {
     // Get the current user's page
-    const userPage = await prisma.page.findUnique({
+    const userPage = await ctx.prisma.page.findUnique({
       where: {
-        userId: session.user.id
+        userId: ctx.session.user.id
       }
     });
 
@@ -51,7 +51,7 @@ export const userRouter = createTRPCRouter({
       });
 
     // Authenticated user
-    const posts = await prisma?.post.findMany({
+    const posts = await ctx.prisma.post.findMany({
       where: {
         page: {
           followedBy: {

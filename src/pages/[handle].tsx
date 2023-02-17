@@ -100,6 +100,8 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
           official={official}
           description={description}
           popover={true}
+          followerCount={followerCount}
+          followingCount={followingCount}
         />
         <Grid.Container css={{ pl: '$6' }}>
           <Grid xs={12}>

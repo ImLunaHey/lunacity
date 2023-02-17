@@ -92,7 +92,7 @@ class PageService {
                         id: ctx.session?.user?.id,
                     }
                 },
-                // If this user doesnt have a user page assign this new page as it
+                // If this user doesn't have a user page assign this new page as it
                 ...(
                     !ctx.session.user.page ? {
                         user: {
@@ -253,6 +253,12 @@ class PageService {
                 page: {
                     include: {
                         owner: true,
+                        _count: {
+                            select: {
+                                followedBy: true,
+                                following: true,
+                            }
+                        }
                     },
                 },
                 media: true,
@@ -262,10 +268,18 @@ class PageService {
             },
         });
 
-        // If the user is signed out return public posts
-        if (!ctx.session?.user?.id) return posts;
-
-        return posts;
+        // Return the posts with the follower and following counts
+        return posts.map(post => {
+            const { _count, ...page } = post.page;
+            return {
+                ...post,
+                page: {
+                    ...page,
+                    followerCount: _count.followedBy,
+                    followingCount: _count.following,
+                }
+            };
+        });
 
         // // If the user is signed in check if they have permission to get more posts, if they don't then return public post
         // if (page?.ownerId !== session.user.id) return posts;

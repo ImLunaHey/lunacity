@@ -1,7 +1,7 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
-import { Button, Grid, Spacer, Text } from '@nextui-org/react';
+import { Button, Spacer, Text } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
