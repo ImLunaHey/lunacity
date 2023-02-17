@@ -24,7 +24,7 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
         />
       </Card.Header>
       <Card.Body css={{ py: '$2' }} className="break-words">
-        <Text>{post.title}</Text>
+        <Text h4>{post.title}</Text>
         {post.body && <ReactMarkdown remarkPlugins={[[remarkGfm]]}>{post.body}</ReactMarkdown>}
       </Card.Body>
       <Card.Footer>
