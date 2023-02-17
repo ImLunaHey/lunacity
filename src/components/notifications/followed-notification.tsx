@@ -8,15 +8,12 @@ import type { Notification } from '@app/stores/notification';
 export const FollowedNotification: FC<{ notification: Notification | null }> = ({ notification }) => {
   const { t } = useTranslation();
 
-  // If we forgot to pass data don't render
-  if (!notification) return null;
-
-  // TODO: Fix this
-  if (!notification.data?.page?.handle) return null;
+  // If we don't have a page, don't render
+  if (!notification?.data?.page) return null;
 
   return (
-    <Link href={`/@${notification.data.page?.handle}`} className="text-xs text-gray-500 hover:text-white">
-      {notification.data.page?.displayName ?? `@${notification.data.page?.handle}`} {t('followed-you')}
+    <Link href={`/@${notification.data.page.handle}`} className="text-xs text-gray-500 hover:text-white">
+      {`@${notification.data.page?.handle}`} {t('followed-you')}
     </Link>
   );
 };
