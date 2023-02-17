@@ -63,7 +63,6 @@ const SettingsInput = z
   .required();
 
 const Settings: NextPage<{
-  handle: string;
   email: string;
   emailVerified: boolean;
   page: Page;
@@ -77,7 +76,7 @@ const Settings: NextPage<{
     formState: { errors, dirtyFields },
   } = useForm<Inputs>({
     defaultValues: {
-      handle: props.handle,
+      handle: props.page.handle,
       email: props.email,
       displayName: props.page.displayName,
     },
