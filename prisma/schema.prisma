@@ -89,7 +89,7 @@ model Protection {
 
   // The page this protection applies to
   pageId String
-  page   Page   @relation(fields: [pageId], references: [id])
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
 }
 
 model Page {
@@ -121,7 +121,7 @@ model Page {
 
   // If this is a user page this will exist
   userId String? @unique
-  user   User?   @relation("userPage", fields: [userId], references: [id])
+  user   User?   @relation("userPage", fields: [userId], references: [id], onDelete: Cascade)
 
   // Reports towards this page
   reports Report[]
@@ -209,7 +209,7 @@ model Media {
   id String @id @default(cuid())
 
   postId String
-  Post   Post   @relation(fields: [postId], references: [id])
+  Post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -248,14 +248,14 @@ model PostReaction {
   id String @id @default(cuid())
 
   postId String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
   id String @id @default(cuid())
 
   postId String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   reports Report[]
 
@@ -267,14 +267,14 @@ model CommentReaction {
   id String @id @default(cuid())
 
   commentId String
-  Comment   Comment @relation(fields: [commentId], references: [id])
+  Comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 model PageFollowedByUser {
   id String @id @default(cuid())
 
-  page   Page   @relation(fields: [pageId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   pageId String
   userId String
 }
@@ -303,7 +303,7 @@ model Notification {
 
   // Who got the notification
   notifiedId String? @map("notified")
-  notified   User?   @relation(fields: [notifiedId], references: [id])
+  notified   User?   @relation(fields: [notifiedId], references: [id], onDelete: Cascade)
 
   // The associated data for this notification
   data NotificationData?
