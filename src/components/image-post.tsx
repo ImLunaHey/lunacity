@@ -15,6 +15,8 @@ export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
           src={'https://nextui.org/images/card-example-5.jpeg'}
           name={post.page.displayName}
           handle={post.page.handle}
+          description={post.page.description}
+          popover={true}
         />
         <Grid.Container css={{ pl: '$6' }}>
           <Grid xs={12}>
