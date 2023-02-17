@@ -1,11 +1,15 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
 import { LoadingSpinner } from '@app/components/loading-spinner';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown } from '@nextui-org/react';
 import type { Page } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { type FC, useEffect, useState } from 'react';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
 import { api } from '../../utils/api';
 
 export const getServerSideProps = withPrivateAccess();
@@ -50,17 +54,67 @@ const PageSelector: FC<{
   );
 };
 
+const CreatePostInput = z.object({
+  handle: z
+    .string()
+    .regex(/^[a-zA-Z0-9_\-]+$/, 'Your handle can only contain letters, numbers, hyphens and underscores.')
+    .min(3, 'Your handle must be at least 3 characters long.')
+    .max(32, 'Your handle must be no more than 32 characters long.'),
+  title: z.string().min(3, 'Your title must be at least 3 characters long.'),
+  body: z.string().max(5_000, 'The post body must be no more than 5,000 characters long.').optional(),
+  image: z.string().optional(),
+  type: z.union([
+    z.literal('text'),
+    z.literal('image')
+  ])
+});
+
+type Input = z.infer<typeof CreatePostInput>;
+
 const CreatePost = () => {
-  const [handle, setHandle] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [error, setError] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [selectedPostType, setSelectedPostType] = useState<'text' | 'image'>('text');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<Input>({
+    defaultValues: {
+      type: 'text'
+    },
+    mode: 'all',
+    resolver: zodResolver(CreatePostInput),
+  });
+
   const { status } = useSession();
   const router = useRouter();
   const createPost = api.post.createPost.useMutation();
   const getUsersPages = api.page.getUsersPages.useQuery();
+
+  const onSubmit: SubmitHandler<Input> = (data) => {
+    // Post to server
+    createPost.mutate(
+      {
+        page: {
+          handle: data.handle,
+        },
+        post: {
+          title: data.title,
+          body: data.body,
+          tags: [],
+          type: 'text',
+        },
+      },
+      {
+        onError(error) {
+          toast.error(error.message);
+        },
+        async onSuccess() {
+          await router.push(`/@${data.handle}`);
+        },
+      }
+    );
+  };
 
   // Redirect unauthenticated users to the signin page
   if (status === 'unauthenticated') return void router.push('/api/auth/signin?callbackUrl=/post/create');
@@ -78,34 +132,8 @@ const CreatePost = () => {
       </Head>
       <div className="flex flex-col items-center justify-center pt-20">
         <Card css={{ mw: '420px', p: '20px' }}>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-
-              // Create a new post on the server
-              createPost.mutate(
-                {
-                  page: {
-                    handle,
-                  },
-                  post: {
-                    title,
-                    body,
-                    tags: [],
-                    type: 'text',
-                  },
-                },
-                {
-                  onError(error) {
-                    setError(error.message);
-                  },
-                  async onSuccess() {
-                    await router.push(`/@${handle}`);
-                  },
-                }
-              );
-            }}
-          >
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Text
               size={24}
               weight="bold"
@@ -118,15 +146,15 @@ const CreatePost = () => {
 
             {/* Select where to post */}
             <Grid.Container justify="center">
-              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => handle && setHandle(handle)} />
+              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => handle && setValue('handle', handle, {})} />
             </Grid.Container>
 
             <Grid.Container gap={2} justify="center">
               {['text' as const, 'image' as const].map((postType) => (
                 <Grid key={postType}>
                   <Button
-                    onPress={() => setSelectedPostType(postType)}
-                    color={selectedPostType === postType ? 'success' : 'primary'}
+                    onPress={() => setValue('type', postType, {})}
+                    color={watch('type') === postType ? 'success' : 'primary'}
                     auto
                   >
                     {postType}
@@ -136,23 +164,19 @@ const CreatePost = () => {
             </Grid.Container>
 
             {/* Text Post */}
-            {selectedPostType === 'text' && (
+            {watch('type') === 'text' && (
               <>
                 {/* Title */}
                 <Input
                   aria-label="Post title"
                   bordered
                   fullWidth
-                  color="primary"
-                  status="default"
                   size="lg"
                   maxLength={25}
-                  value={title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                    setError('');
-                  }}
-                  helperText="Post title"
+                  color={errors.title ? 'error' : 'primary'}
+                  status="default"
+                  {...register('title', { required: true })}
+                  helperText={errors.title?.message ?? ''}
                   placeholder="An amazing title!"
                 />
                 <Spacer y={2} />
@@ -161,90 +185,66 @@ const CreatePost = () => {
                   aria-label="Post body"
                   bordered
                   fullWidth
-                  color="primary"
                   size="lg"
                   maxLength={100000}
-                  value={body}
-                  onChange={(event) => {
-                    setBody(event.target.value);
-                    setError('');
-                    return true;
-                  }}
+                  color={errors.body ? 'error' : 'primary'}
+                  status="default"
+                  {...register('body', { required: true })}
+                  helperText={errors.body?.message ?? ''}
                   placeholder="A wild thought, markdown works here!"
-                  helperText="The text body"
                 />
               </>
             )}
 
             {/* Image Post */}
-            {selectedPostType === 'image' && (
+            {watch('type') === 'image' && (
               <>
                 {/* Title */}
                 <Input
                   aria-label="Post title"
                   bordered
                   fullWidth
-                  color="primary"
-                  status="default"
                   size="lg"
                   maxLength={25}
-                  value={title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                    setError('');
-                  }}
-                  helperText="Post title"
+                  color={errors.title ? 'error' : 'primary'}
+                  status="default"
+                  {...register('title', { required: true })}
+                  helperText={errors.title?.message ?? ''}
                   placeholder="An amazing title!"
                 />
                 <Spacer y={2} />
                 {/* Image */}
                 {/* TODO: Add an image selector here */}
                 {/* <Input
-                    aria-label='Post select image'
-                    bordered
-                    fullWidth
-                    color="primary"
-                    status='default'
-                    size="lg"
-                    maxLength={25}
-                    value={handle}
-                    type="file"
-                    onChange={(event) => {
-                        // @TODO: Workout how to get the image data so we can send a mutation with it
-                        // setImage(event.target.value);
-                        setError('');
-                    }}
-                    helperText="An image"
-                    placeholder=""
-                />
-                <Spacer y={2} /> */}
+                  aria-label="Post select image"
+                  bordered
+                  fullWidth
+                  size="lg"
+                  maxLength={25}
+                  color={errors.image ? 'error' : 'primary'}
+                  status="default"
+                  {...register('image', { required: true })}
+                  helperText={errors.image?.message ?? ''}
+                  type="file"
+                  placeholder=""
+                /> */}
+                {/* <Spacer y={2} /> */}
                 <Input
                   aria-label="Post image URL"
                   bordered
                   fullWidth
-                  color="primary"
-                  status="default"
                   size="lg"
                   maxLength={25}
-                  value={imageUrl}
                   labelLeft="http(s)://"
-                  onChange={(event) => {
-                    setImageUrl(event.target.value);
-                    setError('');
-                  }}
-                  helperText="URL of existing image (e.g. imgur)"
+                  color={errors.image ? 'error' : 'primary'}
+                  status="default"
+                  {...register('image', { required: true })}
+                  helperText={errors.image?.message ?? ''}
                   placeholder="Image URL"
                 />
               </>
             )}
-
             <Spacer y={2} />
-            {error && (
-              <>
-                <p>Error: {error}</p>
-                <Spacer y={1} />
-              </>
-            )}
             <Button className="min-w-full" type="submit" disabled={createPost.isLoading}>
               Post!
             </Button>
