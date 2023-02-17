@@ -21,6 +21,8 @@ export const serverSchema = z.object({
   ),
   EMAIL_SERVER: z.string(),
   EMAIL_FROM: z.string(),
+  PLAUSIBLE_KEY: z.string(),
+  PLAUSIBLE_SITE_ID: z.string(),
 });
 
 /**
@@ -35,6 +37,8 @@ export const serverEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   EMAIL_SERVER: process.env.EMAIL_SERVER,
   EMAIL_FROM: process.env.EMAIL_FROM,
+  PLAUSIBLE_KEY: process.env.PLAUSIBLE_KEY,
+  PLAUSIBLE_SITE_ID: process.env.PLAUSIBLE_SITE_ID,
 };
 
 /**
