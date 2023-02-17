@@ -1,8 +1,7 @@
-import { FollowButton } from '@app/components/follow-button';
 import type { SinglePostProps } from '@app/components/single-post';
 import { TagCloud } from '@app/components/tag-cloud';
 import { TimeAgo } from '@app/components/time-ago';
-import { UserAvatar } from '@app/components/user-avatar';
+import { PageAvatar } from '@app/components/page-avatar';
 import { Button, Card, Grid, Link, Spacer, Text } from '@nextui-org/react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -13,14 +12,14 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
   return (
     <Card css={{ p: '$6', mb: '$8' }} role="region">
       <Card.Header>
-        <UserAvatar
+        <PageAvatar
           official={post.page.official}
           src={post.page.image ?? 'https://nextui.org/images/card-example-5.jpeg'}
-          name={post.page.displayName ?? `@${post.page.handle}`}
+          name={post.page.displayName}
           handle={post.page.handle}
+          popover={true}
+          description={post.page.description}
         />
-        {/* Follow button */}
-        <FollowButton handle={post.page.handle} />
         <Spacer x={0.2} />
         {/* Created/Updated at */}
         <Link href={`/@${post.page.handle}/${post.id}`}>

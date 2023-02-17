@@ -309,8 +309,8 @@ class PageService {
 
         const alreadyFollowing = await ctx.prisma.follows.findFirst({
             where: {
-                // followerId: sessionUserPage.id,
-                // followingId: pageToFollow.id
+                followerId: sessionUserPage.id,
+                followingId: pageToFollow.id
             }
         });
 

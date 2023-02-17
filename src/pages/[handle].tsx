@@ -9,7 +9,7 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Countdown from 'react-countdown-simple';
-import { UserAvatar } from '../components/user-avatar';
+import { PageAvatar } from '../components/page-avatar';
 import prettyMilliseconds from 'pretty-ms';
 import { useSession } from 'next-auth/react';
 import type { Infractions } from '@prisma/client';
@@ -62,7 +62,7 @@ const renderer = ({
 
 type ProfileHeaderProps = {
   id: string;
-  description?: string;
+  description: string;
   displayName: string;
   handle: string;
   official: boolean;
@@ -92,11 +92,13 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   return (
     <Card css={{ p: '$6' }}>
       <Card.Header>
-        <UserAvatar
+        <PageAvatar
           src={'https://nextui.org/images/card-example-5.jpeg'}
-          name={displayName || `@${handle}`}
+          name={displayName}
           handle={handle}
           official={official}
+          description={description}
+          popover={true}
         />
         <Grid.Container css={{ pl: '$6' }}>
           <Grid xs={12}>

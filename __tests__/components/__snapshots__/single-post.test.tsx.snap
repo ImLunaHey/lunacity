@@ -22,8 +22,8 @@ exports[`SinglePost renders an image post 1`] = `
     <div
       class="nextui-c-jxECYO"
     >
-      <div
-        class="nextui-c-ijHtNE nextui-c-gulvcB nextui-c-ijHtNE-iPJLV-css"
+      <button
+        class="nextui-c-ijHtNE nextui-c-gulvcB nextui-c-ijHtNE-ibkbaiK-css"
       >
         <span
           class="nextui-c-gEEnVX nextui-c-gulvcB nextui-c-gEEnVX-eeabkr-color-primary nextui-c-gEEnVX-duCSmO-textColor-default nextui-c-gEEnVX-iHugVF-size-md nextui-c-gEEnVX-krOtXB-borderWeight-normal nextui-c-gEEnVX-dbZNQr-bordered-true nextui-c-gEEnVX-bAEoQm-rounded-true nextui-c-gEEnVX-MtAEf-cv nextui-c-gEEnVX-iPJLV-css nextui-user-avatar"
@@ -58,12 +58,11 @@ exports[`SinglePost renders an image post 1`] = `
               tabindex="0"
               target="_self"
             >
-              @
-              test-user
+              @test-user
             </a>
           </span>
         </div>
-      </div>
+      </button>
       <div
         class="nextui-c-kRHeuF nextui-c-kRHeuF-idjRAkN-css nextui-grid-item nextui-grid-container"
       >

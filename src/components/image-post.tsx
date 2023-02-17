@@ -1,6 +1,6 @@
 import type { SinglePostProps } from '@app/components/single-post';
 import { TagCloud } from '@app/components/tag-cloud';
-import { UserAvatar } from '@app/components/user-avatar';
+import { PageAvatar } from '@app/components/page-avatar';
 import { Card, Grid, Button, Text } from '@nextui-org/react';
 
 export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
@@ -9,7 +9,7 @@ export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
   return (
     <Card css={{ p: '$6' }}>
       <Card.Header>
-        <UserAvatar
+        <PageAvatar
           // @TODO: Fix this
           official={false}
           src={'https://nextui.org/images/card-example-5.jpeg'}
