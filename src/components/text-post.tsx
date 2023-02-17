@@ -20,35 +20,45 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
           popover={true}
           description={post.page.description}
         />
-        <Spacer x={0.2} />
-        {/* Created/Updated at */}
-        <Link href={`/@${post.page.handle}/${post.id}`}>
-          <TimeAgo createdAt={post.createdAt} updatedAt={post.updatedAt} />
-        </Link>
       </Card.Header>
       <Card.Body css={{ py: '$2' }} className="break-words">
         <Text>{post.title}</Text>
-        <ReactMarkdown remarkPlugins={[[remarkGfm]]}>{post.body}</ReactMarkdown>
+        {post.body && <ReactMarkdown remarkPlugins={[[remarkGfm]]}>{post.body}</ReactMarkdown>}
       </Card.Body>
       <Card.Footer>
-        <Grid.Container alignItems="flex-start" gap={0.5}>
+        <Grid.Container justify="space-between" alignItems="center">
           <Grid>
-            <Button className="min-w-0" size="xs" color="default" aria-label="Favourite">
-              🔖
-            </Button>
+            <Grid.Container alignItems="flex-start" gap={0.5}>
+              <Grid>
+                <Button className="min-w-0" size="xs" color="default" aria-label="Favourite">
+                  🔖
+                </Button>
+              </Grid>
+              <Grid>
+                <Button className="min-w-0" size="xs" color="default" aria-label="Star post">
+                  ⭐
+                </Button>
+              </Grid>
+              <Grid>
+                <Button className="min-w-0" size="xs" aria-label="Comment on post">
+                  💬
+                </Button>
+              </Grid>
+            </Grid.Container>
           </Grid>
           <Grid>
-            <Button className="min-w-0" size="xs" color="default" aria-label="Star post">
-              ⭐
-            </Button>
-          </Grid>
-          <Grid>
-            <Button className="min-w-0" size="xs" aria-label="Comment on post">
-              💬
-            </Button>
-          </Grid>
-          <Grid>
-            <TagCloud tags={post.tags} />
+            <Grid.Container alignItems="flex-end">
+              {/* Created/Updated at */}
+              <Grid>
+                <Link href={`/@${post.page.handle}/${post.id}`}>
+                  <TimeAgo createdAt={post.createdAt} updatedAt={post.updatedAt} />
+                </Link>
+              </Grid>
+              <Spacer />
+              <Grid>
+                <TagCloud tags={post.tags} />
+              </Grid>
+            </Grid.Container>
           </Grid>
         </Grid.Container>
       </Card.Footer>
