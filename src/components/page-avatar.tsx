@@ -9,9 +9,11 @@ export const PageAvatar: FC<{
   description: string;
   handle: string;
   official: boolean;
+  followerCount: number;
+  followingCount: number;
   popover: boolean;
-}> = ({ handle, name, src, official, popover, description }) => {
-  // If we dont need a popover just return the avatar
+}> = ({ handle, name, src, official, popover, description, followerCount, followingCount }) => {
+  // If we don't need a popover just return the avatar
   // This is mainly used in places where the avatar is used as a button for something else
   if (!popover)
     return (
@@ -48,7 +50,7 @@ export const PageAvatar: FC<{
         </User>
       </Popover.Trigger>
       <Popover.Content css={{ px: '$4', py: '$2' }}>
-        <PageAvatarPopover {...{ handle, name, src, official, description }} />
+        <PageAvatarPopover {...{ handle, name, src, official, description, followerCount, followingCount }} />
       </Popover.Content>
     </Popover>
   );

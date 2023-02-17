@@ -116,8 +116,8 @@ const Application: AppType<{ session: Session | null }> = ({
 
       if (notification.type === 'FOLLOWED') toast(<FollowedNotification notification={notification} />, { delay: 100 });
     },
-    onError(err) {
-      console.log({ err });
+    onError(error) {
+      toast.error(error.message);
     },
     enabled: session?.user?.id !== undefined,
   });

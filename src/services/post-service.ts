@@ -89,15 +89,35 @@ class PostService {
             },
         });
 
-        // If the user is signed out return public details
-        if (!ctx.session?.user?.id) return post;
+        // No post found for that post ID
+        if (!post)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No post found for this post ID.',
+            });
 
-        // If the user is signed in check if they have permission to get more details, if they don't then return public details
-        if (post?.page?.ownerId !== ctx.session.user.id) return post;
+        // Get followerCount and followingCount
+        const [followerCount, followingCount] = await ctx.prisma.$transaction([
+            ctx.prisma.follows.count({
+                where: {
+                    followingId: post?.page.id
+                }
+            }),
+            ctx.prisma.follows.count({
+                where: {
+                    followerId: post?.page.id
+                }
+            })
+        ]);
 
-        // If the user is the owner return more details
-        // TODO: The comment above
-        return post;
+        return {
+            ...post,
+            page: {
+                ...post.page,
+                followerCount,
+                followingCount
+            }
+        };
     }
 
     async getExplorePosts(ctx: PublicServiceContext, input: z.infer<typeof GetExplorePostsInput>) {

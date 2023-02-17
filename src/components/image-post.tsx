@@ -16,6 +16,8 @@ export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
           name={post.page.displayName}
           handle={post.page.handle}
           description={post.page.description}
+          followerCount={post.page.followerCount}
+          followingCount={post.page.followingCount}
           popover={true}
         />
         <Grid.Container css={{ pl: '$6' }}>

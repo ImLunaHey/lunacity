@@ -8,7 +8,9 @@ export const PageAvatarPopover: FC<{
   handle: string;
   description: string;
   official: boolean;
-}> = ({ src, name, official, description, handle }) => {
+  followerCount: number;
+  followingCount: number;
+}> = ({ src, name, official, description, handle, followerCount, followingCount }) => {
   return (
     <Grid.Container
       css={{
@@ -43,14 +45,14 @@ export const PageAvatarPopover: FC<{
       <Grid.Container justify="flex-start" alignContent="center">
         <Text size={14} color="#888888">
           <Text b color="foreground" size={14}>
-            4
+            {followingCount}
           </Text>{' '}
           Following
         </Text>
         <Spacer inline x={0.5} />
         <Text size={14} color="#888888">
           <Text b color="foreground" size={14}>
-            97.1K
+            {followerCount}
           </Text>{' '}
           Followers
         </Text>

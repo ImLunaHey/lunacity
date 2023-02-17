@@ -19,6 +19,8 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
           handle={post.page.handle}
           popover={true}
           description={post.page.description}
+          followerCount={post.page.followerCount}
+          followingCount={post.page.followingCount}
         />
       </Card.Header>
       <Card.Body css={{ py: '$2' }} className="break-words">

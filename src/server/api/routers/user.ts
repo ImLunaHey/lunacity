@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure } from '../trpc';
 
 export const userRouter = createTRPCRouter({
   // infinitePosts: t
@@ -35,31 +35,28 @@ export const userRouter = createTRPCRouter({
   //     };
   //   })
 
-  getAllPosts: publicProcedure.query(async ({ ctx: { prisma, session } }) => {
-    // Unauthenticated user
-    if (!session?.user) return [];
-
-    // Get the current session's page
-    const sessionPage = await prisma.page.findUnique({
+  getAllPosts: protectedProcedure.query(async ({ ctx: { prisma, session } }) => {
+    // Get the current user's page
+    const userPage = await prisma.page.findUnique({
       where: {
         userId: session.user.id
       }
     });
 
     // No page found for the current session
-    if (!sessionPage)
+    if (!userPage)
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'No page found for your session.',
       });
 
     // Authenticated user
-    return prisma?.post.findMany({
+    const posts = await prisma?.post.findMany({
       where: {
         page: {
           followedBy: {
             some: {
-              followerId: sessionPage.id,
+              followerId: userPage.id,
             },
           },
         },
@@ -69,6 +66,12 @@ export const userRouter = createTRPCRouter({
         page: {
           include: {
             owner: true,
+            _count: {
+              select: {
+                followedBy: true,
+                following: true,
+              }
+            }
           },
         },
         media: true,
@@ -76,6 +79,19 @@ export const userRouter = createTRPCRouter({
       orderBy: {
         createdAt: 'desc',
       },
+    });
+
+    // Return the posts with the follower and following counts
+    return posts.map(post => {
+      const { _count, ...page } = post.page;
+      return {
+        ...post,
+        page: {
+          ...page,
+          followerCount: _count.followedBy,
+          followingCount: _count.following,
+        }
+      };
     });
   }),
 
