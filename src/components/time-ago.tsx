@@ -10,11 +10,11 @@ export const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, 
   const hasUpdated = createdAt.getTime() !== updatedAt?.getTime();
   const time = hasUpdated ? updatedAt : createdAt;
 
-  // Dont render if we don't have at least one of the two "createdAt" or "updatedAt"
+  // Don't render if we don't have at least one of the two "createdAt" or "updatedAt"
   if (!time) return null;
 
   return (
-    <Badge>
+    <Badge isSquared>
       {hasUpdated ? t('Updated') : t('Posted')} {humanTime(time)}
     </Badge>
   );
