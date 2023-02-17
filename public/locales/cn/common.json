@@ -1,0 +1,17 @@
+{
+    "notifications": {
+        "live-notifications-started": "实时通知已开始"
+    },
+    "update-settings": "更新设置",
+    "create-post": "创建帖子",
+    "create-page": "创建",
+    "no-more-posts": "太好了！你看到了所有内容",
+    "unfollow": "取消关注",
+    "follow": "关注",
+    "signup": "注册",
+    "signin": "登录",
+    "signout": "登出",
+    "site": {
+        "title": "Lunacity"
+    }
+}
