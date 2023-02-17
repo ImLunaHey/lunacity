@@ -226,7 +226,7 @@ model Post {
   id     String  @id @default(cuid())
   type   String
   title  String
-  body   String
+  body   String?
   media  Media[]
   pageId String
   page   Page    @relation(fields: [pageId], references: [id], onDelete: Cascade)

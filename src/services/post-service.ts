@@ -13,7 +13,7 @@ export const CreatePostInput = z.object({
             title: z.string(),
             type: z.literal('text'),
             tags: z.array(z.string()),
-            body: z.string(),
+            body: z.string().optional(),
         }),
         z.object({
             title: z.string(),
