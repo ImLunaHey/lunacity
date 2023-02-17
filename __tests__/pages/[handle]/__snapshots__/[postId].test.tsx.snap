@@ -3,11 +3,11 @@
 exports[`PostId renders a loading state 1`] = `
 <div>
   <div
-    class="nextui-c-bOoPrE nextui-c-bOoPrE-iWdsRK-color-default nextui-c-bOoPrE-fQoxSm-textColor-default"
+    class="nextui-c-bOoPrE nextui-c-bOoPrE-byitVA-color-currentColor nextui-c-bOoPrE-fQoxSm-textColor-default"
   >
     <span
       aria-label="Loading"
-      class="nextui-c-chTLhx nextui-c-chTLhx-cPGQpm-size-md nextui-c-chTLhx-jJwoeB-type-default nextui-c-chTLhx-iPJLV-css nextui-loading nextui-loading-default"
+      class="nextui-c-chTLhx nextui-c-chTLhx-eWttbs-size-sm nextui-c-chTLhx-heRREU-type-points-opacity nextui-c-chTLhx-gzjEDO-cv nextui-c-chTLhx-iPJLV-css nextui-loading nextui-loading-points-opacity"
     >
       <i
         class="_1"

@@ -23,7 +23,9 @@ exports[`SinglePost renders an image post 1`] = `
       class="nextui-c-jxECYO"
     >
       <button
+        aria-expanded="false"
         class="nextui-c-ijHtNE nextui-c-gulvcB nextui-c-ijHtNE-ibkbaiK-css"
+        type="button"
       >
         <span
           class="nextui-c-gEEnVX nextui-c-gulvcB nextui-c-gEEnVX-eeabkr-color-primary nextui-c-gEEnVX-duCSmO-textColor-default nextui-c-gEEnVX-iHugVF-size-md nextui-c-gEEnVX-krOtXB-borderWeight-normal nextui-c-gEEnVX-dbZNQr-bordered-true nextui-c-gEEnVX-bAEoQm-rounded-true nextui-c-gEEnVX-MtAEf-cv nextui-c-gEEnVX-iPJLV-css nextui-user-avatar"
