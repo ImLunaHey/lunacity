@@ -1,6 +1,7 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 import { api } from '@app/utils/api';
-import { Card, Loading, Text } from '@nextui-org/react';
+import { Card, Text } from '@nextui-org/react';
 import { styled } from '@nextui-org/react';
 import { type NextPage } from 'next';
 import React, { type FC } from 'react';
@@ -74,7 +75,7 @@ const Messages: NextPage = () => {
   const messageThreads = api.message.getAllMessageThreads.useQuery();
 
   // Show loading state while we fetch the message threads
-  if (messageThreads.isLoading) return <Loading />;
+  if (messageThreads.isLoading) return <LoadingSpinner />;
 
   if (!messageThreads.data) return <div>No message threads found.</div>;
 

@@ -1,5 +1,6 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
-import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown, Loading } from '@nextui-org/react';
+import { LoadingSpinner } from '@app/components/loading-spinner';
+import { Card, Text, Spacer, Input, Button, Grid, Textarea, Dropdown } from '@nextui-org/react';
 import type { Page } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -65,7 +66,7 @@ const CreatePost = () => {
   if (status === 'unauthenticated') return void router.push('/api/auth/signin?callbackUrl=/post/create');
 
   // Show loading element while session is loaded
-  if (status === 'loading' || getUsersPages.isLoading) return <Loading />;
+  if (status === 'loading' || getUsersPages.isLoading) return <LoadingSpinner />;
 
   // If we have no pages tell the user to go make one
   if (getUsersPages.data?.length === 0) return void router.push('/page/create');

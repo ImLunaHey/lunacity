@@ -1,13 +1,14 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
-import { Button, Loading, Spacer } from '@nextui-org/react';
+import { Button, Spacer } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { withPublicAccess } from '@app/common/with-public-access';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 
 export const getServerSideProps = withPublicAccess();
 
@@ -27,7 +28,7 @@ export const AuthenticatedPage: FC = () => {
   const posts = api.user.getAllPosts.useQuery();
 
   // Show loading while we fetch data
-  if (posts.isLoading) return <Loading />;
+  if (posts.isLoading) return <LoadingSpinner />;
 
   return (
     <>
@@ -51,7 +52,7 @@ const Home: NextPage = () => {
   const { status } = useSession();
 
   // Show loading while we fetch data
-  if (status === 'loading') return <Loading />;
+  if (status === 'loading') return <LoadingSpinner />;
 
   // Unauthenticated user
   if (status === 'unauthenticated') return <UnauthenticatedPage />;

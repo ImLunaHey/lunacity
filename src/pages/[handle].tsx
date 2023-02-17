@@ -3,7 +3,7 @@ import Head from 'next/head';
 import ErrorPage from 'next/error';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
-import { Badge, Button, Card, Grid, Loading, Spacer, Tooltip } from '@nextui-org/react';
+import { Badge, Button, Card, Grid, Spacer, Tooltip } from '@nextui-org/react';
 import type { FC } from 'react';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -18,6 +18,7 @@ import { PlanSelector } from '@app/components/plan-selector';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { withPublicAccess } from '@app/common/with-public-access';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 
 // Return the handle from the url
 export const getServerSideProps = withPublicAccess((context) => {
@@ -87,7 +88,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   const { data: session, status } = useSession();
 
   // Wait until we've checked for a valid session
-  if (status === 'loading') return <Loading />;
+  if (status === 'loading') return <LoadingSpinner />;
 
   return (
     <Card css={{ p: '$6' }}>
@@ -165,7 +166,7 @@ const Page: NextPage<{ handle: string }> = ({ handle }) => {
       <main className="flex flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-4 pt-4">
           <div className="flex flex-col items-center justify-center gap-4">
-            <Loading />
+            <LoadingSpinner />
           </div>
         </div>
       </main>

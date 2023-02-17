@@ -1,5 +1,6 @@
+import { LoadingSpinner } from '@app/components/loading-spinner';
 import { useNotificationStore } from '@app/stores/notification';
-import { Dropdown, Navbar, Badge, styled, Loading } from '@nextui-org/react';
+import { Dropdown, Navbar, Badge, styled } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import { type FC, useState } from 'react';
 import { NotificationIcon } from '../icons/notification-icon';
@@ -36,7 +37,7 @@ export const Notifications: FC = () => {
   // Don't render unless the user has a page
   if (!session?.user?.page?.handle) return null;
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <LoadingSpinner />;
 
   if (notifications.length === 0)
     return (

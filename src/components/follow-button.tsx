@@ -1,12 +1,13 @@
 'use client';
 
-import { Button, Loading } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { type FC, useState } from 'react';
 import { api } from '../utils/api';
 import ErrorComponent from '../components/error';
 import { useSession } from 'next-auth/react';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import { useTranslation } from 'react-i18next';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 
 type handleErrorProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +82,7 @@ export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
   // If we hit an error show it
   if (error) return <ErrorComponent {...error} />;
 
-  if (session.status === 'loading') return <Loading />;
+  if (session.status === 'loading') return <LoadingSpinner />;
 
   // Unauthenticated users cannot follow/unfollow
   if (session.status === 'unauthenticated') return null;

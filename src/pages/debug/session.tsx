@@ -1,5 +1,5 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
-import { Loading } from '@nextui-org/react';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 import { useSession } from 'next-auth/react';
 import type { FC } from 'react';
 
@@ -10,7 +10,7 @@ export const getServerSideProps = withPrivateAccess();
 const Settings: FC = () => {
   const { data, status } = useSession();
 
-  if (status === 'loading') return <Loading />;
+  if (status === 'loading') return <LoadingSpinner />;
   return <pre>{JSON.stringify(data, null, 2)}</pre>;
 };
 

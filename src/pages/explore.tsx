@@ -1,5 +1,5 @@
 import { withPublicAccess } from '@app/common/with-public-access';
-import { Loading } from '@nextui-org/react';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -13,7 +13,7 @@ const Explore: NextPage = () => {
   const posts = api.post.getExplorePosts.useQuery();
 
   // Show loading while we fetch data
-  if (posts.isLoading || status === 'loading') return <Loading />;
+  if (posts.isLoading || status === 'loading') return <LoadingSpinner />;
 
   return (
     <>

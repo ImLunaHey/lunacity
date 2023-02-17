@@ -1,6 +1,6 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
+import { LoadingSpinner } from '@app/components/loading-spinner';
 import { api } from '@app/utils/api';
-import { Loading } from '@nextui-org/react';
 import Head from 'next/head';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ const Search: FC<{ query: string }> = ({ query }) => {
   const results = api.search.query.useQuery({ query });
   const { t } = useTranslation();
 
-  if (results.isLoading) return <Loading />;
+  if (results.isLoading) return <LoadingSpinner />;
 
   return (
     <>
