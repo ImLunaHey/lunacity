@@ -136,7 +136,7 @@ const Application: AppType<{ session: Session | null }> = ({
           )}
         </Head>
         <Navbar {...pageProps} />
-        <main className="container mx-auto mt-2 w-4/5 max-w-5xl">
+        <main className="container mx-auto mt-2 w-4/5 max-w-2xl">
           <Page {...pageProps} />
         </main>
         <ToastContainer
