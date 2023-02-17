@@ -1,7 +1,7 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
-import { Button, Spacer } from '@nextui-org/react';
+import { Button, Grid, Spacer, Text } from '@nextui-org/react';
 import Link from 'next/link';
 import { api } from '../utils/api';
 import Feed from '../components/feed';
@@ -17,6 +17,8 @@ export const UnauthenticatedPage: FC = () => {
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
       <div className="flex flex-col items-center justify-center gap-4">
+        <Text h1>{t('page.home.welcome.title')}</Text>
+        <Text h3>{t('page.home.welcome.message')}</Text>
         <Button onClick={() => void signIn()}>{t('signin')}</Button>
       </div>
     </div>

@@ -49,11 +49,15 @@ const i18nInitData = {
         signin: 'Sign in',
         signout: 'Sign out',
         site: {
-          title: 'Social Media Platform',
+          title: 'Lunacity',
         },
         page: {
           home: {
             title: 'Home',
+            welcome: {
+              title: 'Welcome to Lunacity',
+              message: 'A modern social media platform',
+            },
           },
           settings: {
             title: 'Settings',
