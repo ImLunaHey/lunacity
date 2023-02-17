@@ -42,12 +42,6 @@ export const getServerSideProps = withPrivateAccess(async (context) => {
   };
 });
 
-type Inputs = {
-  handle: string;
-  email: string;
-  displayName: string;
-};
-
 const SettingsInput = z
   .object({
     handle: z
@@ -59,8 +53,11 @@ const SettingsInput = z
       .string()
       .min(3, 'Your display name must be at least 3 characters long.')
       .max(32, 'Your display name must be no more than 32 characters long.'),
+    email: z.string().min(3, 'Your email must be at least 3 characters long.'),
   })
   .required();
+
+type Input = z.infer<typeof SettingsInput>;
 
 const Settings: NextPage<{
   email: string;
@@ -74,7 +71,7 @@ const Settings: NextPage<{
     handleSubmit,
     reset: resetForm,
     formState: { errors, dirtyFields },
-  } = useForm<Inputs>({
+  } = useForm<Input>({
     defaultValues: {
       handle: props.page.handle,
       email: props.email,
@@ -83,16 +80,15 @@ const Settings: NextPage<{
     mode: 'all',
     resolver: zodResolver(SettingsInput),
   });
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Input> = (data) => {
     const modifiedData = Object.fromEntries(
       (Object.entries(dirtyFields) as Entries<Partial<typeof dirtyFields>>).map(([field]) => [field, data[field]])
-    ) as Partial<Inputs>;
+    ) as Partial<Input>;
 
     // Post to server
     updateSettings.mutate(modifiedData, {
       onError(error) {
-        console.log('oh no', error);
-        // setError(error.message);
+        toast(error.message);
       },
       onSuccess() {
         refreshSession();
