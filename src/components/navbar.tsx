@@ -12,7 +12,7 @@ import Logo from '@app/components/logo';
 
 const DropdownMenu: FC = () => {
   const { data: session } = useSession();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   if (!session?.user?.page?.handle) {
     return (
       <Dropdown.Menu aria-label="User menu actions" color="secondary">
@@ -103,7 +103,7 @@ const UserMenu: FC = () => {
 export default function NavBar() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const { isBrowser } = useSSR();
 
   // Search box

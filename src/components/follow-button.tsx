@@ -23,7 +23,7 @@ const handleError = ({ error, setError }: handleErrorProps) => {
 };
 
 export const FollowButton: FC<{ handle: string }> = ({ handle }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const session = useSession();
   const followingState = api.page.getFollowingState.useQuery(
     { handle },

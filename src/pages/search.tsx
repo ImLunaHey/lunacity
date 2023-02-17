@@ -13,7 +13,7 @@ export const getServerSideProps = withPrivateAccess<{ query: string }>((context)
 
 const Search: FC<{ query: string }> = ({ query }) => {
   const results = api.search.query.useQuery({ query });
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   if (results.isLoading) return <LoadingSpinner />;
 

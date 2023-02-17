@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, updatedAt }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   // If the updated time isn't the same as the created time then it's been updated
   const hasUpdated = createdAt.getTime() !== updatedAt?.getTime();
@@ -15,7 +15,7 @@ export const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, 
 
   return (
     <Badge isSquared>
-      {hasUpdated ? t('Updated') : t('Posted')} {humanTime(time)}
+      {hasUpdated ? t('updated') : t('posted')} {humanTime(time)}
     </Badge>
   );
 };

@@ -37,7 +37,7 @@ const CreatePageInput = z
   .required();
 
 const CreatePage: NextPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const router = useRouter();
   const createPage = api.page.createPage.useMutation();
   const generatedUsername = generateUsername();

@@ -14,7 +14,7 @@ import { LoadingSpinner } from '@app/components/loading-spinner';
 export const getServerSideProps = withPublicAccess();
 
 export const UnauthenticatedPage: FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const { isBrowser } = useSSR();
   const { data: realTimeUserCount, isLoading } = api.stats.getRealtimeUserCount.useQuery();
 
@@ -35,7 +35,7 @@ export const UnauthenticatedPage: FC = () => {
 };
 
 export const AuthenticatedPage: FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const posts = api.user.getAllPosts.useQuery();
 
   // Show loading while we fetch data

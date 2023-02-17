@@ -1,0 +1,39 @@
+{
+    "notifications": {
+        "live-notifications-started": "Live notifications started"
+    },
+    "update-settings": "Update settings",
+    "create-post": "Create a post",
+    "create-page": "Create a page",
+    "no-more-posts": "Yay! You have seen it all",
+    "unfollow": "Unfollow",
+    "follow": "Follow",
+    "signup": "Sign up",
+    "signin": "Sign in",
+    "signout": "Sign out",
+    "updated": "Updated",
+    "created": "Created",
+    "posted": "Posted",
+    "site": {
+        "title": "Lunacity"
+    },
+    "page": {
+        "page": {
+            "create": {
+                "success": "Page created successfully"
+            }
+        },
+        "explore": {
+            "title": "Explore"
+        },
+        "messages": {
+            "title": "Messages"
+        },
+        "analytics": {
+            "title": "Analytics"
+        },
+        "help": {
+            "title": "Help & Feedback"
+        }
+    }
+}

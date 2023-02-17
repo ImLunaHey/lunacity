@@ -6,7 +6,7 @@ import type { Notification } from '@app/stores/notification';
 
 // Fix the padding and such
 export const FollowedNotification: FC<{ notification: Notification | null }> = ({ notification }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   // If we don't have a page, don't render
   if (!notification?.data?.page) return null;
