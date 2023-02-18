@@ -4,6 +4,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { env } from '../../../env/server.mjs';
 import { prisma } from '../../../server/db';
 
+const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith('https');
+
 export const authOptions: NextAuthOptions = {
   callbacks: {
     // @TODO: Use this to handle limited signup
@@ -41,6 +43,18 @@ export const authOptions: NextAuthOptions = {
       maxAge: 60 * 60, // How long email links are valid for (1h)
     }),
   ],
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        domain: useSecureCookies ? '.lunacity.app' : 'localhost',
+        secure: useSecureCookies,
+      },
+    },
+  },
 };
 
 export default NextAuth(authOptions);
