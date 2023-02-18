@@ -41,6 +41,11 @@ export const getServerSideProps = withPrivateAccess(async (context) => {
       user: {
         ...user,
         emailVerified: user.emailVerified !== null,
+      } as typeof user & {
+        emailVerified: boolean;
+        page: NonNullable<typeof user.page>;
+        email: string;
+        language: 'en';
       },
     },
   };
@@ -74,10 +79,10 @@ const Settings: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>>
     formState: { errors, dirtyFields },
   } = useForm<Input>({
     defaultValues: {
-      // handle: props.user.page.handle,
-      // email: props.user.email,
-      // displayName: props.user.page.displayName,
-      // language: props.user.language,
+      handle: props.user.page.handle,
+      email: props.user.email,
+      displayName: props.user.page.displayName,
+      language: props.user.language,
     },
     mode: 'all',
     resolver: zodResolver(SettingsInput),
