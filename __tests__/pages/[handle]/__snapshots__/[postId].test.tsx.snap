@@ -2,7 +2,7 @@
 
 exports[`PostId renders a loading state 1`] = `
 <div>
-  <div
+  <span
     class="nextui-c-bOoPrE nextui-c-bOoPrE-byitVA-color-currentColor nextui-c-bOoPrE-fQoxSm-textColor-default"
   >
     <span
@@ -19,7 +19,7 @@ exports[`PostId renders a loading state 1`] = `
         class="_3"
       />
     </span>
-  </div>
+  </span>
 </div>
 `;
 

@@ -1,15 +1,15 @@
+import { getServerAuthSession } from '@app/server/auth';
 import type { Dict } from '@trpc/server';
 import type { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import type { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
 
 type Callback = (context: Parameters<GetServerSideProps>[0] & { session: Session }) => ReturnType<GetServerSideProps> | Awaited<ReturnType<GetServerSideProps>>;
 
 export const withPrivateAccess = <Props extends Dict<string | string[]>, T extends Callback = Callback>(fn?: T) => {
     return async (context: GetServerSidePropsContext<Props>) => {
-        const session = await getSession({ req: context.req });
+        const session = await getServerAuthSession(context);
 
-        // If the user isnt signed in redirect them to the signin page
+        // If the user isn't signed in redirect them to the signin page
         if (!session) {
             return {
                 redirect: {
@@ -19,7 +19,7 @@ export const withPrivateAccess = <Props extends Dict<string | string[]>, T exten
             };
         }
 
-        // If the user is signed in but doesnt have a user page redirect them to the page creation page
+        // If the user is signed in but doesn't have a user page redirect them to the page creation page
         if (!session.user.page && context.resolvedUrl !== '/page/create') {
             return {
                 redirect: {

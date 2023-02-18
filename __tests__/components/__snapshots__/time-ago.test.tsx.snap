@@ -10,7 +10,7 @@ exports[`TimeAgo renders createdAt time if no updatedAt is the same as createdAt
     <span
       class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
     >
-      Posted
+      posted
        
       now
     </span>
@@ -26,7 +26,7 @@ exports[`TimeAgo renders updatedAt time if no updatedAt is different to createdA
     <span
       class="nextui-c-jTSrtu nextui-c-jTSrtu-jCnmOD-size-md nextui-c-jTSrtu-dKqOOw-color-default nextui-c-jTSrtu-UlDvZ-isSquared-true nextui-c-jTSrtu-iCGBCn-placement-top-right nextui-c-jTSrtu-foBxhG-borderWeight-normal nextui-c-jTSrtu-bnEBqI-disableOutline-false nextui-c-jTSrtu-iXycSg-disableAnimation-true nextui-badge"
     >
-      Updated
+      updated
        
       now
     </span>

@@ -1,15 +1,17 @@
+import { getServerAuthSession } from '@app/server/auth';
 import { withPrivateAccess } from '@app/common/with-private-access';
-import { getSession } from 'next-auth/react';
 
 import type { IncomingMessage, ServerResponse } from 'http';
 
 import '@testing-library/jest-dom';
 
-jest.mock('next-auth/react');
+jest.mock('@app/server/auth', () => ({
+    getServerAuthSession: jest.fn(() => null)
+}));
 
 describe('withPrivateAccess', () => {
     it('redirects the user when not-authenticated', async () => {
-        jest.mocked(getSession).mockImplementation(() => new Promise(resolve => resolve(null)));
+        jest.mocked(getServerAuthSession).mockImplementation(() => new Promise(resolve => resolve(null)));
 
         const fn = withPrivateAccess();
         await expect(fn({
@@ -27,7 +29,7 @@ describe('withPrivateAccess', () => {
 
     it('redirects to the "create page" page when the user has no user page', async () => {
         const sessionExpiration = new Date().toISOString();
-        jest.mocked(getSession).mockImplementation(() => new Promise(resolve => resolve({
+        jest.mocked(getServerAuthSession).mockImplementation(() => new Promise(resolve => resolve({
             user: {
                 id: '123'
             },
@@ -50,12 +52,13 @@ describe('withPrivateAccess', () => {
 
     it('renders the children elements when authenticated with a user page', async () => {
         const sessionExpiration = new Date().toISOString();
-        jest.mocked(getSession).mockImplementation(() => new Promise(resolve => resolve({
+        jest.mocked(getServerAuthSession).mockImplementation(() => new Promise(resolve => resolve({
             user: {
                 id: '123',
                 page: {
                     id: '456',
                     handle: '',
+                    image: '',
                     displayName: '',
                     followerCount: 0,
                     official: false,
@@ -83,6 +86,7 @@ describe('withPrivateAccess', () => {
                         page: {
                             id: '456',
                             handle: '',
+                            image: '',
                             displayName: '',
                             followerCount: 0,
                             official: false,

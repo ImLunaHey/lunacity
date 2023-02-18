@@ -25,8 +25,8 @@ export const UnauthenticatedPage: FC = () => {
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
       <div className="flex flex-col items-center justify-center gap-4 text-center">
-        <Text h1>{t('page.home.welcome.title')}</Text>
-        <Text h3>{t('page.home.welcome.message')}</Text>
+        <Text h1>{t('pages.home.welcome.title')}</Text>
+        <Text h3>{t('pages.home.welcome.message')}</Text>
         <Text>There are currently {isLoading ? <LoadingSpinner /> : realTimeUserCount} people online.</Text>
         <Button onClick={() => void signIn()}>{t('signin')}</Button>
       </div>
@@ -36,7 +36,8 @@ export const UnauthenticatedPage: FC = () => {
 
 export const AuthenticatedPage: FC = () => {
   const { t } = useTranslation(['common']);
-  const posts = api.user.getAllPosts.useQuery();
+  const { data: session } = useSession();
+  const posts = api.user.getAllPosts.useQuery(undefined, { enabled: session?.user.page?.id !== undefined });
 
   // Show loading while we fetch data
   if (posts.isLoading) return <LoadingSpinner />;
@@ -49,7 +50,7 @@ export const AuthenticatedPage: FC = () => {
       <div className="flex flex-col">
         <div className="flex flex-row-reverse">
           <Link className="rounded-md bg-white p-2 text-black" href="/post/create">
-            {t('create-post')}
+            {t('pages.home.create-post')}
           </Link>
         </div>
         <Spacer y={0.5} />

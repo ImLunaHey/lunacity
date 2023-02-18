@@ -53,6 +53,7 @@ model User {
   id            String               @id @default(cuid())
   email         String?              @unique
   emailVerified DateTime?
+  language      String               @default("en")
   accounts      Account[]
   sessions      Session[]
   reports       Report[]

@@ -5,6 +5,7 @@ import { TimeAgo } from '../../src/components/time-ago';
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({
     t: jest.fn((text: string) => text),
+    ready: true,
   })),
 }));
 

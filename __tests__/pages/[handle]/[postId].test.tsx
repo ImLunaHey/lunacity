@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import PostId, { getServerSideProps } from '../../../src/pages/[handle]/[postId]';
+import PostId, { getServerSideProps } from '@app/pages/[handle]/[postId]';
 import createPrismaMock from 'prisma-mock';
 import { randomUUID } from 'crypto';
 import { createMockUser } from '__tests__/__utils__/mocks/create-mock-user';
@@ -20,7 +20,7 @@ jest.mock('next/config', () => ({
 }));
 
 // Mock text-post component
-jest.mock('../../../src/components/text-post', () => ({
+jest.mock('@app/components/text-post', () => ({
   __esModule: true,
   TextPost: () => <div>__TEXT_POST__MOCK__</div>,
 }));
@@ -85,7 +85,7 @@ describe('PostId', () => {
 
     const { container } = render(<PostId postId="1" />);
     expect(container).toMatchSnapshot();
-    expect(container.querySelector('span')).toHaveAttribute('aria-label', 'Loading');
+    expect(container.querySelector('span')?.querySelector('span')).toHaveAttribute('aria-label', 'Loading');
   });
 
   it('renders a post with the provided ID', async () => {

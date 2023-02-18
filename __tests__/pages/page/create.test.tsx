@@ -16,6 +16,10 @@ jest.mock('@app/utils/api', () => ({
   },
 }));
 
+jest.mock('@app/server/auth', () => ({
+  getServerAuthSession: jest.fn(() => null),
+}));
+
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
     asPath: '/',
@@ -25,6 +29,7 @@ jest.mock('next/router', () => ({
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({
     t: jest.fn((text: string) => text),
+    ready: true,
   })),
 }));
 

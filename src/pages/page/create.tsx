@@ -62,7 +62,7 @@ const CreatePage: NextPage = () => {
       },
       async onSuccess() {
         refreshSession();
-        toast.success(t('page.create.success'));
+        toast.success(t('pages.create.success'));
         await router.push(`/@${data.handle}`);
       },
     });

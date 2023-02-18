@@ -69,8 +69,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
               role="link"
               tabindex="0"
             >
-              🏡 
-              page.home.title
+              components.navbar.links.home
             </a>
           </li>
           <li
@@ -84,8 +83,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
               role="link"
               tabindex="0"
             >
-              🌏 
-              page.explore.title
+              components.navbar.links.explore
             </a>
           </li>
           <li
@@ -99,8 +97,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
               role="link"
               tabindex="0"
             >
-              📩 
-              page.messages.title
+              components.navbar.links.messages
             </a>
           </li>
         </ul>

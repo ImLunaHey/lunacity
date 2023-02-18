@@ -25,12 +25,12 @@ const DropdownMenu: FC = () => {
         </Dropdown.Item>
         <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
           <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
-            {t('page.settings.title')}
+            {t('pages.settings.title')}
           </Link>
         </Dropdown.Item>
         <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
           <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
-            {t('page.help.title')}
+            {t('pages.help.title')}
           </Link>
         </Dropdown.Item>
         <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
@@ -56,17 +56,17 @@ const DropdownMenu: FC = () => {
       </Dropdown.Item>
       <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
-          {t('page.settings.title')}
+          {t('pages.settings.title')}
         </Link>
       </Dropdown.Item>
       <Dropdown.Item textValue="Analytics" key="analytics">
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/analytics">
-          {t('page.analytics.title')}
+          {t('pages.analytics.title')}
         </Link>
       </Dropdown.Item>
       <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
-          {t('page.help.title')}
+          {t('pages.help.title')}
         </Link>
       </Dropdown.Item>
       <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
@@ -103,7 +103,7 @@ const UserMenu: FC = () => {
 export default function NavBar() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { t } = useTranslation(['common']);
+  const { t, ready } = useTranslation(['common']);
   const { isBrowser } = useSSR();
 
   // Search box
@@ -125,6 +125,8 @@ export default function NavBar() {
   // If there's no session at all don't render
   if (!session) return null;
 
+  if (!ready) return null;
+
   return (
     <Navbar isBordered variant="sticky">
       <Navbar.Brand css={{ mr: '$4' }}>
@@ -136,13 +138,13 @@ export default function NavBar() {
         </Link>
         <Navbar.Content hideIn="xs" variant="highlight">
           <Navbar.Link isActive={router.asPath === '/'} href="/" as={Link}>
-            🏡 {t('page.home.title')}
+            {t('components.navbar.links.home')}
           </Navbar.Link>
           <Navbar.Link isActive={router.asPath === '/explore'} href="/explore" as={Link}>
-            🌏 {t('page.explore.title')}
+            {t('components.navbar.links.explore')}
           </Navbar.Link>
           <Navbar.Link isActive={router.asPath === '/messages'} href="/messages" as={Link}>
-            📩 {t('page.messages.title')}
+            {t('components.navbar.links.messages')}
           </Navbar.Link>
         </Navbar.Content>
       </Navbar.Brand>

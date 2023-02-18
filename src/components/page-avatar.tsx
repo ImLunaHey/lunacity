@@ -1,7 +1,7 @@
-import { PageAvatarPopover } from '@app/components/page-avatar-popover';
 import { Popover, User } from '@nextui-org/react';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { PageAvatarPopover } from './page-avatar-popover';
 
 export const PageAvatar: FC<{
   src: string;

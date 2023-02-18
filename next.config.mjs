@@ -5,6 +5,12 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import('./src/env/server.mjs'));
 
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import("next").NextConfig} */
 const config = {
   distDir: process.env.DOT_NEXT_DIRECTORY ?? '.next',
@@ -22,8 +28,18 @@ const config = {
   },
   publicRuntimeConfig: {
     APP_URL: process.env.APP_URL,
-    WS_URL: process.env.WS_URL
-  }
+    WS_URL: process.env.WS_URL,
+  },
+  experimental: {
+    swcPlugins: [
+      [
+        'next-superjson-plugin',
+        {
+          excluded: [],
+        },
+      ],
+    ],
+  },
 };
 
-export default config;
+export default withBundleAnalyzer(config);

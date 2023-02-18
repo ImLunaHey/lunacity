@@ -1,39 +1,59 @@
 {
-    "notifications": {
-        "live-notifications-started": "Live notifications started"
-    },
-    "update-settings": "Update settings",
-    "create-post": "Create a post",
-    "create-page": "Create a page",
-    "no-more-posts": "Yay! You have seen it all",
-    "unfollow": "Unfollow",
-    "follow": "Follow",
-    "signup": "Sign up",
-    "signin": "Sign in",
-    "signout": "Sign out",
-    "updated": "Updated",
-    "created": "Created",
-    "posted": "Posted",
-    "site": {
-        "title": "Lunacity"
-    },
-    "page": {
-        "page": {
-            "create": {
-                "success": "Page created successfully"
-            }
-        },
-        "explore": {
-            "title": "Explore"
-        },
-        "messages": {
-            "title": "Messages"
-        },
-        "analytics": {
-            "title": "Analytics"
-        },
-        "help": {
-            "title": "Help & Feedback"
-        }
+  "site": {
+    "title": "Lunacity"
+  },
+  "no-more-posts": "No more posts",
+  "posted": "Posted",
+  "updated": "Updated",
+  "notifications": {
+    "live-notifications-started": "Live notifications started"
+  },
+  "signup": "Sign up",
+  "signin": "Sign in",
+  "signout": "Sign out",
+  "placeholder": {
+    "email-address": "Email address"
+  },
+  "components": {
+    "navbar": {
+      "links": {
+        "home": "🏡 Home",
+        "explore": "🌏 Explore",
+        "messages": "💬 Messages"
+      }
     }
+  },
+  "pages": {
+    "home": {
+      "title": "Home",
+      "welcome": {
+        "title": "Lunacity",
+        "message": "A modern social media platform"
+      },
+      "create-post": "Create a new post"
+    },
+    "post": {
+      "create": {
+        "title": "Create a new post",
+        "create-post": "Create a post"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "heading": "Settings",
+      "update-settings": "Update Settings",
+      "user-settings": "User Settings",
+      "page-settings": "Page Settings",
+      "deactivate-account": "Deactivate Account",
+      "update": {
+        "success": "Settings updated successfully"
+      }
+    },
+    "help": {
+      "title": "Help"
+    },
+    "analytics": {
+      "title": "Analytics"
+    }
+  }
 }

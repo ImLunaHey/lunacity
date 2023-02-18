@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { type FC, useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { api } from '../../utils/api';
@@ -63,10 +64,7 @@ const CreatePostInput = z.object({
   title: z.string().min(3, 'Your title must be at least 3 characters long.'),
   body: z.string().max(5_000, 'The post body must be no more than 5,000 characters long.').optional(),
   image: z.string().optional(),
-  type: z.union([
-    z.literal('text'),
-    z.literal('image')
-  ])
+  type: z.union([z.literal('text'), z.literal('image')]),
 });
 
 type Input = z.infer<typeof CreatePostInput>;
@@ -80,13 +78,14 @@ const CreatePost = () => {
     formState: { errors },
   } = useForm<Input>({
     defaultValues: {
-      type: 'text'
+      type: 'text',
     },
     mode: 'all',
     resolver: zodResolver(CreatePostInput),
   });
 
   const { status } = useSession();
+  const { t } = useTranslation(['common']);
   const router = useRouter();
   const createPost = api.post.createPost.useMutation();
   const getUsersPages = api.page.getUsersPages.useQuery();
@@ -128,7 +127,7 @@ const CreatePost = () => {
   return (
     <>
       <Head>
-        <title>Create a new post</title>
+        <title>{t('pages.post.create.title')}</title>
       </Head>
       <div className="flex flex-col items-center justify-center pt-20">
         <Card css={{ mw: '420px', p: '20px' }}>
@@ -141,12 +140,15 @@ const CreatePost = () => {
                 as: 'center',
               }}
             >
-              Create a new post
+              {t('pages.post.create.create-post')}
             </Text>
 
             {/* Select where to post */}
             <Grid.Container justify="center">
-              <PageSelector pages={getUsersPages.data ?? []} onChanged={(handle) => handle && setValue('handle', handle, {})} />
+              <PageSelector
+                pages={getUsersPages.data ?? []}
+                onChanged={(handle) => handle && setValue('handle', handle, {})}
+              />
             </Grid.Container>
 
             <Grid.Container gap={2} justify="center">

@@ -1,7 +1,6 @@
 import { Card, Text, Spacer, Input, Button, Modal } from '@nextui-org/react';
-import { type Page } from '@prisma/client';
-import type { NextPage } from 'next';
-import { getSession, signOut, useSession } from 'next-auth/react';
+import type { InferGetServerSidePropsType, NextPage } from 'next';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from '../utils/api';
@@ -17,13 +16,10 @@ import { z } from 'zod';
 import { useState } from 'react';
 
 export const getServerSideProps = withPrivateAccess(async (context) => {
-  const session = await getSession(context);
-  if (!session?.user) return { props: {} };
-
   // Get the session's settings
   const user = await prisma?.user.findUnique({
     where: {
-      id: session.user.id,
+      id: context.session.user.id,
     },
     select: {
       email: true,
@@ -32,13 +28,21 @@ export const getServerSideProps = withPrivateAccess(async (context) => {
     },
   });
 
-  if (!user) return { props: {} };
+  if (!user || !user?.page || !user.email)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
 
   return {
     props: {
-      ...user,
-      emailVerified: user.emailVerified !== null,
-    } as const,
+      user: {
+        ...user,
+        emailVerified: user.emailVerified !== null,
+      },
+    },
   };
 });
 
@@ -54,18 +58,15 @@ const SettingsInput = z
       .min(3, 'Your display name must be at least 3 characters long.')
       .max(32, 'Your display name must be no more than 32 characters long.'),
     email: z.string().min(3, 'Your email must be at least 3 characters long.'),
+    language: z.union([z.literal('en'), z.literal('de'), z.literal('uk')]),
   })
   .required();
 
 type Input = z.infer<typeof SettingsInput>;
 
-const Settings: NextPage<{
-  email: string;
-  emailVerified: boolean;
-  page: Page;
-}> = (props) => {
+const Settings: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
   const { status } = useSession();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
   const {
     register,
     handleSubmit,
@@ -73,9 +74,10 @@ const Settings: NextPage<{
     formState: { errors, dirtyFields },
   } = useForm<Input>({
     defaultValues: {
-      handle: props.page.handle,
-      email: props.email,
-      displayName: props.page.displayName,
+      // handle: props.user.page.handle,
+      // email: props.user.email,
+      // displayName: props.user.page.displayName,
+      // language: props.user.language,
     },
     mode: 'all',
     resolver: zodResolver(SettingsInput),
@@ -93,7 +95,7 @@ const Settings: NextPage<{
       onSuccess() {
         refreshSession();
         resetForm(modifiedData);
-        toast.success(t('page.settings.update.success'));
+        toast.success(t('pages.settings.update.success'));
       },
     });
   };
@@ -104,7 +106,7 @@ const Settings: NextPage<{
     setModalVisible(false);
   };
 
-  // Dectivate account
+  // Deactivate account
   const deactivateAccount = api.user.deactivateAccount.useMutation();
   const onDeactivateAccountPress = () => {
     setModalVisible(true);
@@ -112,7 +114,7 @@ const Settings: NextPage<{
   const onDeactivateAccountConfirmPress = () => {
     deactivateAccount.mutate(undefined, {
       onSuccess() {
-        toast.success(t('page.settings.deactivate.success'));
+        toast.success(t('pages.settings.deactivate.success'));
 
         // Sign the user out of their current session
         void signOut({ callbackUrl: '/bye', redirect: true });
@@ -128,11 +130,12 @@ const Settings: NextPage<{
   // Don't show for unauthenticated users
   if (status !== 'authenticated') return null;
   if (props === null) return null;
+  if (props.user === null) return null;
 
   return (
     <>
       <Head>
-        <title>{t('page.settings.title')}</title>
+        <title>{t('pages.settings.title')}</title>
       </Head>
       <div className="flex flex-col items-center justify-center">
         {/* User settings */}
@@ -147,7 +150,7 @@ const Settings: NextPage<{
                 mb: '20px',
               }}
             >
-              {t('page.settings.user-settings')}
+              {t('pages.settings.user-settings')}
             </Text>
             {/* Handle */}
             <Input
@@ -168,12 +171,12 @@ const Settings: NextPage<{
               clearable
               bordered
               fullWidth
-              color={props.emailVerified ? 'success' : 'primary'}
-              status="default"
-              size="lg"
-              labelLeft={props.emailVerified ? '✅' : '❌'}
-              {...register('email')}
-              disabled={props.emailVerified}
+              // color={props.user.emailVerified ? 'success' : 'primary'}
+              // status="default"
+              // size="lg"
+              // labelLeft={props.user.emailVerified ? '✅' : '❌'}
+              // {...register('email')}
+              // disabled={props.user.emailVerified}
               helperText={errors.email?.message ?? ''}
               placeholder={t('placeholder.email-address') ?? 'placeholder.email-address'}
             />
@@ -185,7 +188,7 @@ const Settings: NextPage<{
               </>
             )} */}
             <Button className="min-w-full" type="submit" disabled={submitDisabled}>
-              {t('update-settings')}
+              {t('pages.settings.update-settings')}
             </Button>
           </form>
         </Card>
@@ -204,7 +207,7 @@ const Settings: NextPage<{
                 mb: '20px',
               }}
             >
-              {t('page.settings.user-page-settings')}
+              {t('pages.settings.page-settings')}
             </Text>
             {/* Display name */}
             <Input
@@ -222,7 +225,7 @@ const Settings: NextPage<{
             <Spacer y={2} />
 
             <Button className="min-w-full" type="submit" disabled={submitDisabled}>
-              {t('update-settings')}
+              {t('pages.settings.update-settings')}
             </Button>
           </form>
         </Card>
@@ -237,7 +240,7 @@ const Settings: NextPage<{
             type="submit"
             disabled={isLoading}
           >
-            {t('page.settings.deactivate-account')}
+            {t('pages.settings.deactivate-account')}
           </Button>
         </Card>
       </div>

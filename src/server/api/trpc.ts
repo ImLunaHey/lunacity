@@ -99,13 +99,13 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  */
 
 /**
- * This is how you create new routers and subrouters in your tRPC API
+ * This is how you create new routers and sub-routers in your tRPC API
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router;
 
 /**
- * Public (unauthed) procedure
+ * Public (unauthenticated) procedure
  *
  * This is the base piece you use to build new queries and mutations on your
  * tRPC API. It does not guarantee that a user querying is authorized, but you
