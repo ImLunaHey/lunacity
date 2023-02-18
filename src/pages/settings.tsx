@@ -176,22 +176,16 @@ const Settings: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>>
               clearable
               bordered
               fullWidth
-              // color={props.user.emailVerified ? 'success' : 'primary'}
-              // status="default"
-              // size="lg"
-              // labelLeft={props.user.emailVerified ? '✅' : '❌'}
-              // {...register('email')}
-              // disabled={props.user.emailVerified}
+              color={props.user.emailVerified ? 'success' : 'primary'}
+              status="default"
+              size="lg"
+              labelLeft={props.user.emailVerified ? '✅' : '❌'}
+              {...register('email')}
+              disabled={props.user.emailVerified}
               helperText={errors.email?.message ?? ''}
               placeholder={t('placeholder.email-address') ?? 'placeholder.email-address'}
             />
             <Spacer y={2} />
-            {/* {error && (
-              <>
-                <p>{error}</p>
-                <Spacer y={1} />
-              </>
-            )} */}
             <Button className="min-w-full" type="submit" disabled={submitDisabled}>
               {t('pages.settings.update-settings')}
             </Button>
