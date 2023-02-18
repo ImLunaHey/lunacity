@@ -24,6 +24,31 @@ export const CreatePostInput = z.object({
     ]),
 });
 
+export const EditPostInput = z.object({
+    post: z.union([
+        z.object({
+            id: z.string(),
+            title: z.string(),
+            type: z.literal('text'),
+            tags: z.array(z.string()),
+            body: z.string().optional(),
+        }),
+        z.object({
+            id: z.string(),
+            title: z.string(),
+            type: z.literal('image'),
+            tags: z.array(z.string()),
+            body: z.never(),
+        }),
+    ])
+});
+
+export const DeletePostInput = z.object({
+    post: z.object({
+        id: z.string(),
+    })
+});
+
 export const GetPostDetailsInput = z.object({
     postId: z.string(),
 });
@@ -69,6 +94,90 @@ class PostService {
                     }),
                 },
             },
+        });
+    }
+
+    async editPost(ctx: PrivateServiceContext, input: z.infer<typeof EditPostInput>) {
+        // Get the post
+        const post = await ctx.prisma.post.findUnique({
+            where: {
+                id: input.post.id,
+            },
+            include: {
+                page: {
+                    include: {
+                        owner: true,
+                        moderators: true
+                    }
+                }
+            }
+        });
+
+        // If we have no post throw
+        if (!post) throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'No post found with the provided ID.',
+        });
+
+        // Check if the user has permission to edit this post
+        if (post.page.owner.id === ctx.session.user.id || post.page.moderators.some((mod) => mod.id === ctx.session.user.id)) new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'You do not have permission to edit this post.',
+        });
+
+        // Edit post
+        await ctx.prisma.post.update({
+            where: {
+                id: input.post.id,
+            },
+            data: {
+                title: input.post.title,
+                body: input.post.body,
+                tags: {
+                    connectOrCreate: input.post.tags.map((tag) => {
+                        return {
+                            where: { name: tag },
+                            create: { name: tag },
+                        };
+                    }),
+                }
+            }
+        });
+    }
+
+    async deletePost(ctx: PrivateServiceContext, input: z.infer<typeof DeletePostInput>) {
+        // Get the post
+        const post = await ctx.prisma.post.findUnique({
+            where: {
+                id: input.post.id,
+            },
+            include: {
+                page: {
+                    include: {
+                        owner: true,
+                        moderators: true
+                    }
+                }
+            }
+        });
+
+        // If we have no post throw
+        if (!post) throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'No post found with the provided ID.',
+        });
+
+        // Check if the user has permission to delete this post
+        if (post.page.owner.id === ctx.session.user.id || post.page.moderators.some((mod) => mod.id === ctx.session.user.id)) new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'You do not have permission to delete this post.',
+        });
+
+        // Delete post
+        await ctx.prisma.post.delete({
+            where: {
+                id: input.post.id,
+            }
         });
     }
 

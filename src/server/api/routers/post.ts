@@ -1,4 +1,4 @@
-import { CreatePostInput, GetExplorePostsInput, GetPostDetailsInput, postService } from '@app/services/post-service';
+import { CreatePostInput, DeletePostInput, EditPostInput, GetExplorePostsInput, GetPostDetailsInput, postService } from '@app/services/post-service';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const postRouter = createTRPCRouter({
@@ -6,6 +6,18 @@ export const postRouter = createTRPCRouter({
     .input(CreatePostInput)
     .mutation(async ({ ctx, input }) => {
       return postService.createPost(ctx, input);
+    }),
+
+  editPost: protectedProcedure
+    .input(EditPostInput)
+    .mutation(async ({ ctx, input }) => {
+      return postService.editPost(ctx, input);
+    }),
+
+  deletePost: protectedProcedure
+    .input(DeletePostInput)
+    .mutation(async ({ ctx, input }) => {
+      return postService.deletePost(ctx, input);
     }),
 
   getPostDetails: publicProcedure
