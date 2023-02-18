@@ -13,7 +13,6 @@ import Script from 'next/script';
 import { Router } from 'next/router';
 import { useSSR } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
-import { useDetectAdBlock } from 'adblock-detect-react';
 
 // 2. Call `createTheme` and pass your custom theme values
 const theme = createTheme({
@@ -33,7 +32,6 @@ const Application: AppType<{ session: Session | null }> = ({
   Component: Page,
   pageProps: { session, ...pageProps },
 }) => {
-  const isPageBlocked = useDetectAdBlock();
   const Navbar = dynamic(() => import('@app/components/navbar').then((pkg) => pkg.default));
   const ToastContainer = dynamic(() => import('react-toastify').then((pkg) => pkg.ToastContainer));
   const { isBrowser } = useSSR();
@@ -63,7 +61,6 @@ const Application: AppType<{ session: Session | null }> = ({
             />
           )}
         </Head>
-        {isPageBlocked && <div>Please enable js and/or disable any ad-blocking extensions you have installed.</div>}
         <Navbar {...pageProps} />
         <main className="container mx-auto mt-2 w-4/5 max-w-2xl">
           <Page {...pageProps} />
