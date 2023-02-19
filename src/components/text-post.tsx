@@ -78,13 +78,15 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
       <Card.Body css={{ py: '$2' }} className="break-words">
         <Text h4>{post.title}</Text>
         {post.body && <ReactMarkdown remarkPlugins={[[remarkGfm]]}>{post.body}</ReactMarkdown>}
+        <Spacer x={1} />
+        <TagCloud tags={post.tags} />
       </Card.Body>
       <Card.Footer>
         <Grid.Container justify="space-between" alignItems="center">
           <Grid>
             <Grid.Container alignItems="flex-start" gap={0.5}>
               <Grid>
-                <Button className="min-w-0" size="xs" color="default" aria-label={t('favourite')}>
+                <Button className="min-w-0" size="xs" color="default" aria-label={t('bookmark')}>
                   🔖
                 </Button>
               </Grid>
@@ -94,7 +96,7 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
                 </Button>
               </Grid>
               <Grid>
-                <Button className="min-w-0" size="xs" aria-label="Comment on post">
+                <Button className="min-w-0" size="xs" aria-label={t('comment-on-post')}>
                   💬
                 </Button>
               </Grid>
@@ -107,10 +109,6 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
                 <Link href={`/@${post.page.handle}/${post.id}`}>
                   <TimeAgo createdAt={post.createdAt} updatedAt={post.updatedAt} />
                 </Link>
-              </Grid>
-              <Spacer />
-              <Grid>
-                <TagCloud tags={post.tags} />
               </Grid>
             </Grid.Container>
           </Grid>
