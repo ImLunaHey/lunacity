@@ -56,7 +56,7 @@ export const TextPost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
             <div className="-mt-10 -mr-1">
               <Dropdown placement="bottom-right">
                 <Dropdown.Trigger>
-                  <div className="p-2">&#8230;</div>
+                  <div className="cursor-pointer p-2">&#8230;</div>
                 </Dropdown.Trigger>
                 <Dropdown.Menu aria-label="Post menu actions" color="secondary">
                   <Dropdown.Item key="edit-post" textValue={t('edit-post')}>
