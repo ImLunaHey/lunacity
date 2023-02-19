@@ -1,4 +1,4 @@
-import { generateUsername } from '../../src/common/generate-username';
+import { generateUsername } from '@app/common/generate-username';
 
 import '@testing-library/jest-dom';
 

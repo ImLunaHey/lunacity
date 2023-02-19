@@ -7,7 +7,7 @@ import '@testing-library/jest-dom';
 
 import type { Session } from 'next-auth';
 import React from 'react';
-import { replaceDynamicIds } from '../__utils__/replace-dynamic-ids';
+import { replaceDynamicIds } from '@test/__utils__/replace-dynamic-ids';
 
 // Mock next-auth with defaults
 jest.mock('next/config', () => ({
@@ -34,7 +34,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 // Mock notifications component
-jest.mock('../../src/components/notifications', () => ({
+jest.mock('@app/components/notifications', () => ({
   __esModule: true,
   Notifications: () => <div>__NOTIFICATIONS__MOCK__</div>,
 }));

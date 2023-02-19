@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { api } from '@app/utils/api';
-import Following, { getServerSideProps } from '../../../src/pages/[handle]/following';
+import Following, { getServerSideProps } from '@app/pages/[handle]/following';
 import type { IncomingMessage, ServerResponse } from 'http';
 import { render } from '@testing-library/react';
 

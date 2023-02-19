@@ -1,4 +1,4 @@
-import { humanTime } from '../../src/common/human-time';
+import { humanTime } from '@app/common/human-time';
 
 import '@testing-library/jest-dom';
 

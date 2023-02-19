@@ -21,6 +21,7 @@ const customJestConfig = {
 
     moduleNameMapper: {
         '@app/(.*)$': '<rootDir>/src/$1',
+        '@test/(.*)$': '<rootDir>/__tests__/$1',
     },
     testEnvironment: 'jest-environment-jsdom',
     "collectCoverageFrom": [

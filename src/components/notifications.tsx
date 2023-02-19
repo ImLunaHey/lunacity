@@ -7,8 +7,8 @@ import { useSession } from 'next-auth/react';
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { NotificationIcon } from '../icons/notification-icon';
-import { api } from '../utils/api';
+import { NotificationIcon } from '@app/icons/notification-icon';
+import { api } from '@app/utils/api';
 import { FollowedNotification } from './notifications/followed-notification';
 
 const NotificationButton = styled('button', {

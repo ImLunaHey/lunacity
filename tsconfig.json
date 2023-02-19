@@ -23,6 +23,9 @@
     "paths": {
       "@app/*": [
         "src/*"
+      ],
+      "@test/*": [
+        "__tests__/*"
       ]
     },
     "plugins": [

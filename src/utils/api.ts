@@ -11,7 +11,7 @@ import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import { type NextPageContext } from 'next';
 import getConfig from 'next/config';
 import superJSON from 'superjson';
-import { type AppRouter } from '../server/api/root';
+import { type AppRouter } from '@app/server/api/root';
 
 const { publicRuntimeConfig } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
 const { APP_URL, WS_URL } = publicRuntimeConfig;

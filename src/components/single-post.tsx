@@ -1,6 +1,6 @@
 import { ImagePost } from '@app/components/image-post';
 import { TextPost } from '@app/components/text-post';
-import { type RouterOutputs } from '../utils/api';
+import { type RouterOutputs } from '@app/utils/api';
 
 export type SinglePostProps = RouterOutputs['post']['getPostDetails'];
 

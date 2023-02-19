@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Bye from '../../src/pages/bye';
+import Bye from '@app/pages/bye';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({

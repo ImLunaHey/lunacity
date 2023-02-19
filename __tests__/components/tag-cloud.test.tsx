@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TagCloud } from '../../src/components/tag-cloud';
+import { TagCloud } from '@app/components/tag-cloud';
 
 describe('TagCloud', () => {
   it('renders an error message', () => {

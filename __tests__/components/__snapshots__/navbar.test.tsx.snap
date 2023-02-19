@@ -126,7 +126,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
                   <span
                     class="nextui-c-PJLV nextui-c-iFHsrU nextui-input-placeholder"
                   >
-                    Search...
+                    placeholder.search
                   </span>
                   <span
                     class="nextui-c-PJLV nextui-input-content nextui-input-content--left"
@@ -149,7 +149,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
                   <input
                     aria-label="search-box-label"
                     aria-multiline="false"
-                    aria-placeholder="Search..."
+                    aria-placeholder="placeholder.search"
                     aria-readonly="false"
                     aria-required="false"
                     autocomplete="off"
@@ -157,7 +157,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
                     data-state="normal"
                     id="static-id-8"
                     name="query"
-                    placeholder="Search..."
+                    placeholder="placeholder.search"
                     type="text"
                     value=""
                   />

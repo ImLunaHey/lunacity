@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import Followers, { getServerSideProps } from '../../../src/pages/[handle]/followers';
+import Followers, { getServerSideProps } from '@app/pages/[handle]/followers';
 import type { IncomingMessage, ServerResponse } from 'http';
 
 jest.mock('@app/common/with-public-access', () => ({

@@ -4,7 +4,7 @@ import { Navbar, Text, Input, Dropdown, Avatar } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SearchIcon } from '../icons/search-icon';
+import { SearchIcon } from '@app/icons/search-icon';
 import { Notifications } from './notifications';
 import { useTranslation } from 'react-i18next';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -174,7 +174,7 @@ export default function NavBar() {
                   dflex: 'center',
                 },
               }}
-              placeholder="Search..."
+              placeholder={t('placeholder.search')}
               {...register('query', { required: true, maxLength: 25 })}
             />
           </form>

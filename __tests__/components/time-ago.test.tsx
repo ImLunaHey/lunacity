@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TimeAgo } from '../../src/components/time-ago';
+import { TimeAgo } from '@app/components/time-ago';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({

@@ -25,7 +25,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 // Mock text-post component
-jest.mock('../../src/components/text-post', () => ({
+jest.mock('@app/components/text-post', () => ({
   __esModule: true,
   TextPost: () => <div>__TEXT_POST__MOCK__</div>,
 }));
