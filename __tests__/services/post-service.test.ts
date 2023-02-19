@@ -14,6 +14,17 @@ jest.mock('@app/env/server.mjs', () => ({
   },
 }));
 
+// Mock next-auth with defaults
+jest.mock('next/config', () => ({
+  __esModule: true,
+  default: () => ({
+    publicRuntimeConfig: {
+      APP_URL: 'http://localhost:3000',
+      WS_URL: 'ws://localhost:3001',
+    },
+  }),
+}));
+
 describe('postService', () => {
   describe('createPost', () => {
     it('throws an error if no page can be found for the specified handle', async () => {
