@@ -7,6 +7,7 @@ import next from 'next';
 import { parse } from 'url';
 import ws from 'ws';
 import { appRouter } from './api/root';
+import { logger } from './logger';
 
 const port = parseInt(process.env.PORT || '3001', 10);
 const dev = process.env.NODE_ENV !== 'production';
@@ -29,16 +30,12 @@ app.prepare().then(() => {
     });
 
     process.on('SIGTERM', () => {
-        console.log('SIGTERM');
+        logger.info('SIGTERM');
         handler.broadcastReconnectNotification();
     });
     server.listen(port);
 
-    // tslint:disable-next-line:no-console
-    console.log(
-        `> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV
-        }`,
-    );
+    logger.info(`Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`);
 }).catch(error => {
-    console.error('> Server crashed', error);
+    logger.error('Server crashed', error);
 });

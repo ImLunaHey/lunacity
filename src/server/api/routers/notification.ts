@@ -1,7 +1,8 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure } from '@app/server/api/trpc';
 import { observable } from '@trpc/server/observable';
-import { bus, type BusEvents } from '../../bus';
+import { bus, type BusEvents } from '@app/server/bus';
+import { logger } from '@app/server/logger';
 
 // @TODO: fix this fuckery
 type BusSession = Parameters<Parameters<typeof protectedProcedure['subscription']>[0]>[0]['ctx']['session'];
@@ -20,7 +21,7 @@ const createBusObserver = <Event extends keyof BusEvents = keyof BusEvents>(even
         bus.off(eventName, handler);
       };
     } catch (error) {
-      console.log('error', error);
+      logger.error(error);
     }
   });
 }

@@ -1,6 +1,7 @@
 import Redis from 'ioredis';
 import superjson from 'superjson';
 import type { Notification, NotificationData, Page, Post, User, Comment } from 'prisma/prisma-client';
+import { logger } from '@app/server/logger';
 
 export type BusEvents = {
     newNotification: (data: {
@@ -79,12 +80,10 @@ export class RedisBus<Events extends { [key: string]: (...args: any) => any; }> 
         void this.sub.subscribe(String(event), (error, count) => {
             if (error) {
                 // Just like other commands, subscribe() can fail for some reasons, ex network issues.
-                console.error('Failed to subscribe: %s', error.message);
+                logger.error('Failed to subscribe: %s', error.message);
             } else {
                 // `count` represents the number of channels this client are currently subscribed to.
-                console.log(
-                    `Subscribed successfully! This client is currently subscribed to ${count as number} channels.`
-                );
+                logger.info(`Subscribed successfully! This client is currently subscribed to ${count as number} channels.`);
             }
         });
 
