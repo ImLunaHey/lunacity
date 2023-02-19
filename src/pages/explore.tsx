@@ -4,8 +4,8 @@ import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
-import Feed from '../components/feed';
-import { api } from '../utils/api';
+import Feed from '@app/components/feed';
+import { api } from '@app/utils/api';
 
 export const getServerSideProps = withPublicAccess();
 

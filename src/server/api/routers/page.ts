@@ -1,5 +1,5 @@
 import { CreatePageInput, FollowingStateInput, FollowPageInput, GetPageDetailsInput, GetPageFollowingInput, GetPagePostsInput, PageExistsInput, pageService, UnfollowPageInput } from '@app/services/page-service';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '@app/server/api/trpc';
 
 export const pageRouter = createTRPCRouter({
   createPage: protectedProcedure

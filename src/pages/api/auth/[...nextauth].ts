@@ -1,8 +1,8 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { env } from '../../../env/server.mjs';
-import { prisma } from '../../../server/db';
+import { env } from '@app/env/server.mjs';
+import { prisma } from '@app/server/db';
 
 const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith('https');
 

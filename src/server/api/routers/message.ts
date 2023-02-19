@@ -1,5 +1,5 @@
 import { messageService } from '@app/services/message-service';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure } from '@app/server/api/trpc';
 
 export const messageRouter = createTRPCRouter({
   getAllMessageThreads: protectedProcedure

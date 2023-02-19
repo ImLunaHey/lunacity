@@ -22,8 +22,8 @@ import type ws from 'ws';
 import { type NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http';
 import { type IncomingMessage } from 'http';
 import { getSession } from 'next-auth/react';
-import { getServerAuthSession } from '../auth';
-import { prisma } from '../db';
+import { getServerAuthSession } from '@app/server/auth';
+import { prisma } from '@app/server/db';
 
 type CreateContextOptions = {
   session: Session | null;

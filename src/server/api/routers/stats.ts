@@ -1,5 +1,5 @@
 import { env } from '@app/env/server.mjs';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, publicProcedure } from '@app/server/api/trpc';
 
 let lastCallTime: Date;
 let cachedResponse: number;

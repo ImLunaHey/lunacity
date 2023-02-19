@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure } from '@app/server/api/trpc';
 
 export const searchRouter = createTRPCRouter({
   query: protectedProcedure

@@ -1,5 +1,5 @@
 import { CreatePostInput, DeletePostInput, EditPostInput, GetExplorePostsInput, GetPostDetailsInput, postService } from '@app/services/post-service';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '@app/server/api/trpc';
 
 export const postRouter = createTRPCRouter({
   createPost: protectedProcedure
