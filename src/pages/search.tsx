@@ -13,17 +13,17 @@ export const getServerSideProps = withPrivateAccess<{ query: string }>((context)
 
 const Search: FC<{ query: string }> = ({ query }) => {
   const results = api.search.query.useQuery({ query });
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
 
   if (results.isLoading) return <LoadingSpinner />;
 
   return (
     <>
       <Head>
-        <title>{`Search results for: ${query}`}</title>
+        <title>{t('search-results-for-query', { query })}</title>
       </Head>
-      <div>Search results for: {JSON.stringify(query)}</div>
-      {results.data?.length === 0 && <div>{t('No results found.')}</div>}
+      <div>{t('search-results-for-query', { query })}</div>
+      {results.data?.length === 0 && <div>{t('no-results-found')}</div>}
       {results.data && results.data?.length >= 1 && <pre>{JSON.stringify(results.data, null, 2)}</pre>}
     </>
   );

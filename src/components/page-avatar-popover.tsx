@@ -1,6 +1,7 @@
 import { FollowButton } from '@app/components/follow-button';
 import { User, Text, Spacer, Grid } from '@nextui-org/react';
 import { type FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const PageAvatarPopover: FC<{
   src: string;
@@ -11,6 +12,7 @@ export const PageAvatarPopover: FC<{
   followerCount: number;
   followingCount: number;
 }> = ({ src, name, official, description, handle, followerCount, followingCount }) => {
+  const { t } = useTranslation();
   return (
     <Grid.Container
       css={{
@@ -45,16 +47,14 @@ export const PageAvatarPopover: FC<{
       <Grid.Container justify="flex-start" alignContent="center">
         <Text size={14} color="#888888">
           <Text b color="foreground" size={14}>
-            {followingCount}
-          </Text>{' '}
-          Following
+            {t('following-count', { followingCount })}
+          </Text>
         </Text>
         <Spacer inline x={0.5} />
         <Text size={14} color="#888888">
           <Text b color="foreground" size={14}>
-            {followerCount}
-          </Text>{' '}
-          Followers
+            {t('follower-count', { followerCount })}
+          </Text>
         </Text>
       </Grid.Container>
     </Grid.Container>

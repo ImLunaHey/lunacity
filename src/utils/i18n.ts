@@ -21,10 +21,11 @@ export const i18n = i18nNext
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init<HttpBackendOptions>({
-        fallbackLng: 'en',
-        supportedLngs: ['en'],
+        fallbackLng: 'es',
+        supportedLngs: ['es'],
         debug: env.NODE_ENV !== 'production',
         defaultNS: 'common',
+        returnNull: false,
         load: 'languageOnly',
         react: {
             useSuspense: false,

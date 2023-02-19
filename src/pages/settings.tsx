@@ -71,7 +71,7 @@ type Input = z.infer<typeof SettingsInput>;
 
 const Settings: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
   const { status } = useSession();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,

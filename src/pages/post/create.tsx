@@ -152,14 +152,17 @@ const CreatePost = () => {
             </Grid.Container>
 
             <Grid.Container gap={2} justify="center">
-              {['text' as const, 'image' as const].map((postType) => (
-                <Grid key={postType}>
+              {[
+                { name: t('text-post'), value: 'text' as const },
+                { name: t('image-post'), value: 'image' as const },
+              ].map((postType) => (
+                <Grid key={postType.value}>
                   <Button
-                    onPress={() => setValue('type', postType, {})}
-                    color={watch('type') === postType ? 'success' : 'primary'}
+                    onPress={() => setValue('type', postType.value, {})}
+                    color={watch('type') === postType.value ? 'success' : 'primary'}
                     auto
                   >
-                    {postType}
+                    {postType.name}
                   </Button>
                 </Grid>
               ))}
@@ -212,7 +215,7 @@ const CreatePost = () => {
                   status="default"
                   {...register('title', { required: true })}
                   helperText={errors.title?.message ?? ''}
-                  placeholder="An amazing title!"
+                  placeholder={t('placeholder.create-post.title')}
                 />
                 <Spacer y={2} />
                 {/* Image */}
@@ -248,7 +251,7 @@ const CreatePost = () => {
             )}
             <Spacer y={2} />
             <Button className="min-w-full" type="submit" disabled={createPost.isLoading}>
-              Post!
+              {t('pages.post.create.post')}
             </Button>
           </form>
         </Card>

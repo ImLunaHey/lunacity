@@ -1,14 +1,14 @@
 import { type FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const Bye: FC = () => (
-  <div>
-    <h1>Account Deactivated</h1>
-    <p>Your account has been deactivated.</p>
-    <p>
-      In 30 days your account will be deleted. If you would like to reactivate your account before that happens, just
-      signin again.
-    </p>
-  </div>
-);
+const Bye: FC = () => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <h1>{t('pages.bye.account-deactivated-title')}</h1>
+      <p>{t('pages.bye.account-deactivated-message')}</p>
+    </div>
+  );
+};
 
 export default Bye;

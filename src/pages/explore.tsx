@@ -3,6 +3,7 @@ import { LoadingSpinner } from '@app/components/loading-spinner';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useTranslation } from 'react-i18next';
 import Feed from '../components/feed';
 import { api } from '../utils/api';
 
@@ -10,6 +11,7 @@ export const getServerSideProps = withPublicAccess();
 
 const Explore: NextPage = () => {
   const { status } = useSession();
+  const { t } = useTranslation();
   const posts = api.post.getExplorePosts.useQuery();
 
   // Show loading while we fetch data
@@ -18,7 +20,7 @@ const Explore: NextPage = () => {
   return (
     <>
       <Head>
-        <title>🌏 Explore</title>
+        <title>{t('pages.explore.title')}</title>
       </Head>
       <Feed
         items={posts.data?.posts ?? []}

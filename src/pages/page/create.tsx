@@ -37,7 +37,7 @@ const CreatePageInput = z
   .required();
 
 const CreatePage: NextPage = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const router = useRouter();
   const createPage = api.page.createPage.useMutation();
   const generatedUsername = generateUsername();
@@ -71,7 +71,7 @@ const CreatePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Create a new page</title>
+        <title>{t('create-page')}</title>
       </Head>
       <div className="flex flex-col items-center justify-center">
         <Card css={{ mw: '420px', p: '20px' }}>
@@ -85,11 +85,11 @@ const CreatePage: NextPage = () => {
                 mb: '20px',
               }}
             >
-              Create a new page
+              {t('create-page')}
             </Text>
             {/* Handle */}
             <Input
-              aria-label="Handle"
+              aria-label={t('handle')}
               clearable
               bordered
               fullWidth
@@ -104,7 +104,7 @@ const CreatePage: NextPage = () => {
             <Spacer y={2} />
             {/* Display name */}
             <Input
-              aria-label="Display name"
+              aria-label={t('display-name')}
               clearable
               bordered
               fullWidth
@@ -117,7 +117,7 @@ const CreatePage: NextPage = () => {
             <Spacer y={2} />
             {/* Body */}
             <Textarea
-              aria-label="Description"
+              aria-label={t('description')}
               bordered
               fullWidth
               color={errors.description ? 'error' : 'primary'}
@@ -125,7 +125,7 @@ const CreatePage: NextPage = () => {
               maxLength={100000}
               {...register('description', { required: true, maxLength: 25 })}
               // @TODO: make the placeholder better, wtf even is this?
-              placeholder="Add your socials here?"
+              placeholder={t('placeholder.page.create.description')}
               helperText={errors.description?.message ?? ''}
             />
             <Spacer y={2} />

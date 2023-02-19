@@ -1,6 +1,7 @@
 import { Popover, User } from '@nextui-org/react';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PageAvatarPopover } from './page-avatar-popover';
 
 export const PageAvatar: FC<{
@@ -13,6 +14,8 @@ export const PageAvatar: FC<{
   followingCount: number;
   popover: boolean;
 }> = ({ handle, name, src, official, popover, description, followerCount, followingCount }) => {
+  const { t } = useTranslation();
+
   // If we don't need a popover just return the avatar
   // This is mainly used in places where the avatar is used as a button for something else
   if (!popover)
@@ -21,10 +24,10 @@ export const PageAvatar: FC<{
         bordered
         as="button"
         color={official ? 'secondary' : 'primary'}
-        altText={`Avatar for ${name}`}
+        altText={t('avatar-for', { name })}
         src={src}
         name={name}
-        description={official ? '✅ Official' : ''}
+        description={official ? t('official-checkmark') : ''}
       >
         <User.Link href={`/@${handle}`} target={'_self'} as={Link}>
           {`@${handle}`}

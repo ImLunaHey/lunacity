@@ -8,8 +8,6 @@ declare module 'react-i18next' {
         // custom namespace type if you changed it
         defaultNS: 'common';
         // custom resources type
-        resources: {
-            common: typeof common;
-        };
+        resources: typeof common;
     }
 }

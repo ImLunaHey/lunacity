@@ -83,7 +83,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
   followerCount,
   followingCount,
 }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const isBanned = infractions.filter((infraction) => infraction.severity === 'BAN').length >= 1;
   const { data: session, status } = useSession();
 

@@ -2,8 +2,10 @@ import type { SinglePostProps } from '@app/components/single-post';
 import { TagCloud } from '@app/components/tag-cloud';
 import { PageAvatar } from '@app/components/page-avatar';
 import { Card, Grid, Button, Text } from '@nextui-org/react';
+import { useTranslation } from 'react-i18next';
 
 export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
+  const { t } = useTranslation();
   if (!post) return null;
 
   return (
@@ -39,17 +41,17 @@ export const ImagePost: React.FC<{ post: SinglePostProps }> = ({ post }) => {
       <Card.Footer>
         <Grid.Container alignItems="flex-start" gap={0.5}>
           <Grid>
-            <Button className="min-w-0" size="xs" color="default" aria-label="Favourite">
+            <Button className="min-w-0" size="xs" color="default" aria-label={t('bookmark-post')}>
               🔖
             </Button>
           </Grid>
           <Grid>
-            <Button className="min-w-0" size="xs" color="default" aria-label="Star post">
+            <Button className="min-w-0" size="xs" color="default" aria-label={t('add-reaction')}>
               ⭐
             </Button>
           </Grid>
           <Grid>
-            <Button className="min-w-0" size="xs" aria-label="Comment on post">
+            <Button className="min-w-0" size="xs" aria-label={t('post-add-comment')}>
               💬
             </Button>
           </Grid>

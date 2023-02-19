@@ -1,17 +1,56 @@
 {
-    "notifications": {
-        "live-notifications-started": "实时通知已开始"
-    },
-    "update-settings": "更新设置",
-    "create-post": "创建帖子",
-    "create-page": "创建",
-    "no-more-posts": "太好了！你看到了所有内容",
-    "unfollow": "取消关注",
-    "follow": "关注",
-    "signup": "注册",
-    "signin": "登录",
-    "signout": "登出",
-    "site": {
-        "title": "Lunacity"
+  "components": {
+    "navbar": {
+      "links": {
+        "explore": "🌏 探索",
+        "home": "🏡 主页",
+        "messages": "💬 消息"
+      }
     }
+  },
+  "create-page": "创建",
+  "create-post": "创建帖子",
+  "follow": "跟随",
+  "help": "帮助",
+  "no-more-posts": "太好了！你看到了所有内容",
+  "notifications": {
+    "live-notifications-started": "实时通知已开始"
+  },
+  "online-user-count": "当前有 {{count}} 人在线。",
+  "pages": {
+    "analytics": {
+      "title": "Analytics"
+    },
+    "bye": {
+      "account-deactivated-message": "In 30 days your account will be deleted. If you would like to reactivate your account before that happens, please signin again.",
+      "account-deactivated-title": "Account deactivated"
+    },
+    "help": {
+      "title": "帮助"
+    },
+    "home": {
+      "create-post": "Create a new post",
+      "title": "Home",
+      "welcome": {
+        "message": "现代社交媒体平台",
+        "title": "欢迎来到Lunacity"
+      }
+    },
+    "settings": {
+      "title": "设置"
+    }
+  },
+  "placeholder": {
+    "create-post": {
+      "title": "一个惊人的标题！"
+    }
+  },
+  "sign-in": "登录",
+  "sign-out": "登出",
+  "sign-up": "注册",
+  "site": {
+    "title": "Lunacity"
+  },
+  "unfollow": "取消关注",
+  "update-settings": "更新设置"
 }

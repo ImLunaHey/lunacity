@@ -1,0 +1,11 @@
+{
+  "components": {
+    "navbar": {
+      "links": {
+        "explore": "🌏 explorar",
+        "home": "🏠 página principal",
+        "messages": "💬 mensaje"
+      }
+    }
+  }
+}

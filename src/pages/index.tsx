@@ -14,7 +14,7 @@ import { LoadingSpinner } from '@app/components/loading-spinner';
 export const getServerSideProps = withPublicAccess();
 
 export const UnauthenticatedPage: FC = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const { isBrowser } = useSSR();
   const { data: realTimeUserCount, isLoading } = api.stats.getRealtimeUserCount.useQuery();
 
@@ -27,15 +27,15 @@ export const UnauthenticatedPage: FC = () => {
       <div className="flex flex-col items-center justify-center gap-4 text-center">
         <Text h1>{t('pages.home.welcome.title')}</Text>
         <Text h3>{t('pages.home.welcome.message')}</Text>
-        <Text>There are currently {isLoading ? <LoadingSpinner /> : realTimeUserCount} people online.</Text>
-        <Button onClick={() => void signIn()}>{t('signin')}</Button>
+        {!isLoading && <Text>{t('online-user-count', { count: realTimeUserCount })}</Text>}
+        <Button onClick={() => void signIn()}>{t('sign-in')}</Button>
       </div>
     </div>
   );
 };
 
 export const AuthenticatedPage: FC = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const posts = api.user.getAllPosts.useQuery(undefined, { enabled: session?.user.page?.id !== undefined });
 

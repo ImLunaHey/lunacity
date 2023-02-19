@@ -21,7 +21,7 @@ const NotificationButton = styled('button', {
 });
 
 export const Notifications: FC = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const notifications = useNotificationStore((state) => state.notifications);

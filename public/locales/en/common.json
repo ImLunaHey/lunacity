@@ -1,59 +1,114 @@
 {
-  "site": {
-    "title": "Lunacity"
-  },
-  "no-more-posts": "No more posts",
-  "posted": "Posted",
-  "updated": "Updated",
-  "notifications": {
-    "live-notifications-started": "Live notifications started"
-  },
-  "signup": "Sign up",
-  "signin": "Sign in",
-  "signout": "Sign out",
-  "placeholder": {
-    "email-address": "Email address"
-  },
+  "add-reaction": "Add reaction",
+  "avatar-for": "Avatar for {{name}}",
+  "bookmark-post": "Bookmark",
   "components": {
     "navbar": {
       "links": {
-        "home": "🏡 Home",
         "explore": "🌏 Explore",
+        "home": "🏡 Home",
         "messages": "💬 Messages"
       }
     }
   },
-  "pages": {
-    "home": {
-      "title": "Home",
-      "welcome": {
-        "title": "Lunacity",
-        "message": "A modern social media platform"
-      },
-      "create-post": "Create a new post"
+  "create-page": "Create a new page",
+  "delete-post": "Delete post",
+  "delete-post-failure": "Post deletion failed",
+  "delete-post-success": "Post deleted",
+  "description": "Description",
+  "display-name": "Display name",
+  "edit-post": "Edit post",
+  "errors": {
+    "page": {
+      "not-found": "No page exists with this handle"
     },
     "post": {
-      "create": {
-        "title": "Create a new post",
-        "create-post": "Create a post"
-      }
+      "not-found": "No post exists with this ID"
+    }
+  },
+  "followed-you": "@{{page.handle}} followed you",
+  "follower-count": "{{followerCount}} followers",
+  "follower-for": "Followers for {{handle}}",
+  "following-count": "{{followingCount}} following",
+  "handle": "Handle",
+  "help": "Help",
+  "image-post": "Image",
+  "navbar": {
+    "user-menu-label": "User menu actions"
+  },
+  "no-more-posts": "No more posts",
+  "no-results-found": "No results found",
+  "notifications": {
+    "live-notifications-started": "Live notifications started"
+  },
+  "official-checkmark": "✅ Official",
+  "online-user-count": "There are currently {{count}} people online.",
+  "pages": {
+    "analytics": {
+      "title": "Analytics"
     },
-    "settings": {
-      "title": "Settings",
-      "heading": "Settings",
-      "update-settings": "Update Settings",
-      "user-settings": "User Settings",
-      "page-settings": "Page Settings",
-      "deactivate-account": "Deactivate Account",
-      "update": {
-        "success": "Settings updated successfully"
-      }
+    "bye": {
+      "account-deactivated-message": "30 天后您的帐户将被删除。 如果您想在此之前重新激活您的帐户，请重新登录。",
+      "account-deactivated-title": "帐户停用"
+    },
+    "explore": {
+      "title": "🌏 Explore"
     },
     "help": {
       "title": "Help"
     },
-    "analytics": {
-      "title": "Analytics"
+    "home": {
+      "create-post": "Create a new post",
+      "title": "Home",
+      "welcome": {
+        "message": "A modern social media platform",
+        "title": "Welcome to Lunacity"
+      }
+    },
+    "post": {
+      "create": {
+        "create-post": "Create a post",
+        "post": "Post!",
+        "title": "Create a new post"
+      }
+    },
+    "settings": {
+      "deactivate": {
+        "success": "Account successfully deactivated."
+      },
+      "deactivate-account": "Deactivate Account",
+      "heading": "Settings",
+      "page-settings": "Page Settings",
+      "title": "Settings",
+      "update": {
+        "success": "Settings updated successfully"
+      },
+      "update-settings": "Update Settings",
+      "user-settings": "User Settings"
     }
-  }
+  },
+  "placeholder": {
+    "create-post": {
+      "title": "An amazing title!"
+    },
+    "email-address": "Email address",
+    "page": {
+      "create": {
+        "description": "Add your socials here?"
+      }
+    }
+  },
+  "post-add-comment": "Add comment to post",
+  "post-deleted": "Post deleted",
+  "posted": "Posted",
+  "search-box-label": "Search box",
+  "search-results-for-query": "Search results for: {{query}}",
+  "sign-in": "Sign in",
+  "sign-out": "Sign out",
+  "sign-up": "Sign up",
+  "site": {
+    "title": "Lunacity"
+  },
+  "text-post": "Text",
+  "updated": "Updated"
 }

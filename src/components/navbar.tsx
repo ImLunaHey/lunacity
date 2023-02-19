@@ -12,33 +12,33 @@ import Logo from '@app/components/logo';
 
 const DropdownMenu: FC = () => {
   const { data: session } = useSession();
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   if (!session?.user?.page?.handle) {
     return (
       <Dropdown.Menu aria-label="User menu actions" color="secondary">
-        <Dropdown.Item textValue="Create page" key="profile" className="p-0">
+        <Dropdown.Item textValue={t('create-page')} key="profile" className="p-0">
           <Link className="m-0 block h-full w-full p-2 text-white" href="/page/create">
             <Text b color="inherit" css={{ d: 'flex' }}>
-              Create page
+              {t('create-page')}
             </Text>
           </Link>
         </Dropdown.Item>
-        <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
+        <Dropdown.Item textValue={t('pages.settings.title')} key="settings" withDivider>
           <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
             {t('pages.settings.title')}
           </Link>
         </Dropdown.Item>
-        <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
+        <Dropdown.Item textValue={t('pages.help.title')} key="help_and_feedback">
           <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
             {t('pages.help.title')}
           </Link>
         </Dropdown.Item>
-        <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
+        <Dropdown.Item textValue={t('signout')} key="signout" withDivider color="error">
           <a
             className="m-0 block h-full w-full text-gray-400 hover:text-white"
             onClick={() => void signOut({ callbackUrl: '/' })}
           >
-            {t('signout')}
+            {t('sign-out')}
           </a>
         </Dropdown.Item>
       </Dropdown.Menu>
@@ -46,7 +46,7 @@ const DropdownMenu: FC = () => {
   }
 
   return (
-    <Dropdown.Menu aria-label="User menu actions" color="secondary">
+    <Dropdown.Menu aria-label={t('navbar.user-menu-label')} color="secondary">
       <Dropdown.Item textValue={`@${session.user?.page?.handle}`} key="profile" className="p-0">
         <Link className="m-0 block h-full w-full p-2 text-white" href={`/${session.user?.page?.handle}`}>
           <Text b color="inherit" css={{ d: 'flex' }}>
@@ -54,27 +54,27 @@ const DropdownMenu: FC = () => {
           </Text>
         </Link>
       </Dropdown.Item>
-      <Dropdown.Item command="⌘S" textValue="Settings" key="settings" withDivider>
+      <Dropdown.Item textValue={t('pages.settings.title')} key="settings" withDivider>
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/settings">
           {t('pages.settings.title')}
         </Link>
       </Dropdown.Item>
-      <Dropdown.Item textValue="Analytics" key="analytics">
+      <Dropdown.Item textValue={t('pages.analytics.title')} key="analytics">
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/analytics">
           {t('pages.analytics.title')}
         </Link>
       </Dropdown.Item>
-      <Dropdown.Item textValue="Help and feedback" key="help_and_feedback">
+      <Dropdown.Item textValue={t('pages.help.title')} key="help_and_feedback">
         <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/help">
           {t('pages.help.title')}
         </Link>
       </Dropdown.Item>
-      <Dropdown.Item textValue="Signout" key="signout" withDivider color="error">
+      <Dropdown.Item textValue={t('sign-out')} key="signout" withDivider color="error">
         <a
           className="m-0 block h-full w-full text-gray-400 hover:text-white"
           onClick={() => void signOut({ callbackUrl: '/' })}
         >
-          {t('signout')}
+          {t('sign-out')}
         </a>
       </Dropdown.Item>
     </Dropdown.Menu>
@@ -103,7 +103,7 @@ const UserMenu: FC = () => {
 export default function NavBar() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { t, ready } = useTranslation(['common']);
+  const { t, ready } = useTranslation();
   const { isBrowser } = useSSR();
 
   // Search box
@@ -162,7 +162,7 @@ export default function NavBar() {
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
-              aria-label="Search box"
+              aria-label={t('search-box-label')}
               clearable
               contentLeft={<SearchIcon fill="var(--nextui-colors-accents6)" size={16} />}
               contentLeftStyling={false}

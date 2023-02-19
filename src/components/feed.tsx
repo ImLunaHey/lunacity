@@ -19,7 +19,7 @@ const getUniqueItemsInArray = (items: SinglePostProps[]): Exclude<SinglePostProp
 };
 
 const Feed: React.FC<FeedProps> = ({ items, fetchData = () => () => undefined, personalCursor, publicCursor }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   if (!items) return null;
   const uniqueItems = getUniqueItemsInArray(items);
 

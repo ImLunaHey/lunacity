@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const TimeAgo: FC<{ createdAt: Date; updatedAt?: Date }> = ({ createdAt, updatedAt }) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
 
   // If the updated time isn't the same as the created time then it's been updated
   const hasUpdated = createdAt.getTime() !== updatedAt?.getTime();
