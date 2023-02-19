@@ -20,6 +20,8 @@
   "help": "يساعد",
   "image-post": "مشاركة الصورة",
   "no-more-posts": "لا يوجد المزيد من المنشورات",
+  "no-notifications": "لا إشعارات",
+  "no-results-found": "لم يتم العثور على نتائج",
   "notifications": {
     "live-notifications-started": "بدأت الإشعارات المباشرة"
   },
@@ -72,6 +74,7 @@
     "search": "يبحث…"
   },
   "search-box-label": "مربع البحث",
+  "search-results-for-query": "نتائج البحث عن: {{query}}",
   "sign-in": "تسجيل الدخول",
   "sign-out": "تسجيل الخروج",
   "sign-up": "تسجيل",

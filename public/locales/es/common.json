@@ -17,6 +17,11 @@
   "edit-post": "Editar post",
   "follower-count": "{{followerCount}} seguidores",
   "following-count": "{{followingCount}} siguiendo",
+  "no-notifications": "No Notificaciones",
+  "no-results-found": "No se han encontrado resultados",
+  "notifications": {
+    "live-notifications-started": "Comenzaron las notificaciones en vivo"
+  },
   "online-user-count": "Actualmente hay {{count}} personas en línea.",
   "pages": {
     "bye": {
@@ -27,5 +32,6 @@
     "search": "Buscar…"
   },
   "search-box-label": "Caja de búsqeda",
+  "search-results-for-query": "Resultados de búsqueda para: {{query}}",
   "sign-in": "Iniciar sesión"
 }

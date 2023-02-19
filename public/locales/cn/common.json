@@ -21,6 +21,8 @@
   "following-count": "{{followerCount}} 下列的",
   "help": "帮助",
   "no-more-posts": "太好了！你看到了所有内容",
+  "no-notifications": "没有通知",
+  "no-results-found": "No results found",
   "notifications": {
     "live-notifications-started": "实时通知已开始"
   },
@@ -55,6 +57,7 @@
     "search": "搜索…"
   },
   "search-box-label": "搜索框",
+  "search-results-for-query": "搜索结果：{{query}}",
   "sign-in": "登录",
   "sign-out": "登出",
   "sign-up": "注册",

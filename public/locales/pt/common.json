@@ -1,0 +1,10 @@
+{
+  "create-page": "Criar uma nova página",
+  "follower-count": "{{followerCount}} seguidores",
+  "no-notifications": "Nenhuma notificação",
+  "no-results-found": "Nenhum resultado encontrado",
+  "notifications": {
+    "live-notifications-started": "Notificações ao vivo iniciadas"
+  },
+  "search-results-for-query": "Resultados da pesquisa para: {{query}}"
+}
