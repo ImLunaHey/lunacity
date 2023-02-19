@@ -21,8 +21,8 @@ export const i18n = i18nNext
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init<HttpBackendOptions>({
-        fallbackLng: 'es',
-        supportedLngs: ['es'],
+        fallbackLng: 'en',
+        supportedLngs: ['en', 'ar', 'cn', 'es'],
         debug: env.NODE_ENV !== 'production',
         defaultNS: 'common',
         returnNull: false,
