@@ -7,6 +7,13 @@ import { createMockSession } from '__tests__/__utils__/mocks/create-mock-session
 import createPrismaMock from 'prisma-mock';
 import { randomUUID } from 'crypto';
 
+jest.mock('@app/env/server.mjs', () => ({
+  env: {
+    NODE_ENV: 'test',
+    NEXTAUTH_URL: 'http://localhost:3000',
+  },
+}));
+
 describe('postService', () => {
   describe('createPost', () => {
     it('throws an error if no page can be found for the specified handle', async () => {
