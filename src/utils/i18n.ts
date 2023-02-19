@@ -37,5 +37,8 @@ export const i18n = i18nNext
         nonExplicitSupportedLngs: true,
         backend: {
             loadPath: `${APP_URL}/locales/{{lng}}/{{ns}}.json`,
+        },
+        detection: {
+            caches: []
         }
     });
