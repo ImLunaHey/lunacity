@@ -1,4 +1,4 @@
-import i18nNext from 'i18next';
+import i18nNext, { type InitOptions } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import Backend, { type HttpBackendOptions } from 'i18next-http-backend';
@@ -8,6 +8,31 @@ import { env } from 'process';
 
 const { publicRuntimeConfig } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
 const { APP_URL } = publicRuntimeConfig;
+
+const options = {
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'ar', 'cn', 'es'],
+    debug: env.NODE_ENV !== 'production',
+    defaultNS: 'common',
+    returnNull: false,
+    load: 'languageOnly' as const,
+    react: {
+        useSuspense: false,
+    },
+    ns: ['common'],
+    interpolation: {
+        escapeValue: false, // not needed for react as it escapes by default
+    },
+    nonExplicitSupportedLngs: true,
+    backend: {
+        loadPath: `${APP_URL}/locales/{{lng}}/{{ns}}.json`,
+    },
+    detection: {
+        caches: []
+    },
+} satisfies InitOptions<HttpBackendOptions>;
+
+export const getCurrentLocale = () => i18nNext.languages[0];
 
 export const i18n = i18nNext
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -20,25 +45,4 @@ export const i18n = i18nNext
     .use(initReactI18next)
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
-    .init<HttpBackendOptions>({
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'ar', 'cn', 'es'],
-        debug: env.NODE_ENV !== 'production',
-        defaultNS: 'common',
-        returnNull: false,
-        load: 'languageOnly',
-        react: {
-            useSuspense: false,
-        },
-        ns: ['common'],
-        interpolation: {
-            escapeValue: false, // not needed for react as it escapes by default
-        },
-        nonExplicitSupportedLngs: true,
-        backend: {
-            loadPath: `${APP_URL}/locales/{{lng}}/{{ns}}.json`,
-        },
-        detection: {
-            caches: []
-        }
-    });
+    .init<HttpBackendOptions>(options);
