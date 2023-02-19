@@ -1,7 +1,8 @@
 {
   "add-reaction": "Add reaction",
   "avatar-for": "Avatar for {{name}}",
-  "bookmark-post": "Bookmark",
+  "bookmark": "Bookmark",
+  "comment-on-post": "Comment on post",
   "components": {
     "navbar": {
       "links": {
@@ -26,6 +27,7 @@
       "not-found": "No post exists with this ID"
     }
   },
+  "favourite": "Favourite",
   "followed-you": "@{{page.handle}} followed you",
   "follower-count": "{{followerCount}} followers",
   "follower-for": "Followers for {{handle}}",
@@ -48,7 +50,7 @@
       "title": "Analytics"
     },
     "bye": {
-      "account-deactivated-message": "30 天后您的帐户将被删除。 如果您想在此之前重新激活您的帐户，请重新登录。",
+      "account-deactivated-message": "In 30 days your account will be deleted. If you would like to reactivate your account before that happens, please signin again.",
       "account-deactivated-title": "帐户停用"
     },
     "explore": {
@@ -96,7 +98,8 @@
       "create": {
         "description": "Add your socials here?"
       }
-    }
+    },
+    "search": "Search…"
   },
   "post-add-comment": "Add comment to post",
   "post-deleted": "Post deleted",

@@ -1,4 +1,8 @@
 {
+  "add-reaction": "أضف رد فعل",
+  "avatar-for": "صورة رمزية لـ {{name}}",
+  "bookmark": "المرجعية",
+  "comment-on-post": "التعليق على المنشور",
   "components": {
     "navbar": {
       "links": {
@@ -8,6 +12,11 @@
       }
     }
   },
+  "create-page": "قم بإنشاء صفحة جديدة",
+  "delete-post": "حذف آخر",
+  "edit-post": "تعديل المنشور",
+  "follower-count": "{{followerCount}} متابع",
+  "following-count": "{{followCount}} متابع",
   "help": "يساعد",
   "image-post": "مشاركة الصورة",
   "no-more-posts": "لا يوجد المزيد من المنشورات",
@@ -59,8 +68,10 @@
   "placeholder": {
     "create-post": {
       "title": "عنوان رائع!"
-    }
+    },
+    "search": "يبحث…"
   },
+  "search-box-label": "مربع البحث",
   "sign-in": "تسجيل الدخول",
   "sign-out": "تسجيل الخروج",
   "sign-up": "تسجيل",

@@ -1,4 +1,8 @@
 {
+  "add-reaction": "添加反应",
+  "avatar-for": "{{name}} 的头像",
+  "bookmark": "Bookmark",
+  "comment-on-post": "Comment on post",
   "components": {
     "navbar": {
       "links": {
@@ -10,7 +14,11 @@
   },
   "create-page": "创建",
   "create-post": "创建帖子",
+  "delete-post": "Delete post",
+  "edit-post": "Edit post",
   "follow": "跟随",
+  "follower-count": "{{followerCount}} 追随者",
+  "following-count": "{{followerCount}} 下列的",
   "help": "帮助",
   "no-more-posts": "太好了！你看到了所有内容",
   "notifications": {
@@ -22,7 +30,7 @@
       "title": "Analytics"
     },
     "bye": {
-      "account-deactivated-message": "In 30 days your account will be deleted. If you would like to reactivate your account before that happens, please signin again.",
+      "account-deactivated-message": "30 天后您的帐户将被删除。 如果您想在此之前重新激活您的帐户，请重新登录。",
       "account-deactivated-title": "Account deactivated"
     },
     "help": {
@@ -43,8 +51,10 @@
   "placeholder": {
     "create-post": {
       "title": "一个惊人的标题！"
-    }
+    },
+    "search": "搜索…"
   },
+  "search-box-label": "搜索框",
   "sign-in": "登录",
   "sign-out": "登出",
   "sign-up": "注册",

@@ -1,4 +1,8 @@
 {
+  "add-reaction": "Añadir reacción",
+  "avatar-for": "Avatar para {{name}}",
+  "bookmark": "Marcador",
+  "comment-on-post": "Comentar en la publicación",
   "components": {
     "navbar": {
       "links": {
@@ -7,5 +11,21 @@
         "messages": "💬 mensaje"
       }
     }
-  }
+  },
+  "create-page": "Crear una nueva página",
+  "delete-post": "Eliminar mensaje",
+  "edit-post": "Editar post",
+  "follower-count": "{{followerCount}} seguidores",
+  "following-count": "{{followingCount}} siguiendo",
+  "online-user-count": "Actualmente hay {{count}} personas en línea.",
+  "pages": {
+    "bye": {
+      "account-deactivated-message": "En 30 días tu cuenta será eliminada. \nSi desea reactivar su cuenta antes de que eso suceda, vuelva a iniciar sesión."
+    }
+  },
+  "placeholder": {
+    "search": "Buscar…"
+  },
+  "search-box-label": "Caja de búsqeda",
+  "sign-in": "Iniciar sesión"
 }
