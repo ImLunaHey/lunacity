@@ -1,6 +1,7 @@
-import pino from 'pino';
+import { Signale } from 'signale';
+import { env } from '@app/env/server.mjs';
 
-// create pino logger
-export const logger = pino({
-    level: process.env.LOG_LEVEL || 'info',
+export const logger = new Signale({
+    secrets: Object.entries(env).filter(([key]) => !['NODE_ENV', 'NEXTAUTH_URL'].includes(key)).map(([, value]) => value),
+    scope: 'app',
 });

@@ -1,6 +1,8 @@
 import { shuffleArray } from '@app/common/shuffle-array';
+import { logger } from '@app/server/logger';
 import type { PrivateServiceContext, PublicServiceContext } from '@app/types/service';
 import { TRPCError } from '@trpc/server';
+import getConfig from 'next/config';
 import { z } from 'zod';
 
 export const CreatePostInput = z.object({
@@ -60,6 +62,7 @@ export const GetExplorePostsInput = z.object({
 
 class PostService {
     async createPost(ctx: PrivateServiceContext, input: z.infer<typeof CreatePostInput>) {
+        logger.debug(`Attempting to create a post for page: ${input.page.handle}`);
         const page = await ctx.prisma.page.findUnique({
             where: {
                 handle: input.page.handle,
@@ -79,7 +82,7 @@ class PostService {
         });
 
         // Create the post
-        await ctx.prisma.post.create({
+        const post = await ctx.prisma.post.create({
             data: {
                 pageId: page.id,
                 type: input.post.type,
@@ -95,6 +98,9 @@ class PostService {
                 },
             },
         });
+
+        const { publicRuntimeConfig: { APP_URL } } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
+        logger.complete(`Created post for page: ${input.page.handle} ${APP_URL}/@${input.page.handle}/${post.id}`);
     }
 
     async editPost(ctx: PrivateServiceContext, input: z.infer<typeof EditPostInput>) {

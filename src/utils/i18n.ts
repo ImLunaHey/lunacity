@@ -12,7 +12,7 @@ const { APP_URL } = publicRuntimeConfig;
 const options = {
     fallbackLng: 'en',
     supportedLngs: ['en', 'ar', 'cn', 'es'],
-    debug: env.NODE_ENV !== 'production',
+    debug: !!env.LANG_DEBUG,
     defaultNS: 'common',
     returnNull: false,
     load: 'languageOnly' as const,
