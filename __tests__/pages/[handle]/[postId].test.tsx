@@ -25,6 +25,13 @@ jest.mock('@app/components/text-post', () => ({
   TextPost: () => <div>__TEXT_POST__MOCK__</div>,
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: jest.fn(() => ({
+    t: jest.fn((text: string, args) => (args ? `${text} ${JSON.stringify(args, null)}` : text)),
+    ready: true,
+  })),
+}));
+
 jest.mock('@app/utils/api', () => ({
   api: {
     post: {
@@ -73,7 +80,7 @@ describe('PostId', () => {
     const { container } = render(<PostId postId="" />);
     expect(container).toMatchSnapshot();
     expect(container.querySelector('h1')).toHaveTextContent('404');
-    expect(container.querySelector('h2')).toHaveTextContent('No post exists with this ID');
+    expect(container.querySelector('h2')).toHaveTextContent('errors.post.not-found.');
   });
 
   it('renders a loading state', () => {

@@ -8,9 +8,7 @@ exports[`FollowedNotification returns x followed you 1`] = `
     class="text-xs text-gray-500 hover:text-white"
     href="/@test-page"
   >
-    @test-page
-     
-    followed-you
+    followed-you {"page":{"handle":"test-page"}}
   </a>
 </div>
 `;

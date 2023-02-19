@@ -63,7 +63,7 @@ exports[`PostId throws an error when no postId is provided 1`] = `
         <h2
           style="font-size: 14px; font-weight: normal; line-height: 49px; margin: 0px; padding: 0px;"
         >
-          No post exists with this ID
+          errors.post.not-found
           .
         </h2>
       </div>

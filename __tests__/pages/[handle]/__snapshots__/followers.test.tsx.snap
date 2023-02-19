@@ -3,8 +3,7 @@
 exports[`getServerSideProps renders the followers page 1`] = `
 <div>
   <div>
-    Followers for 
-    staff
+    follower-for {"handle":"staff"}
   </div>
 </div>
 `;

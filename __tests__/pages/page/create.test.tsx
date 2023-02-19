@@ -28,7 +28,7 @@ jest.mock('next/router', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(() => ({
-    t: jest.fn((text: string) => text),
+    t: jest.fn((text: string, args) => (args ? `${text} ${JSON.stringify(args, null)}` : text)),
     ready: true,
   })),
 }));

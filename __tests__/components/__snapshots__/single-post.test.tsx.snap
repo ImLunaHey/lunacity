@@ -118,7 +118,7 @@ exports[`SinglePost renders an image post 1`] = `
           class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
         >
           <button
-            aria-label="Favourite"
+            aria-label="bookmark-post"
             class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
             data-state="ready"
             type="button"
@@ -134,7 +134,7 @@ exports[`SinglePost renders an image post 1`] = `
           class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
         >
           <button
-            aria-label="Star post"
+            aria-label="add-reaction"
             class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
             data-state="ready"
             type="button"
@@ -150,7 +150,7 @@ exports[`SinglePost renders an image post 1`] = `
           class="nextui-c-kRHeuF nextui-c-kRHeuF-igNCIse-css nextui-grid-item"
         >
           <button
-            aria-label="Comment on post"
+            aria-label="post-add-comment"
             class="nextui-c-iWjDFM nextui-c-gulvcB nextui-c-iWjDFM-hkKLfu-color-default nextui-c-iWjDFM-imrJwH-size-xs nextui-c-iWjDFM-cwXrJp-borderWeight-normal nextui-c-iWjDFM-iPJLV-css nextui-button nextui-button--ready min-w-0"
             data-state="ready"
             type="button"

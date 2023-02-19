@@ -147,7 +147,7 @@ exports[`Navbar renders the navbar when authenticated 1`] = `
                     </svg>
                   </span>
                   <input
-                    aria-label="Search box"
+                    aria-label="search-box-label"
                     aria-multiline="false"
                     aria-placeholder="Search..."
                     aria-readonly="false"

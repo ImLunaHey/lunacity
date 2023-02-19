@@ -8,6 +8,13 @@ jest.mock('@app/common/with-public-access', () => ({
   withPublicAccess: (fn: any) => (ctx: any) => fn(ctx),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: jest.fn(() => ({
+    t: jest.fn((text: string, args) => (args ? `${text} ${JSON.stringify(args, null)}` : text)),
+    ready: true,
+  })),
+}));
+
 describe('getServerSideProps', () => {
   it('returns the handle from the url', async () => {
     const handle = '@staff';

@@ -22,6 +22,13 @@ jest.mock('../../src/components/text-post', () => ({
   TextPost: () => <div>__TEXT_POST__MOCK__</div>,
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: jest.fn(() => ({
+    t: jest.fn((text: string, args) => (args ? `${text} ${JSON.stringify(args, null)}` : text)),
+    ready: true,
+  })),
+}));
+
 describe('SinglePost', () => {
   const mockedPost = {
     type: 'text',
@@ -61,12 +68,12 @@ describe('SinglePost', () => {
     title: '',
   } satisfies
     | (Post & {
-      page: Page & {
-        owner: User;
-      };
-      media: Media[];
-      tags: Tag[];
-    })
+        page: Page & {
+          owner: User;
+        };
+        media: Media[];
+        tags: Tag[];
+      })
     | null;
 
   it('renders nothing if this is an unsupported post type', () => {
