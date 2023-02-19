@@ -38,6 +38,8 @@
     "next-superjson-plugin": "^0.5.4",
     "nodemailer": "^6.9.1",
     "patch-package": "^6.5.1",
+    "pino": "^8.10.0",
+    "pino-logflare": "^0.3.12",
     "pretty-ms": "^8.0.0",
     "react": "18.2.0",
     "react-countdown-simple": "^1.0.12",
