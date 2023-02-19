@@ -83,7 +83,7 @@ export const Notifications: FC = () => {
             key="no-notifications"
             className="h-fit items-start py-2 leading-normal text-gray-500 hover:text-white"
           >
-            No notifications
+            {t('no-notifications')}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

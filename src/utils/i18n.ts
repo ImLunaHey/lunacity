@@ -11,7 +11,7 @@ const { APP_URL } = publicRuntimeConfig;
 
 const options = {
     fallbackLng: 'en',
-    supportedLngs: ['en', 'ar', 'cn', 'es'],
+    supportedLngs: ['en', 'ar', 'cn', 'es', 'pt'],
     debug: !!env.LANG_DEBUG,
     defaultNS: 'common',
     returnNull: false,
@@ -31,8 +31,6 @@ const options = {
         caches: []
     },
 } satisfies InitOptions<HttpBackendOptions>;
-
-export const getCurrentLocale = () => i18nNext.languages[0];
 
 export const i18n = i18nNext
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
