@@ -4,7 +4,8 @@ import { initReactI18next } from 'react-i18next';
 import Backend, { type HttpBackendOptions } from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import getConfig from 'next/config';
-import { env } from 'process';
+import Pseudo from 'i18next-pseudo';
+import { env } from '@app/env/client.mjs';
 
 const { publicRuntimeConfig } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
 const { APP_URL } = publicRuntimeConfig;
@@ -12,7 +13,7 @@ const { APP_URL } = publicRuntimeConfig;
 const options = {
     fallbackLng: 'en',
     supportedLngs: ['en', 'ar', 'cn', 'es', 'pt'],
-    debug: !!env.LANG_DEBUG,
+    debug: !!env.NEXT_PUBLIC_LANG_DEBUG,
     defaultNS: 'common',
     returnNull: false,
     load: 'languageOnly' as const,
@@ -30,9 +31,14 @@ const options = {
     detection: {
         caches: []
     },
+    postProcess: ['pseudo'],
 } satisfies InitOptions<HttpBackendOptions>;
 
 export const i18n = i18nNext
+    .use(new Pseudo({
+        enabled: env.NEXT_PUBLIC_PSUDO_ENABLED === 'true',
+        languageToPseudo: 'en-US',
+    }))
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
     // learn more: https://github.com/i18next/i18next-http-backend
     .use(Backend)
