@@ -11,7 +11,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
-import { api } from '../../utils/api';
+import { api } from '@app/utils/api';
 
 export const getServerSideProps = withPrivateAccess();
 
