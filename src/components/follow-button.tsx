@@ -5,7 +5,7 @@ import { type FC, useState } from 'react';
 import { api } from '@app/utils/api';
 import ErrorComponent from '@app/components/error';
 import { useSession } from 'next-auth/react';
-import { type TRPCClientErrorLike } from '@trpc/client';
+import type { TRPCClientErrorLike } from '@trpc/client';
 import { useTranslation } from 'react-i18next';
 import { LoadingSpinner } from '@app/components/loading-spinner';
 

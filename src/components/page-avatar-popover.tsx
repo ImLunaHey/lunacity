@@ -1,6 +1,6 @@
 import { FollowButton } from '@app/components/follow-button';
 import { User, Text, Spacer, Grid } from '@nextui-org/react';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const PageAvatarPopover: FC<{

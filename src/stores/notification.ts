@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { type RouterOutputs } from '@app/utils/api';
+import type { RouterOutputs } from '@app/utils/api';
 
 export type Notification = RouterOutputs['notification']['getAllNotifications'][number];
 

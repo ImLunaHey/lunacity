@@ -16,11 +16,11 @@
  * processing a request
  *
  */
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { type Session } from 'next-auth';
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import type { Session } from 'next-auth';
 import type ws from 'ws';
-import { type NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http';
-import { type IncomingMessage } from 'http';
+import type { NodeHTTPCreateContextFnOptions } from '@trpc/server/dist/adapters/node-http';
+import type { IncomingMessage } from 'http';
 import { getSession } from 'next-auth/react';
 import { getServerAuthSession } from '@app/server/auth';
 import { prisma } from '@app/server/db';

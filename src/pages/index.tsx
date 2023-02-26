@@ -1,4 +1,4 @@
-import { type NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
 import { Button, Spacer, Text } from '@nextui-org/react';

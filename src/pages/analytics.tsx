@@ -1,5 +1,5 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const getServerSideProps = withPrivateAccess();
