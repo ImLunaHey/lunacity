@@ -1,7 +1,7 @@
 import '@app/utils/i18n';
 
-import { type AppType } from 'next/app';
-import { type Session } from 'next-auth';
+import type { AppType } from 'next/app';
+import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { createTheme, Link, NextUIProvider } from '@nextui-org/react';
 import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import '@app/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
 import Script from 'next/script';
-import { Router } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { useSSR } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
 
@@ -35,6 +35,7 @@ const Application: AppType<{ session: Session | null }> = ({
   const Navbar = dynamic(() => import('@app/components/navbar').then((pkg) => pkg.default));
   const ToastContainer = dynamic(() => import('react-toastify').then((pkg) => pkg.ToastContainer));
   const { isBrowser } = useSSR();
+  const { route } = useRouter();
 
   // If we're in dev mode show route changes as toasts
   if (process.env.NODE_ENV === 'development') {
@@ -62,7 +63,7 @@ const Application: AppType<{ session: Session | null }> = ({
           )}
         </Head>
         <Navbar {...pageProps} />
-        <main className="container mx-auto mt-2 w-4/5 max-w-2xl">
+        <main className={['container mx-auto mt-2 ', route.startsWith('/admin') ? '' : 'w-4/5 max-w-2xl'].join(' ')}>
           <Page {...pageProps} />
         </main>
         <ToastContainer
