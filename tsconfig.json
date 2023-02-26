@@ -32,7 +32,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "importsNotUsedAsValues": "error"
   },
   "include": [
     "next-env.d.ts",
