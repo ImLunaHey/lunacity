@@ -4,7 +4,7 @@ import { Navbar, Text, Input, Dropdown, Avatar } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SearchIcon } from '@app/icons/search-icon';
+import { SearchIcon } from '@app/components/icons/search-icon';
 import { Notifications } from './notifications';
 import { useTranslation } from 'react-i18next';
 import { type SubmitHandler, useForm } from 'react-hook-form';

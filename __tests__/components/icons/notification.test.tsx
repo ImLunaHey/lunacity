@@ -1,4 +1,4 @@
-import { NotificationIcon } from '@app/icons/notification-icon';
+import { NotificationIcon } from '@app/components/icons/notification-icon';
 
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';

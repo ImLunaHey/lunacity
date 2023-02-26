@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { SearchIcon } from '@app/icons/search-icon';
+import { SearchIcon } from '@app/components/icons/search-icon';
 
 describe('SearchIcon', () => {
     it('renders', () => {
