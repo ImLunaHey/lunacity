@@ -1,5 +1,5 @@
 import { Card, Text, Spacer, Input, Button, Modal } from '@nextui-org/react';
-import type { InferGetServerSidePropsType, NextPage } from 'next';
+import type { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,8 +14,9 @@ import { refreshSession } from '@app/common/refresh-session';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { useState } from 'react';
+import type { Session } from 'next-auth';
 
-export const getServerSideProps = withPrivateAccess(async (context) => {
+const getProps = async (context: Parameters<GetServerSideProps>[0] & { session: Session }) => {
   // Get the session's settings
   const user = await prisma?.user.findUnique({
     where: {
@@ -49,7 +50,9 @@ export const getServerSideProps = withPrivateAccess(async (context) => {
       },
     },
   };
-});
+};
+
+export const getServerSideProps = withPrivateAccess(getProps);
 
 const SettingsInput = z
   .object({
@@ -69,7 +72,7 @@ const SettingsInput = z
 
 type Input = z.infer<typeof SettingsInput>;
 
-const Settings: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (props) => {
+const Settings: NextPage<InferGetServerSidePropsType<typeof getProps>> = (props) => {
   const { status } = useSession();
   const { t } = useTranslation();
   const {
