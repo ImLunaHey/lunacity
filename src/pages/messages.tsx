@@ -1,96 +1,81 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
 import { LoadingSpinner } from '@app/components/loading-spinner';
 import { api } from '@app/utils/api';
-import { Card, Text } from '@nextui-org/react';
-import { styled } from '@nextui-org/react';
-import { type NextPage } from 'next';
-import React, { type FC } from 'react';
+import { Avatar, Card, Grid, Input, Spacer, Text } from '@nextui-org/react';
+import type { NextPage } from 'next';
 
 export const getServerSideProps = withPrivateAccess();
 
-export const SendIcon: FC<{
-  size?: number;
-  width?: number;
-  height?: number;
-}> = ({ size, width, height }) => {
-  return (
-    <svg
-      data-name="Iconly/Curved/Lock"
-      xmlns="http://www.w3.org/2000/svg"
-      width={size || width || 24}
-      height={size || height || 24}
-      viewBox="0 0 24 24"
-    >
-      <g transform="translate(2 2)">
-        <path d="M19.435.582A1.933,1.933,0,0,0,17.5.079L1.408,4.76A1.919,1.919,0,0,0,.024,6.281a2.253,2.253,0,0,0,1,2.1L6.06,11.477a1.3,1.3,0,0,0,1.61-.193l5.763-5.8a.734.734,0,0,1,1.06,0,.763.763,0,0,1,0,1.067l-5.773,5.8a1.324,1.324,0,0,0-.193,1.619L11.6,19.054A1.91,1.91,0,0,0,13.263,20a2.078,2.078,0,0,0,.25-.01A1.95,1.95,0,0,0,15.144,18.6L19.916,2.525a1.964,1.964,0,0,0-.48-1.943" />
-      </g>
-    </svg>
-  );
-};
-
-export const SendButton = styled('button', {
-  // reset button styles
-  background: 'transparent',
-  border: 'none',
-  padding: 0,
-  // styles
-  width: '24px',
-  margin: '0 10px',
-  dflex: 'center',
-  bg: '$primary',
-  borderRadius: '$rounded',
-  cursor: 'pointer',
-  transition: 'opacity 0.25s ease 0s, transform 0.25s ease 0s',
-  svg: {
-    size: '100%',
-    padding: '4px',
-    transition: 'transform 0.25s ease 0s, opacity 200ms ease-in-out 50ms',
-    boxShadow: '0 5px 20px -5px rgba(0, 0, 0, 0.1)',
-  },
-  '&:hover': {
-    opacity: 0.8,
-  },
-  '&:active': {
-    transform: 'scale(0.9)',
-    svg: {
-      transform: 'translate(24px, -24px)',
-      opacity: 0,
-    },
-  },
-});
-
-// <Input
-//   className="w-full"
-//   clearable
-//   contentRightStyling={false}
-//   placeholder="Type your message..."
-//   contentRight={
-//     <SendButton>
-//       <SendIcon />
-//     </SendButton>
-//   }
-// />
-
 const Messages: NextPage = () => {
+  const friendsOnline: {
+    src: string;
+    name: string;
+    description: string;
+    handle: string;
+    official: boolean;
+    followerCount: number;
+    followingCount: number;
+    popover: boolean;
+  }[] = [];
   const messageThreads = api.message.getAllMessageThreads.useQuery();
 
   // Show loading state while we fetch the message threads
   if (messageThreads.isLoading) return <LoadingSpinner />;
 
-  if (!messageThreads.data) return <div>No message threads found.</div>;
+  // Show error state if something went wrong
+  if (messageThreads.isError) return <div>Failed to load</div>;
 
+  // Show empty state if there are no message threads
+  if (messageThreads.data?.length === 0) return <div>No message threads</div>;
+
+  // Show the message threads
   return (
-    <>
-      {messageThreads.data.map((messageThread) => (
-        <Card className="p-8" key={messageThread.id}>
-          <Card.Body>
-            <Text h6 size={15} color="white" css={{ m: 0 }}>
-              {messageThread.messages[0]?.text}
+    <Card>
+      <Card.Body className="w-full p-5">
+        <Grid.Container gap={1}>
+          <Grid className="w-1/3">
+            <Text h3 color="white">
+              Chats
             </Text>
-          </Card.Body>
-        </Card>
-      ))}
-    </>
+            <Input className="m-0 w-full bg-[#0A0A0A]" bordered clearable placeholder="Search" />
+            <Spacer x={0.5} />
+            <div>
+              <Grid.Container gap={2} className="scrollbar-hide h-20 overflow-x-scroll overflow-y-scroll">
+                {friendsOnline.map((friend) => (
+                  <Grid key={friend.handle} className="inline-block ">
+                    <Avatar
+                      size="lg"
+                      pointer
+                      src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                      text={friend.handle}
+                      stacked
+                      bordered
+                      color="success"
+                    />
+                  </Grid>
+                ))}
+              </Grid.Container>
+            </div>
+            <Spacer x={0.5} />
+            <div>
+              <Text h4 color="white">
+                Recent chats
+              </Text>
+              {messageThreads.data?.map((messageThread) => (
+                <Card className="p-8" key={messageThread.id}>
+                  <Card.Body>
+                    <Text h6 size={15} color="white" css={{ m: 0 }}>
+                      {messageThread.messages[0]?.text}
+                    </Text>
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
+          </Grid>
+          <Grid>This is where the messages go</Grid>
+        </Grid.Container>
+      </Card.Body>
+    </Card>
   );
 };
 
