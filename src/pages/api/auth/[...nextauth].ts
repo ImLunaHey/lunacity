@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, user }) {
-      // Include user.id on session
+      // Include user.id in the session
       if (session.user) {
         session.user.id = user.id;
         const databaseUser = await prisma.user.findUnique({
@@ -26,9 +26,11 @@ export const authOptions: NextAuthOptions = {
           }
         });
 
-        // Include user's main page on session
-        if (databaseUser?.page)
-          session.user.page = databaseUser.page;
+        // Include user's main page in the session
+        if (databaseUser?.page) session.user.page = databaseUser.page;
+
+        // Include user's role in the session
+        if (databaseUser?.role) session.user.role = databaseUser.role;
       }
 
       return session;

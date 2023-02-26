@@ -1,4 +1,4 @@
-import { type Page } from '@prisma/client';
+import { type Role, type Page } from '@prisma/client';
 
 declare module 'next-auth' {
   /**
@@ -9,6 +9,7 @@ declare module 'next-auth' {
       id: string;
       handle?: string;
       page?: Page
+      role?: Role;
     };
   }
 }

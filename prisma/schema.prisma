@@ -49,11 +49,18 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
 model User {
   id            String               @id @default(cuid())
   email         String?              @unique
   emailVerified DateTime?
   language      String               @default("en")
+  role          Role                 @default(USER)
   accounts      Account[]
   sessions      Session[]
   reports       Report[]
