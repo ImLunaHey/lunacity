@@ -69,6 +69,14 @@ const DropdownMenu: FC = () => {
           {t('pages.help.title')}
         </Link>
       </Dropdown.Item>
+      {/* Show admin link for admins */}
+      {session?.user?.role === 'ADMIN' ? (
+        <Dropdown.Item textValue={t('pages.admin.title')} withDivider key="admin">
+          <Link className="m-0 block h-full w-full text-gray-400 hover:text-white" href="/admin">
+            {t('pages.admin.title')}
+          </Link>
+        </Dropdown.Item>
+      ) : <></>}
       <Dropdown.Item textValue={t('sign-out')} key="signout" withDivider color="error">
         <a
           className="m-0 block h-full w-full text-gray-400 hover:text-white"
@@ -125,6 +133,7 @@ export default function NavBar() {
   // If there's no session at all don't render
   if (!session) return null;
 
+  // If the translations aren't ready yet don't render
   if (!ready) return null;
 
   return (

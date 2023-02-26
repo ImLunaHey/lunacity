@@ -7,6 +7,7 @@ import { tagRouter } from '@app/server/api/routers/tag';
 import { userRouter } from '@app/server/api/routers/user';
 import { messageRouter } from '@app/server/api/routers/message';
 import { statsRouter } from './routers/stats';
+import { adminRouter } from '@app/server/api/routers/admin';
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ import { statsRouter } from './routers/stats';
  * All routers added in /api/routers should be manually added here
  */
 export const appRouter = createTRPCRouter({
+  // User routes
   message: messageRouter,
   notification: notificationRouter,
   page: pageRouter,
@@ -22,6 +24,9 @@ export const appRouter = createTRPCRouter({
   stats: statsRouter,
   tag: tagRouter,
   user: userRouter,
+
+  // Admin routes
+  admin: adminRouter,
 });
 
 // export type definition of API
