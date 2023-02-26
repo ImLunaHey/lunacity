@@ -19,6 +19,7 @@
   "following-count": "{{followCount}} متابع",
   "help": "يساعد",
   "image-post": "مشاركة الصورة",
+  "no-access": "لم يكن لديك الوصول إلى هذه الصفحة.",
   "no-more-posts": "لا يوجد المزيد من المنشورات",
   "no-notifications": "لا إشعارات",
   "no-results-found": "لم يتم العثور على نتائج",
@@ -27,6 +28,9 @@
   },
   "online-user-count": "يوجد حاليًا {{count}} أشخاص متصلين.",
   "pages": {
+    "admin": {
+      "title": "مسؤل"
+    },
     "analytics": {
       "title": "تحليلات"
     },

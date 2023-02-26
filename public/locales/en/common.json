@@ -38,6 +38,7 @@
   "navbar": {
     "user-menu-label": "User menu actions"
   },
+  "no-access": "You do not have access to this page.",
   "no-more-posts": "No more posts",
   "no-notifications": "No notifications",
   "no-results-found": "No results found",
@@ -47,6 +48,9 @@
   "official-checkmark": "✅ Official",
   "online-user-count": "There are currently {{count}} people online.",
   "pages": {
+    "admin": {
+      "title": "Admin"
+    },
     "analytics": {
       "title": "Analytics"
     },

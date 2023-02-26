@@ -1,10 +1,16 @@
 {
   "create-page": "Criar uma nova página",
   "follower-count": "{{followerCount}} seguidores",
+  "no-access": "Você não tem acesso a esta página.",
   "no-notifications": "Nenhuma notificação",
   "no-results-found": "Nenhum resultado encontrado",
   "notifications": {
     "live-notifications-started": "Notificações ao vivo iniciadas"
+  },
+  "pages": {
+    "admin": {
+      "title": "Administrador"
+    }
   },
   "search-results-for-query": "Resultados da pesquisa para: {{query}}"
 }

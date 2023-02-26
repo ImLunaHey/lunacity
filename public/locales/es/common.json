@@ -17,6 +17,7 @@
   "edit-post": "Editar post",
   "follower-count": "{{followerCount}} seguidores",
   "following-count": "{{followingCount}} siguiendo",
+  "no-access": "No tienes acceso a esta pagina.",
   "no-notifications": "No Notificaciones",
   "no-results-found": "No se han encontrado resultados",
   "notifications": {
@@ -24,6 +25,9 @@
   },
   "online-user-count": "Actualmente hay {{count}} personas en línea.",
   "pages": {
+    "admin": {
+      "title": "Administración"
+    },
     "bye": {
       "account-deactivated-message": "En 30 días tu cuenta será eliminada. \nSi desea reactivar su cuenta antes de que eso suceda, vuelva a iniciar sesión."
     }
