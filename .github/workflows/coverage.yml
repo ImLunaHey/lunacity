@@ -10,8 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ArtiomTr/jest-coverage-report-action@v2
+      - uses: actions/setup-node@v3
         with:
-          test-script: SKIP_ENV_VALIDATION=true npm run coverage
+          node-version: 18.x
+      - run: npm ci
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        env:
+          SKIP_ENV_VALIDATION: true
+        with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           annotations: failed-tests
