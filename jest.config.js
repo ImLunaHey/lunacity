@@ -37,7 +37,7 @@ const customJestConfig = {
         }
     },
 
-    coverageReporters: ['clover', 'json', 'lcov', ['text', { skipFull: true }]],
+    coverageReporters: ['clover', 'json', 'json-summary', 'lcov', ['text', { skipFull: true }]],
 
     testPathIgnorePatterns: ['/__fixtures__/', '/__utils__/'],
 }
