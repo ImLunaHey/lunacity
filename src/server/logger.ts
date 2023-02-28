@@ -6,4 +6,5 @@ const secrets = Object.entries(env).filter(([key]) => !['NODE_ENV', 'NEXTAUTH_UR
 export const logger = new Signale({
     secrets,
     scope: 'app',
+    disabled: env.NODE_ENV === 'test',
 });
