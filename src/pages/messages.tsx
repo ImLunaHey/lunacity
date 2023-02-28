@@ -1,22 +1,24 @@
 import { withPrivateAccess } from '@app/common/with-private-access';
 import { LoadingSpinner } from '@app/components/loading-spinner';
 import { api } from '@app/utils/api';
-import { Avatar, Card, Grid, Input, Spacer, Text } from '@nextui-org/react';
+import { Avatar, Button, Card, Grid, Input, Link, Spacer, Text } from '@nextui-org/react';
 import type { NextPage } from 'next';
 
 export const getServerSideProps = withPrivateAccess();
 
+const friendsOnline: {
+  src: string;
+  name: string;
+  description: string;
+  handle: string;
+  official: boolean;
+  followerCount: number;
+  followingCount: number;
+  popover: boolean;
+}[] = [];
+
 const Messages: NextPage = () => {
-  const friendsOnline: {
-    src: string;
-    name: string;
-    description: string;
-    handle: string;
-    official: boolean;
-    followerCount: number;
-    followingCount: number;
-    popover: boolean;
-  }[] = [];
+  const createMessageThread = api.message.createMessageThread.useMutation();
   const messageThreads = api.message.getAllMessageThreads.useQuery();
 
   // Show loading state while we fetch the message threads
@@ -26,7 +28,17 @@ const Messages: NextPage = () => {
   if (messageThreads.isError) return <div>Failed to load</div>;
 
   // Show empty state if there are no message threads
-  if (messageThreads.data?.length === 0) return <div>No message threads</div>;
+  if (messageThreads.data?.length === 0) return (
+    <>
+      <div>Data: {JSON.stringify(createMessageThread.data, null, 2)}</div>
+      <div>Error: {createMessageThread.error?.message}</div>
+      <Button onClick={() => {
+        createMessageThread.mutate({
+          participants: ['testuser'],
+        });
+      }}>Create new thread</Button>
+    </>
+  );
 
   // Show the message threads
   return (
@@ -64,9 +76,9 @@ const Messages: NextPage = () => {
               {messageThreads.data?.map((messageThread) => (
                 <Card className="p-8" key={messageThread.id}>
                   <Card.Body>
-                    <Text h6 size={15} color="white" css={{ m: 0 }}>
-                      {messageThread.messages[0]?.text}
-                    </Text>
+                    <Link href={`/messages/${messageThread.id}`}>
+                      {messageThread.participants[0]?.handle}
+                    </Link>
                   </Card.Body>
                 </Card>
               ))}

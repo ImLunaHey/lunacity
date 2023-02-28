@@ -1,4 +1,4 @@
-import { CreatePageInput, FollowingStateInput, FollowPageInput, GetPageDetailsInput, GetPageFollowingInput, GetPagePostsInput, PageExistsInput, pageService, UnfollowPageInput } from '@app/services/page-service';
+import { CreatePageInput, GetFollowingStateInput, FollowPageInput, GetPageDetailsInput, GetPageFollowingInput, GetPagePostsInput, PageExistsInput, pageService, UnfollowPageInput, BlockPageInput } from '@app/services/page-service';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@app/server/api/trpc';
 
 export const pageRouter = createTRPCRouter({
@@ -50,7 +50,13 @@ export const pageRouter = createTRPCRouter({
     }),
 
   getFollowingState: protectedProcedure
-    .input(FollowingStateInput).query(async ({ ctx, input }) => {
+    .input(GetFollowingStateInput).query(async ({ ctx, input }) => {
       return pageService.getFollowingState(ctx, input);
+    }),
+
+  blockPage: protectedProcedure
+    .input(BlockPageInput)
+    .mutation(async ({ ctx, input }) => {
+      return pageService.blockPage(ctx, input);
     }),
 });

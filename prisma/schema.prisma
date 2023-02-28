@@ -100,6 +100,20 @@ model Protection {
   page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
 }
 
+model Block {
+  // The page who is blocking
+  blockerId String
+  blocker   Page   @relation("blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+
+  // Page they're blocking
+  blockedId String
+  blocked   Page   @relation("blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([blockerId, blockedId])
+}
+
 model Page {
   id             String               @id @default(cuid())
   handle         String               @unique
@@ -136,6 +150,12 @@ model Page {
 
   // Messages threads this page is currently in
   messageThreads MessageThread[]
+
+  // The pages that have this page blocked
+  blockedBy Block[] @relation("blocked")
+
+  // The pages this page has blocked
+  blocked Block[] @relation("blocker")
 
   // Extra junk connections
   NotificationData NotificationData[]

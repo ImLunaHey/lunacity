@@ -33,7 +33,11 @@ export const UnfollowPageInput = z.object({
     handle: z.string(),
 });
 
-export const FollowingStateInput = z.object({
+export const GetFollowingStateInput = z.object({
+    handle: z.string()
+});
+
+export const BlockPageInput = z.object({
     handle: z.string()
 });
 
@@ -442,7 +446,7 @@ class PageService {
         });
     }
 
-    async getFollowingState(ctx: PrivateServiceContext, input: z.infer<typeof FollowingStateInput>) {
+    async getFollowingState(ctx: PrivateServiceContext, input: z.infer<typeof GetFollowingStateInput>) {
         // Get the current session's page
         const userPage = await ctx.prisma.page.findFirst({
             where: {
@@ -482,6 +486,66 @@ class PageService {
         });
 
         return follows !== null;
+    }
+
+    async blockPage(ctx: PrivateServiceContext, input: z.infer<typeof BlockPageInput>) {
+        // Get the page
+        const page = await ctx.prisma.page.findUnique({
+            where: {
+                handle: input.handle,
+            },
+        });
+
+        // No page found for that handle
+        if (!page)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No page found for this handle.',
+            });
+
+        // Get the current session's page
+        const userPage = await ctx.prisma.page.findFirst({
+            where: {
+                userId: ctx.session.user?.id
+            }
+        });
+
+        // No page found for the current session
+        if (!userPage)
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'No page found for this handle.',
+            });
+
+        // Don't allow the user to block themselves
+        if (userPage.id === page.id)
+            throw new TRPCError({
+                code: 'CONFLICT',
+                message: 'You can not block yourself.',
+            });
+
+        // Get the blocked
+        const isBlocked = await ctx.prisma.block.findFirst({
+            where: {
+                blockerId: userPage.id,
+                blockedId: page.id
+            },
+        });
+
+        // Check if the user is blocked this page
+        if (isBlocked)
+            throw new TRPCError({
+                code: 'CONFLICT',
+                message: 'You already blocked this page.',
+            });
+
+        // Block the page
+        await ctx.prisma.block.create({
+            data: {
+                blockerId: userPage.id,
+                blockedId: page.id
+            },
+        });
     }
 }
 
