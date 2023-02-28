@@ -26,5 +26,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: npm ci
-      - run: SKIP_ENV_VALIDATION=true npm run coverage
+      - uses: artiomtr/jest-coverage-report-action@v1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          #   threshold: 80 # optional parameter
