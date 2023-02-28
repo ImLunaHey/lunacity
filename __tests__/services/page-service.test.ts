@@ -6,7 +6,7 @@ import { generateUsername } from '@app/common/generate-username';
 import { randomUUID } from 'crypto';
 import { createMockUser } from '__tests__/__utils__/mocks/create-mock-user';
 
-jest.mock('@app/env/server.mjs', () => ({
+jest.mock('@app/env.mjs', () => ({
     env: {
         NODE_ENV: 'test',
         NEXTAUTH_URL: 'http://localhost:3000',

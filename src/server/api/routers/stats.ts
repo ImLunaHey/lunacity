@@ -1,4 +1,4 @@
-import { env } from '@app/env/server.mjs';
+import { env } from '@app/env.mjs';
 import { createTRPCRouter, publicProcedure } from '@app/server/api/trpc';
 import { logger } from '@app/server/logger';
 

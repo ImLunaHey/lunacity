@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto';
 import createPrismaMock from 'prisma-mock/lib';
 import { createMockSession } from '__tests__/__utils__/mocks/create-mock-session';
 
-jest.mock('@app/env/server.mjs', () => ({
+jest.mock('@app/env.mjs', () => ({
     env: {
         NODE_ENV: 'test',
         NEXTAUTH_URL: 'http://localhost:3000',

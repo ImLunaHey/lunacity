@@ -1,5 +1,5 @@
 import { Card, Text, Spacer, Input, Button, Modal } from '@nextui-org/react';
-import type { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { zodResolver } from '@hookform/resolvers/zod';

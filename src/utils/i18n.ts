@@ -5,7 +5,7 @@ import Backend, { type HttpBackendOptions } from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import getConfig from 'next/config';
 import Pseudo from 'i18next-pseudo';
-import { env } from '@app/env/client.mjs';
+import { env } from '@app/env.mjs';
 
 const { publicRuntimeConfig } = getConfig() as { publicRuntimeConfig: { APP_URL: string; WS_URL: string; } };
 const { APP_URL } = publicRuntimeConfig;

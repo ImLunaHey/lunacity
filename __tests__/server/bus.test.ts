@@ -3,7 +3,7 @@ import { RedisBus } from '@app/server/bus';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('ioredis', () => jest.requireActual('ioredis-mock'));
 
-jest.mock('@app/env/server.mjs', () => ({
+jest.mock('@app/env.mjs', () => ({
     env: {
         NODE_ENV: 'test',
         NEXTAUTH_URL: 'http://localhost:3000',
