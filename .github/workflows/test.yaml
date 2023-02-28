@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [main]
 
+permissions: write-all
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -32,6 +34,7 @@ jobs:
         uses: jpb06/jest-badges-action@latest
         with:
           branches: main
+          commit-message: chore: updating coverage badges
 
   build:
     runs-on: ubuntu-latest
