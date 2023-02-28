@@ -30,8 +30,8 @@ jobs:
       - run: SKIP_ENV_VALIDATION=true npm run coverage
       - name: Generating coverage badges
         uses: jpb06/jest-badges-action@latest
-          with:
-            branches: main
+        with:
+          branches: main
 
   build:
     runs-on: ubuntu-latest
