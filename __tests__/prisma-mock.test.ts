@@ -4,7 +4,7 @@ import createPrismaMock from 'prisma-mock';
 
 describe('prisma-mock', () => {
     // See: https://github.com/demonsters/prisma-mock/issues/22
-    it.failing('can be used to mock prisma', async () => {
+    it('can be used to mock prisma', async () => {
         const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
         const userId1 = randomUUID();
         const userId2 = randomUUID();

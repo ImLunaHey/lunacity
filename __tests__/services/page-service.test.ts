@@ -198,7 +198,8 @@ describe('pageService', () => {
             expect(pages.length).toBe(1);
         });
 
-        it('returns pages the user is an moderator of', async () => {
+        // See: https://github.com/demonsters/prisma-mock/issues/22#issuecomment-1449135577
+        it.failing('returns pages the user is an moderator of', async () => {
             const session = createMockSession();
             const prismaMock = createPrismaMock<NonNullable<typeof prisma>>();
             await prismaMock.page.create({
