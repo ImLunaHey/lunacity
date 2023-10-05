@@ -58,7 +58,7 @@
     "type-fest": "^3.6.1",
     "unique-names-generator": "^4.7.1",
     "ws": "^8.12.1",
-    "zod": "^3.20.6",
+    "zod": "^3.22.3",
     "zustand": "^4.3.5"
   },
   "devDependencies": {
